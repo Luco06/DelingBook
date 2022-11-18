@@ -1,12 +1,59 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { LinearGradient } from "expo-linear-gradient";
+import Step1 from "./src/components/StepPresentation/Step1";
+import Step2 from "../delingbook_app/src/components/StepPresentation/Step2";
+import Step3 from "../delingbook_app/src/components/StepPresentation/Step3";
+import Step4 from "../delingbook_app/src/components/StepPresentation/Step4";
 
 export default function App() {
+  const Stack = createNativeStackNavigator();
+  function LogoTitile() {
+    return (
+      <Image
+        style={{ with: 50, height: 50 }}
+        source={require("../delingbook_app/assets/OriginalLogo_Icon.png")}
+      />
+    );
+  }
   return (
-    <View style={styles.container}>
-      <Text>DelingBook_App</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Step1"
+          component={Step1}
+          options={{
+            headerShown: false,
+            headerStyle: { backgroundColor: "#287DC0" },
+          }}
+        />
+        <Stack.Screen
+          name="Step2"
+          component={Step2}
+          options={{
+            headerShown: false,
+            headerStyle: { backgroundColor: "#287DC0" },
+          }}
+        />
+        <Stack.Screen
+          name="Step3"
+          component={Step3}
+          options={{
+            headerShown: false,
+            headerStyle: { backgroundColor: "#287DC0" },
+          }}
+        />
+        <Stack.Screen
+          name="Step4"
+          component={Step4}
+          options={{
+            headerShown: false,
+            headerStyle: { backgroundColor: "#287DC0" },
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
