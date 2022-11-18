@@ -1,8 +1,11 @@
 import { StyleSheet } from "react-native";
-import Presentations from "./src/components/Pages/Presentations";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { LinearGradient } from "expo-linear-gradient";
+import Step1 from "./src/components/StepPresentation/Step1";
+import Step2 from "../delingbook_app/src/components/StepPresentation/Step2";
+import Step3 from "../delingbook_app/src/components/StepPresentation/Step3";
+import Step4 from "../delingbook_app/src/components/StepPresentation/Step4";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -18,8 +21,32 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name="Presentation"
-          component={Presentations}
+          name="Step1"
+          component={Step1}
+          options={{
+            headerShown: false,
+            headerStyle: { backgroundColor: "#287DC0" },
+          }}
+        />
+        <Stack.Screen
+          name="Step2"
+          component={Step2}
+          options={{
+            headerShown: false,
+            headerStyle: { backgroundColor: "#287DC0" },
+          }}
+        />
+        <Stack.Screen
+          name="Step3"
+          component={Step3}
+          options={{
+            headerShown: false,
+            headerStyle: { backgroundColor: "#287DC0" },
+          }}
+        />
+        <Stack.Screen
+          name="Step4"
+          component={Step4}
           options={{
             headerShown: false,
             headerStyle: { backgroundColor: "#287DC0" },
