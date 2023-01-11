@@ -80,7 +80,9 @@ export default function StepLogin2({ navigation }) {
           </BtnPrez>
         </LinearGradient>
         <ViewCondition>
-          <TextCondition onPress={() => console.log("Page mdp oublié")}>
+          <TextCondition
+            onPress={() => navigation.navigate("StepForgetPassword1")}
+          >
             Mot de passe oublié?
           </TextCondition>
           <TextCondition>
