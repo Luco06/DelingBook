@@ -6,6 +6,10 @@ import Step1 from "./src/components/StepPresentation/Step1";
 import Step2 from "../delingbook_app/src/components/StepPresentation/Step2";
 import Step3 from "../delingbook_app/src/components/StepPresentation/Step3";
 import Step4 from "../delingbook_app/src/components/StepPresentation/Step4";
+import StepLogin1 from "./src/components/StepsLogin/StepLogin1";
+import StepLogin2 from "./src/components/StepsLogin/StepLogin2";
+import StepForgetPassword1 from "./src/components/StepsLogin/StepForgetPassword1";
+import StepForgetPassword2 from "./src/components/StepsLogin/StepForgetPassword2";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -50,6 +54,34 @@ export default function App() {
           options={{
             headerShown: false,
             headerStyle: { backgroundColor: "#287DC0" },
+          }}
+        />
+        <Stack.Screen
+          name="StepLogin1"
+          component={StepLogin1}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="StepLogin2"
+          component={StepLogin2}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="StepForgetPassword1"
+          component={StepForgetPassword1}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="StepForgetPassword2"
+          component={StepForgetPassword2}
+          options={{
+            headerShown: false,
           }}
         />
       </Stack.Navigator>
