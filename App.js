@@ -7,6 +7,7 @@ import Step2 from "../delingbook_app/src/components/StepPresentation/Step2";
 import Step3 from "../delingbook_app/src/components/StepPresentation/Step3";
 import Step4 from "../delingbook_app/src/components/StepPresentation/Step4";
 import StepLogin1 from "./src/components/StepsLogin/StepLogin1";
+import StepLogin2 from "./src/components/StepsLogin/StepLogin2";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -56,6 +57,13 @@ export default function App() {
         <Stack.Screen
           name="StepLogin1"
           component={StepLogin1}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="StepLogin2"
+          component={StepLogin2}
           options={{
             headerShown: false,
           }}
