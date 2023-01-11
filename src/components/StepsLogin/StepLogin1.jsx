@@ -1,24 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useForm, Controller } from "react-hook-form";
-import {
-  StyleSheet,
-  Image,
-  View,
-  TextInput,
-  Button,
-  Text,
-  Alert,
-  Pressable,
-} from "react-native";
-import StepPresentation from "../../../Api/Mock/StepPresentations";
+import { StyleSheet, Image, View, TextInput, Text } from "react-native";
 import MAil from "../../../assets/Img_Presentation/Letter.svg";
 import Tel from "../../../assets/Img_Presentation/smartphone.svg";
 import Lock from "../../../assets/Img_Presentation/lock.svg";
 import { LinearGradient } from "expo-linear-gradient";
 import { CheckBox } from "@rneui/themed";
 
-export default function StepLogin1() {
+export default function StepLogin1({ navigation }) {
   const {
     control,
     handleSubmit,
@@ -142,7 +132,7 @@ export default function StepLogin1() {
         </ViewCondition>
         <TextCondition>
           Vous êtes déja membre?
-          <TextPressable onPress={() => console.log("Se connecter")}>
+          <TextPressable onPress={() => navigation.navigate("StepLogin2")}>
             &nbsp; Se connecter
           </TextPressable>
         </TextCondition>
