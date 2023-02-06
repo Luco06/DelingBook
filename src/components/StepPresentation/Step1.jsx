@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Pressable, StyleSheet, Image } from "react-native";
+import { StyleSheet, Image } from "react-native";
 import StepPresentation from "../../../Api/Mock/StepPresentations";
 import styled from "styled-components/native";
 import ArrowPrez from "../../../assets/Img_Presentation/ArrowPrez.png";
