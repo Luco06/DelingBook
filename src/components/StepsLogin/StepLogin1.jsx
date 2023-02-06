@@ -7,6 +7,7 @@ import Tel from "../../../assets/Img_Presentation/smartphone.svg";
 import Lock from "../../../assets/Img_Presentation/lock.svg";
 import { LinearGradient } from "expo-linear-gradient";
 import { CheckBox } from "@rneui/themed";
+import OriginalLogoWTtxt from "../../../assets/Img_Presentation/OrignalLogoWTtxt.svg";
 
 export default function StepLogin1({ navigation }) {
   const {
@@ -20,7 +21,9 @@ export default function StepLogin1({ navigation }) {
       mdp: "",
     },
   });
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    navigation.navigate("StepBookGenderChoice1");
+  };
   const [showPassword, setShowPassword] = useState(true);
   const showMdp = () => {
     setShowPassword(!showPassword);
@@ -30,10 +33,7 @@ export default function StepLogin1({ navigation }) {
   return (
     <View style={[styles.container]}>
       <ViewImg>
-        <Image
-          style={{ width: 150, height: 150 }}
-          source={require("../../../assets/OriginalLogo_Icon.png")}
-        />
+        <OriginalLogoWTtxt width={150} height={150} />
       </ViewImg>
       <ViewStep>
         <Title>Crée votre compte gratuitement</Title>
