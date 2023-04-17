@@ -15,9 +15,7 @@ export default function StepBookGenderChoice3({ navigation }) {
         </TextBook>
       </ViewImg>
       <ViewBtn>
-        <PressableNext
-          onPress={() => navigation.navigate("StepBookGenderChoice3")}
-        >
+        <PressableNext onPress={() => navigation.navigate("MyUserProfil")}>
           <LinearGradient
             style={{
               borderRadius: 15,

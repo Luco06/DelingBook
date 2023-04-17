@@ -13,6 +13,7 @@ import StepForgetPassword2 from "./src/components/StepsLogin/StepForgetPassword2
 import StepBookGenderChoice1 from "./src/components/StepBookGenderChoice/StepBookGenderChoice1";
 import StepBookGenderChoice2 from "./src/components/StepBookGenderChoice/StepBookGenderChoice2";
 import StepBookGenderChoice3 from "./src/components/StepBookGenderChoice/StepBookGenderChoice3";
+import MyUserProfil from "./src/components/App_Pages/MyUserProfil";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -104,6 +105,13 @@ export default function App() {
         <Stack.Screen
           name="StepBookGenderChoice3"
           component={StepBookGenderChoice3}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="MyUserProfil"
+          component={MyUserProfil}
           options={{
             headerShown: false,
           }}
