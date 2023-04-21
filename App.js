@@ -14,6 +14,8 @@ import StepBookGenderChoice1 from "./src/components/StepBookGenderChoice/StepBoo
 import StepBookGenderChoice2 from "./src/components/StepBookGenderChoice/StepBookGenderChoice2";
 import StepBookGenderChoice3 from "./src/components/StepBookGenderChoice/StepBookGenderChoice3";
 import MyUserProfil from "./src/components/App_Pages/MyUserProfil";
+import UserProfil from "./src/components/App_Pages/UserProfil";
+import Home from "./assets/Img_Presentation/Home.svg";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -112,6 +114,13 @@ export default function App() {
         <Stack.Screen
           name="MyUserProfil"
           component={MyUserProfil}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="UserProfil"
+          component={UserProfil}
           options={{
             headerShown: false,
           }}

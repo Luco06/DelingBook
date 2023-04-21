@@ -53,7 +53,7 @@ export default function MyUserProfil({ navigation }) {
         </BoxInfo>
         <View style={{ overflow: "hidden", paddingBottom: 5 }}>
           <View style={styles.shadow}>
-            <Resume>DCLover17</Resume>
+            <Resume>{pseudo}</Resume>
             <Image
               style={{ height: 130, width: 90, alignSelf: "center", margin: 5 }}
               source={require("../../../assets/Img_Presentation/tokyo.png")}
@@ -109,6 +109,18 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.9,
     shadowRadius: 3,
     elevation: 2,
+  },
+  BtnPrez: {
+    width: 140,
+    height: 70,
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
+    textAlign: "center",
+    borderRadius: 15,
+    marginLeft: 30,
+    marginRight: 30,
+    margin: 20,
   },
 });
 const ViewBtn = styled.View`
