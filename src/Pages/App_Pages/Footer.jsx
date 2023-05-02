@@ -12,7 +12,11 @@ export default function Footer() {
   const navigation = useNavigation();
   return (
     <ViewIconApp>
-      <Home width={25} height={25} />
+      <Home
+        onPress={() => navigation.navigate("HomePage")}
+        width={25}
+        height={25}
+      />
       <Message width={25} height={25} />
       <Library
         onPress={() => navigation.navigate("MyLibrary")}
