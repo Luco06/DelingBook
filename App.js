@@ -1,5 +1,4 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { StatusBar } from "expo-status-bar";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StyleSheet } from "react-native";
 import Step1 from "./src/components/StepPresentation/Step1";
@@ -14,6 +13,7 @@ import StepBookGenderChoice1 from "./src/components/StepBookGenderChoice/StepBoo
 import StepBookGenderChoice2 from "./src/components/StepBookGenderChoice/StepBookGenderChoice2";
 import StepBookGenderChoice3 from "./src/components/StepBookGenderChoice/StepBookGenderChoice3";
 import MyUserProfil from "./src/components/App_Pages/MyUserProfil";
+import MyLibrary from "./src/components/App_Pages/MyLibrary";
 import UserProfil from "./src/components/App_Pages/UserProfil";
 import Home from "./assets/Img_Presentation/Home.svg";
 
@@ -119,8 +119,8 @@ export default function App() {
           }}
         />
         <Stack.Screen
-          name="UserProfil"
-          component={UserProfil}
+          name="MyLibrary"
+          component={MyLibrary}
           options={{
             headerShown: false,
           }}

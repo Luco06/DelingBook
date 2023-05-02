@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Platform, View } from "react-native";
-import { Text, SafeAreaView, StyleSheet, Image } from "react-native";
+import { Text, StyleSheet, Image } from "react-native";
 import styled from "styled-components";
 import ArrowReturn from "../../../assets/Img_Presentation/Shape.svg";
 import Setting from "../../../assets/Img_Presentation/Fill_1157.svg";
@@ -8,12 +8,7 @@ import Avatar from "../../../assets/Img_Presentation/Avatar.svg";
 import Like from "../../../assets/Img_Presentation/like.svg";
 import Comment from "../../../assets/Img_Presentation/Comment.svg";
 import Share from "../../../assets/Img_Presentation/Share.svg";
-import Library from "../../../assets/Img_Presentation/Library.svg";
-import Home from "../../../assets/Img_Presentation/Home.svg";
-import Account from "../../../assets/Img_Presentation/Account.svg";
-import Message from "../../../assets/Img_Presentation/Message.svg";
-import Search from "../../../assets/Img_Presentation/Search.svg";
-import Video from "../../../assets/Img_Presentation/Video.svg";
+import Footer from "./Footer";
 
 export default function MyUserProfil({ navigation }) {
   const [pseudo, setPseudo] = useState("DCLover17");
@@ -79,14 +74,7 @@ export default function MyUserProfil({ navigation }) {
           </View>
         </View>
       </ViewInfoProfile>
-      <ViewIconApp>
-        <Home width={25} height={25} />
-        <Message width={25} height={25} />
-        <Library width={25} height={25} />
-        <Search width={25} height={25} />
-        <Video width={25} height={25} />
-        <Account width={25} height={25} />
-      </ViewIconApp>
+      <Footer />
     </View>
   );
 }
@@ -138,7 +126,7 @@ const ViewIcon = styled.View`
 `;
 const ViewInfoProfile = styled.View`
   width: 100%;
-  flex: 5;
+  flex: 3.8;
   display: flex;
 `;
 const ViewAvatar = styled.View`
@@ -186,15 +174,4 @@ const BoxIconPublication = styled.View`
 const TextIcon = styled.Text`
   font-size: 12px;
   margin-left: 2px;
-`;
-
-const ViewIconApp = styled.View`
-  width: 100%;
-  flex: 0.3;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around;
-  border-top-width: 1px;
-  border-top-color: black;
 `;
