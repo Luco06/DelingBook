@@ -1,21 +1,21 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StyleSheet } from "react-native";
-import Step1 from "./src/components/StepPresentation/Step1";
-import Step2 from "./src/components/StepPresentation/Step2";
-import Step3 from "./src/components/StepPresentation/Step3";
-import Step4 from "./src/components/StepPresentation/Step4";
-import StepLogin1 from "./src/components/StepsLogin/StepLogin1";
-import StepLogin2 from "./src/components/StepsLogin/StepLogin2";
-import StepForgetPassword1 from "./src/components/StepsLogin/StepForgetPassword1";
-import StepForgetPassword2 from "./src/components/StepsLogin/StepForgetPassword2";
-import StepBookGenderChoice1 from "./src/components/StepBookGenderChoice/StepBookGenderChoice1";
-import StepBookGenderChoice2 from "./src/components/StepBookGenderChoice/StepBookGenderChoice2";
-import StepBookGenderChoice3 from "./src/components/StepBookGenderChoice/StepBookGenderChoice3";
-import MyUserProfil from "./src/components/App_Pages/MyUserProfil";
-import MyLibrary from "./src/components/App_Pages/MyLibrary";
-import UserProfil from "./src/components/App_Pages/UserProfil";
+import Step1 from "./src/Pages/StepPresentation/Step1";
+import Step2 from "./src/Pages/StepPresentation/Step2";
+import Step3 from "./src/Pages/StepPresentation/Step3";
+import Step4 from "./src/Pages/StepPresentation/Step4";
+import StepLogin1 from "./src/Pages/StepsLogin/StepLogin1";
+import StepLogin2 from "./src/Pages/StepsLogin/StepLogin2";
+import StepForgetPassword1 from "./src/Pages/StepsLogin/StepForgetPassword1";
+import StepForgetPassword2 from "./src/Pages/StepsLogin/StepForgetPassword2";
+import StepBookGenderChoice1 from "./src/Pages/StepBookGenderChoice/StepBookGenderChoice1";
+import StepBookGenderChoice2 from "./src/Pages/StepBookGenderChoice/StepBookGenderChoice2";
+import StepBookGenderChoice3 from "./src/Pages/StepBookGenderChoice/StepBookGenderChoice3";
+import MyUserProfil from "./src/Pages/App_Pages/MyUserProfil";
+import MyLibrary from "./src/Pages/App_Pages/MyLibrary";
 import Home from "./assets/Img_Presentation/Home.svg";
+import HomePage from "./src/Pages/App_Pages/Home";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -121,6 +121,13 @@ export default function App() {
         <Stack.Screen
           name="MyLibrary"
           component={MyLibrary}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="HomePage"
+          component={HomePage}
           options={{
             headerShown: false,
           }}
