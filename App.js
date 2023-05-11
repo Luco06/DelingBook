@@ -16,6 +16,8 @@ import MyUserProfil from "./src/Pages/App_Pages/MyUserProfil";
 import MyLibrary from "./src/Pages/App_Pages/MyLibrary";
 import Home from "./assets/Img_Presentation/Home.svg";
 import HomePage from "./src/Pages/App_Pages/Home";
+import MyMessage from "./src/Pages/App_Pages/MyMessage";
+import Chat from "./src/components/Chat";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -128,6 +130,20 @@ export default function App() {
         <Stack.Screen
           name="HomePage"
           component={HomePage}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="MyMessage"
+          component={MyMessage}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Chat"
+          component={Chat}
           options={{
             headerShown: false,
           }}
