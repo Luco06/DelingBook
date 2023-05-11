@@ -17,7 +17,11 @@ export default function Footer() {
         width={25}
         height={25}
       />
-      <Message width={25} height={25} />
+      <Message
+        onPress={() => navigation.navigate("MyMessage")}
+        width={25}
+        height={25}
+      />
       <Library
         onPress={() => navigation.navigate("MyLibrary")}
         width={25}
