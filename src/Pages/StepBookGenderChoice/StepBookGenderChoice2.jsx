@@ -182,6 +182,8 @@ const ViewChoiceBook = styled.View`
 const ImgChoiceBook = styled.Image`
   margin: 20px;
   margin-top: 10px;
+  height: 100px;
+  width: 64px;
 `;
 const BtnPrez = styled.Pressable`
   width: 50px;
