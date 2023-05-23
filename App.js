@@ -18,6 +18,7 @@ import Home from "./assets/Img_Presentation/Home.svg";
 import HomePage from "./src/Pages/App_Pages/Home";
 import MyMessage from "./src/Pages/App_Pages/MyMessage";
 import Chat from "./src/components/Chat";
+import SearchBook from "./src/Pages/App_Pages/SearchBook";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -144,6 +145,13 @@ export default function App() {
         <Stack.Screen
           name="Chat"
           component={Chat}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="SearchBook"
+          component={SearchBook}
           options={{
             headerShown: false,
           }}
