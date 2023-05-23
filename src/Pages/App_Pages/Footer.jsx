@@ -27,7 +27,11 @@ export default function Footer() {
         width={25}
         height={25}
       />
-      <Search width={25} height={25} />
+      <Search
+        onPress={() => navigation.navigate("SearchBook")}
+        width={25}
+        height={25}
+      />
       <Video width={25} height={25} />
       <Account
         onPress={() => navigation.navigate("MyUserProfil")}
