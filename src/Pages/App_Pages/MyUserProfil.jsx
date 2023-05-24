@@ -9,8 +9,10 @@ import Like from "../../../assets/Img_Presentation/like.svg";
 import Comment from "../../../assets/Img_Presentation/Comment.svg";
 import Share from "../../../assets/Img_Presentation/Share.svg";
 import Footer from "./Footer";
+import { useNavigation } from "@react-navigation/native";
 
-export default function MyUserProfil({ navigation }) {
+export default function MyUserProfil({ navigation: { goBack } }) {
+  const navigation = useNavigation();
   const [pseudo, setPseudo] = useState("DCLover17");
   const [resume, setResume] = useState("ComicBook forever !!!👌👌");
   const [publication, setPublication] = useState(34);
@@ -19,9 +21,7 @@ export default function MyUserProfil({ navigation }) {
   return (
     <View style={styles.container}>
       <ViewBtn>
-        <ViewIcon>
-          <ArrowReturn width={30} height={30} />
-        </ViewIcon>
+        <ViewIcon></ViewIcon>
         <ViewIcon>
           <Setting width={30} height={30} />
         </ViewIcon>
