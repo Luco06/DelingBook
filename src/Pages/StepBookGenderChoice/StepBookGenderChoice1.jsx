@@ -43,17 +43,7 @@ export default function StepBookGenderChoice1({ navigation }) {
   const [selectedId, setSelectedId] = useState(null);
 
   const renderItem = ({ item }) => {
-    const backgroundColor = item.id === selectedId ? "red" : "white";
-    const color = item.id === selectedId ? "red" : "black";
-
-    return (
-      <BookChoice
-        item={item}
-        onPress={() => setSelectedId(item.id)}
-        backgroundColor={{ backgroundColor }}
-        textColor={{ color }}
-      />
-    );
+    return <BookChoice item={item} onPress={() => setSelectedId(item.id)} />;
   };
   return (
     <View style={styles.container}>
@@ -108,7 +98,7 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   visit: {
-    margin: 10,
+    padding: 15,
     textAlign: "center",
     color: "black",
     fontSize: 18,

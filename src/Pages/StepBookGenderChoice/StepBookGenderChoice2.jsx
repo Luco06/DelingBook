@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import OriginalLogoWTtxt from "../../../assets/Img_Presentation/OrignalLogoWTtxt.svg";
-import { StyleSheet, View, FlatList, Text, Image } from "react-native";
+import { StyleSheet, View, FlatList, Text, Platform } from "react-native";
 import styled from "styled-components";
 import { LinearGradient } from "expo-linear-gradient";
 import { SearchBar } from "@rneui/base";
@@ -15,7 +15,7 @@ export default function StepBookGenderChoice2({ navigation }) {
   const onChangeSearch = (book) => setSearchBook(book);
 
   const Item = ({ item }) => (
-    <ViewChoiceBook key={item.id} style={styles.viewFlat}>
+    <ViewChoiceBook key={item.id} style={styles.shadow}>
       <ImgChoiceBook source={item.book1} />
       <ImgChoiceBook source={item.book2} />
       <ImgChoiceBook source={item.book3} />
@@ -37,25 +37,19 @@ export default function StepBookGenderChoice2({ navigation }) {
         </TextBook>
       </ViewImg>
 
-      <SearchBar
-        placeholder="Taper ici..."
-        onChangeText={onChangeSearch}
-        value={searchBook}
-        platform="android"
-        containerStyle={{
-          border: "solid 2px black",
-          borderRadius: 15,
-          height: 60,
-        }}
-        placeholderTextColor="#000000"
-      />
-
       <FlastListView>
+        <SearchBar
+          placeholder="Taper ici..."
+          onChangeText={onChangeSearch}
+          value={searchBook}
+          platform="ios"
+          placeholderTextColor="#000000"
+        />
         <LinearGradient
           style={{
             borderRadius: 15,
-            height: 60,
-            width: 140,
+            height: 40,
+            width: 110,
             alignSelf: "center",
           }}
           colors={["rgba(40, 125, 192, 0.8)", "rgba(19, 164, 132, 0.8)"]}
@@ -73,8 +67,8 @@ export default function StepBookGenderChoice2({ navigation }) {
         <LinearGradient
           style={{
             borderRadius: 15,
-            height: 60,
-            width: 140,
+            height: 40,
+            width: 110,
             alignSelf: "center",
           }}
           colors={["rgba(40, 125, 192, 0.8)", "rgba(19, 164, 132, 0.8)"]}
@@ -97,8 +91,8 @@ export default function StepBookGenderChoice2({ navigation }) {
         <LinearGradient
           style={{
             borderRadius: 15,
-            height: 45,
-            width: 120,
+            height: 40,
+            width: 110,
             alignSelf: "center",
             alignItems: "center",
             justifyContent: "center",
@@ -118,6 +112,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "column",
+    paddingTop: Platform.OS === "android" ? 40 : 40,
   },
   BtnPrez: {
     width: 140,
@@ -132,10 +127,27 @@ const styles = StyleSheet.create({
     margin: 20,
   },
   visit: {
-    margin: 15,
+    padding: 8,
     textAlign: "center",
     color: "black",
-    fontSize: 18,
+    fontSize: 15,
+  },
+  shadow: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    backgroundColor: "#fff",
+    shadowColor: "#000",
+    shadowOffset: { width: 1, height: 1 },
+    shadowOpacity: 0.9,
+    shadowRadius: 3,
+    elevation: 3,
+    borderLeftWidth: 3,
+    borderRightWidth: 3,
+    borderRightColor: "whitesmoke",
+    borderLeftColor: "whitesmoke",
+    padding: 10,
   },
 });
 
@@ -143,8 +155,7 @@ const ViewImg = styled.View`
   align-items: center;
   text-align: center;
   justify-content: center;
-  flex: 2;
-  margin: 10%;
+  flex: 1.5;
 `;
 const TextBook = styled.Text`
   text-align: center;
@@ -156,21 +167,16 @@ const TextBook = styled.Text`
 const FlastListView = styled.View`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
   flex: 3;
-  margin-bottom: 80px;
 `;
 const PressableNext = styled.TouchableOpacity`
-  bottom: 70px;
+  bottom: 30px;
   justify-content: center;
   text-align: center;
   border-radius: 15px;
   margin: auto;
-`;
-const TextPressableNext = styled.Text`
-  text-align: center;
-  font-size: 15px;
-  color: black;
 `;
 
 const ViewChoiceBook = styled.View`
@@ -184,14 +190,4 @@ const ImgChoiceBook = styled.Image`
   margin-top: 10px;
   height: 100px;
   width: 64px;
-`;
-const BtnPrez = styled.Pressable`
-  width: 50px;
-  height: 50px;
-  border-radius: 50px;
-  justify-content: center;
-  align-items: center;
-  align-self: flex-end;
-  margin-right: 5px;
-  margin-top: 20px;
 `;
