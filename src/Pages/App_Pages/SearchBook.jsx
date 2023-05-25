@@ -1,13 +1,28 @@
 import React, { useState } from "react";
-import { Text, StyleSheet, FlatList, Platform, View } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  FlatList,
+  Platform,
+  View,
+  Pressable,
+} from "react-native";
 import styled from "styled-components/native";
 import ArrowReturn from "../../../assets/Img_Presentation/Shape.svg";
 import { SearchBar } from "@rneui/base";
 import API_Key from "../../../Api/ApiKey";
+import { useNavigation } from "@react-navigation/native";
+import { BookListState } from "../../recoil";
+import { BookDetailsState } from "../../recoil";
+import { useSetRecoilState, useRecoilValue } from "recoil";
 
 export default function SearchBook({ navigation: { goBack } }) {
+  const setBookList = useSetRecoilState(BookListState);
+  const bookList = useRecoilValue(BookListState);
+  const setDetailsBook = useSetRecoilState(BookDetailsState);
+  const bookDetails = useRecoilValue(BookDetailsState);
+  const navigation = useNavigation();
   const [query, setQuery] = useState("");
-  const [books, setBooks] = useState({});
 
   const onSubmit = () => {
     const searchBook = async () => {
@@ -15,12 +30,14 @@ export default function SearchBook({ navigation: { goBack } }) {
         `https://www.googleapis.com/books/v1/volumes?q=${query}&key=${API_Key}`
       )
         .then((resp) => resp.json())
-        .then((json) => setBooks(json.items))
+        .then((json) => setBookList(() => [...json.items]))
+        // .then((json) => setBooks(json.items))
         .catch((error) => console.error(error));
-      console.log(books);
     };
     searchBook();
+    console.log(bookList);
   };
+
   const BookItem = ({ item }) => (
     <ViewBook key={item.id}>
       <BookImg
@@ -31,13 +48,22 @@ export default function SearchBook({ navigation: { goBack } }) {
           }`,
         }}
       />
-
-      <ViewTextBook>
-        <Text>Titre: {item.volumeInfo.title}</Text>
-        <Text>Autheur: {item.volumeInfo.authors}</Text>
-      </ViewTextBook>
+      <Pressable
+        onPress={() => (
+          setDetailsBook(item.volumeInfo),
+          navigation.navigate("BookDetail"),
+          console.log(bookDetails)
+        )}
+      >
+        <ViewTextBook>
+          <Text>Titre: {item.volumeInfo.title}</Text>
+          <Text>Autheur: {item.volumeInfo.authors}</Text>
+          <Text>ID: {item.id}</Text>
+        </ViewTextBook>
+      </Pressable>
     </ViewBook>
   );
+
   return (
     <View style={styles.container}>
       <ViewReturn>
@@ -59,7 +85,7 @@ export default function SearchBook({ navigation: { goBack } }) {
       </SearchBarView>
       <ViewResultBook>
         <FlatList
-          data={books}
+          data={bookList}
           keyExtractor={BookItem.index}
           renderItem={BookItem}
         />
