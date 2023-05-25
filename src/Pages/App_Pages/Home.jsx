@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Platform, View } from "react-native";
 import { ScrollView, StyleSheet, FlatList } from "react-native";
 import styled from "styled-components";
 import Footer from "./Footer";
 import Story from "../../../Api/Mock/Story";
 import BoxPost from "../../components/BoxPost";
+import { AuthProvider } from "../../context/AuthContext";
 
 export default function Home({ navigation }) {
+  const { setIsLoading } = useContext(AuthProvider);
   const Item = ({ item }) => (
     <BoxStory key={item.id}>
       <ImgStory source={item.img} />
@@ -43,7 +45,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "column",
-    paddingTop: Platform.OS === "android" ? 40 : 40,
+    paddingTop: Platform.OS === "android" ? 60 : 60,
   },
   shadow: {
     display: "flex",

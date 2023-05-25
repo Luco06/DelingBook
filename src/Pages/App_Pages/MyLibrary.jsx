@@ -11,8 +11,10 @@ import GenderListeBook3 from "../../../Api/Mock/GenderListeBook3";
 import ArrowPrez from "../../../assets/next_selection.svg";
 import GenderListeBook4 from "../../../Api/Mock/GenderListeBook4";
 import Footer from "./Footer";
-export default function MyLibrary({ navigation }) {
+import { useNavigation } from "@react-navigation/native";
+export default function MyLibrary({ navigation: { goBack } }) {
   const [MyLibrary, setMyLibrary] = useState("MyBookSpace");
+  const navigation = useNavigation();
   const Item = ({ item }) => (
     <ViewChoiceBook key={item.id}>
       <ViexTextFlat>
@@ -34,7 +36,7 @@ export default function MyLibrary({ navigation }) {
     <View style={styles.container}>
       <ViewBtn>
         <ViewIcon>
-          <ArrowReturn width={30} height={30} />
+          <ArrowReturn onPress={() => goBack()} width={30} height={30} />
           <ViewAvatar>
             <Avatar width={40} height={40} />
             <Text>DcLover17</Text>
@@ -77,7 +79,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "column",
-    paddingTop: Platform.OS === "android" ? 5 : 5,
+    paddingTop: Platform.OS === "android" ? 25 : 25,
   },
   shadow: {
     display: "flex",
