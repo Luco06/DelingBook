@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import { useForm, Controller } from "react-hook-form";
 import { StyleSheet, Image, View, TextInput, Text } from "react-native";
@@ -6,8 +6,10 @@ import MAil from "../../../assets/Img_Presentation/Letter.svg";
 import Lock from "../../../assets/Img_Presentation/lock.svg";
 import { LinearGradient } from "expo-linear-gradient";
 import OriginalLogo from "../../../assets/Img_Presentation/OriginalLogo.svg";
+import { AuthProvider } from "../../context/AuthContext";
 
 export default function StepLogin2({ navigation }) {
+  const { isLoging, setIsLoging } = useContext(AuthProvider);
   const {
     control,
     handleSubmit,
@@ -18,7 +20,7 @@ export default function StepLogin2({ navigation }) {
       mdp: "",
     },
   });
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => () => setIsLoging(true);
   const [showPassword, setShowPassword] = useState(true);
   const showMdp = () => {
     setShowPassword(!showPassword);
@@ -75,19 +77,22 @@ export default function StepLogin2({ navigation }) {
         {errors.mdp && <Text>This is required.</Text>}
 
         <LinearGradient colors={["#287DC0", "#13A484"]} style={styles.BtnPrez}>
-          <BtnPrez title="Submit" onPress={handleSubmit(onSubmit)}>
+          <BtnPrez
+            title="Submit"
+            onPress={
+              (() => setIsLoging(true), () => navigation.navigate("Auth"))
+            }
+          >
             <TextBtn>Se connecter</TextBtn>
           </BtnPrez>
         </LinearGradient>
         <ViewCondition>
-          <TextCondition
-            onPress={() => navigation.navigate("StepForgetPassword1")}
-          >
+          <TextCondition onPress={() => navigation.navigate("ForgetPassword1")}>
             Mot de passe oublié?
           </TextCondition>
           <TextCondition>
             Pas encore inscrit?
-            <TextPressable onPress={() => navigation.navigate("StepLogin1")}>
+            <TextPressable onPress={() => navigation.navigate("Login1")}>
               &nbsp; S'inscrire
             </TextPressable>
           </TextCondition>

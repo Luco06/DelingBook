@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Platform, View } from "react-native";
 import { Text, StyleSheet, Image } from "react-native";
 import styled from "styled-components";
-import ArrowReturn from "../../../assets/Img_Presentation/Shape.svg";
 import Setting from "../../../assets/Img_Presentation/Fill_1157.svg";
 import Avatar from "../../../assets/Img_Presentation/Avatar.svg";
 import Like from "../../../assets/Img_Presentation/like.svg";
@@ -10,6 +9,7 @@ import Comment from "../../../assets/Img_Presentation/Comment.svg";
 import Share from "../../../assets/Img_Presentation/Share.svg";
 import Footer from "./Footer";
 import { useNavigation } from "@react-navigation/native";
+import { BottomSheet, Button, ListItem } from "@rneui/themed";
 
 export default function MyUserProfil({ navigation: { goBack } }) {
   const navigation = useNavigation();
@@ -18,12 +18,27 @@ export default function MyUserProfil({ navigation: { goBack } }) {
   const [publication, setPublication] = useState(34);
   const [followers, setFollowwers] = useState(350);
   const [follow, setFollow] = useState(330);
+  const [isVisible, setIsVisible] = useState(false);
+  const list = [
+    { title: "Espace comptes" },
+    { title: "Notifications" },
+    { title: "Gestions des groupes" },
+    { title: "Bloqué/restreints" },
+    { title: "Supprimer son compte" },
+    { title: "Se déconnecter" },
+    {
+      title: "Fermer",
+      containerStyle: { backgroundColor: "red" },
+      titleStyle: { color: "white" },
+      onPress: () => setIsVisible(false),
+    },
+  ];
   return (
     <View style={styles.container}>
       <ViewBtn>
         <ViewIcon></ViewIcon>
         <ViewIcon>
-          <Setting width={30} height={30} />
+          <Setting onPress={() => setIsVisible(true)} width={30} height={30} />
         </ViewIcon>
       </ViewBtn>
       <ViewInfoProfile>
@@ -74,6 +89,19 @@ export default function MyUserProfil({ navigation: { goBack } }) {
           </View>
         </View>
       </ViewInfoProfile>
+      <BottomSheet modalProps={{}} isVisible={isVisible}>
+        {list.map((l, i) => (
+          <ListItem
+            key={i}
+            containerStyle={l.containerStyle}
+            onPress={l.onPress}
+          >
+            <ListItem.Content>
+              <ListItem.Title style={l.titleStyle}>{l.title}</ListItem.Title>
+            </ListItem.Content>
+          </ListItem>
+        ))}
+      </BottomSheet>
       <Footer />
     </View>
   );

@@ -18,7 +18,7 @@ export default function Step4({ navigation }) {
                 <TextStep>{step4.text}</TextStep>
                 <TextId>{step4.id}</TextId>
                 <ViewBtn>
-                  <BtnPrez onPress={() => navigation.navigate("StepLogin1")}>
+                  <BtnPrez onPress={() => navigation.navigate("ChoiceBookNav")}>
                     <Image source={ArrowPrez} />
                   </BtnPrez>
                 </ViewBtn>

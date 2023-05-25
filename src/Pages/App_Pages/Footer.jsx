@@ -13,7 +13,7 @@ export default function Footer() {
   return (
     <ViewIconApp>
       <Home
-        onPress={() => navigation.navigate("HomePage")}
+        onPress={() => navigation.navigate("Home")}
         width={25}
         height={25}
       />

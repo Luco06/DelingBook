@@ -22,7 +22,7 @@ export default function StepLogin1({ navigation }) {
     },
   });
   const onSubmit = (data) => {
-    navigation.navigate("StepBookGenderChoice1");
+    navigation.navigate("PrezNav");
   };
   const [showPassword, setShowPassword] = useState(true);
   const showMdp = () => {
@@ -132,7 +132,7 @@ export default function StepLogin1({ navigation }) {
         </ViewCondition>
         <TextCondition>
           Vous êtes déja membre?
-          <TextPressable onPress={() => navigation.navigate("StepLogin2")}>
+          <TextPressable onPress={() => navigation.navigate("Login2")}>
             &nbsp; Se connecter
           </TextPressable>
         </TextCondition>

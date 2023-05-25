@@ -59,7 +59,7 @@ export default function StepLogin2({ navigation }) {
         <LinearGradient colors={["#287DC0", "#13A484"]} style={styles.BtnPrez}>
           <BtnPrez
             title="Submit"
-            onPress={() => navigation.navigate("StepForgetPassword2")}
+            onPress={() => navigation.navigate("ForgetPassword2")}
           >
             <TextBtn>Envoyer</TextBtn>
           </BtnPrez>
