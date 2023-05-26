@@ -85,4 +85,3 @@ const BtnPrez = styled.Pressable`
 const TextId = styled.Text`
   display: none;
 `;
-const Stepper = styled.Image``;

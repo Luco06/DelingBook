@@ -27,15 +27,13 @@ export default function SearchBook({ navigation: { goBack } }) {
   const onSubmit = () => {
     const searchBook = async () => {
       await fetch(
-        `https://www.googleapis.com/books/v1/volumes?q=${query}&key=${API_Key}`
+        `https://www.googleapis.com/books/v1/volumes?q=${query}&printType=books&langRestrict=fr&key=${API_Key}`
       )
         .then((resp) => resp.json())
         .then((json) => setBookList(() => [...json.items]))
-        // .then((json) => setBooks(json.items))
         .catch((error) => console.error(error));
     };
     searchBook();
-    console.log(bookList);
   };
 
   const BookItem = ({ item }) => (
@@ -50,9 +48,7 @@ export default function SearchBook({ navigation: { goBack } }) {
       />
       <Pressable
         onPress={() => (
-          setDetailsBook(item.volumeInfo),
-          navigation.navigate("BookDetail"),
-          console.log(bookDetails)
+          setDetailsBook(item.volumeInfo), navigation.navigate("BookDetail")
         )}
       >
         <ViewTextBook>

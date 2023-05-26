@@ -73,9 +73,6 @@ export default function StepBookGenderChoice2({ navigation }) {
           }}
           colors={["rgba(40, 125, 192, 0.8)", "rgba(19, 164, 132, 0.8)"]}
         >
-          {/* <TextBookChoice style={[styles.item, textColor]}>
-            {item.txt}
-          </TextBookChoice> */}
           <Text style={styles.visit}>Narratifs</Text>
         </LinearGradient>
         <FlatList

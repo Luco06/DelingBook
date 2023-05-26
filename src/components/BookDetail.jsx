@@ -1,21 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Platform, View, StyleSheet, Text, ScrollView } from "react-native";
 import styled from "styled-components/native";
 import ArrowReturn from "../../assets/Img_Presentation/Shape.svg";
 import Avatar from "../../assets/Img_Presentation/Avatar.svg";
 import Footer from "../Pages/App_Pages/Footer";
-import BookDetails from "../../Api/Mock/BookDetails";
 import Share from "../../assets/Img_Presentation/Share.svg";
 import LikeLibrary from "../../assets/like_library.svg";
+import ReadIcon from "../../assets/Readicon.svg";
+import FinishIcon from "../../assets/FinishIconBook.svg";
 import Rate from "../../assets/star_rate.svg";
 import { useNavigation } from "@react-navigation/native";
-import { BookDetailsState } from "../recoil";
-import { useRecoilValue } from "recoil";
+import {
+  BookDetailsState,
+  MyLibraryLikeState,
+  MyLibraryReadState,
+  MyLibraryFinishState,
+} from "../recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
 export default function BookDetail({ navigation: { goBack } }) {
   const navigation = useNavigation();
-  const [Details, setDetails] = useState({});
   const bookDetails = useRecoilValue(BookDetailsState);
+  const setMyLibraryLike = useSetRecoilState(MyLibraryLikeState);
+  const setMyLibraryRead = useSetRecoilState(MyLibraryReadState);
+  const setMyLibraryFinsh = useSetRecoilState(MyLibraryFinishState);
+  const MyLibraryLike = useRecoilValue(MyLibraryLikeState);
+  const MyLibraryFinsh = useRecoilValue(MyLibraryFinishState);
+  const MyLibraryRead = useRecoilValue(MyLibraryReadState);
   const date = Date.parse(bookDetails.publishedDate);
   const dateConvert = new Date(date);
   const dateString =
@@ -24,10 +35,22 @@ export default function BookDetail({ navigation: { goBack } }) {
     (dateConvert.getMonth() + 1) +
     "/" +
     dateConvert.getFullYear();
-  useEffect(() => {
-    setDetails(BookDetails);
-    console.log(Details);
-  });
+
+  function AddBookLike() {
+    setMyLibraryLike((bookslike) => [...bookslike, bookDetails]);
+    console.log("MyLibLike", MyLibraryLike);
+    alert(bookDetails.title, +"ajouter");
+  }
+  function AddBookRead() {
+    setMyLibraryRead((booksread) => [...booksread, bookDetails]);
+    console.log("MyLibRead", MyLibraryRead);
+    alert(bookDetails.title, +"ajouter");
+  }
+  function AddBookFinish() {
+    setMyLibraryFinsh((booksfinish) => [...booksfinish, bookDetails]);
+    console.log("MyLibFinish", MyLibraryFinsh);
+    alert(bookDetails.title, +"ajouter");
+  }
   return (
     <View style={styles.container}>
       <ViewIcon>
@@ -47,8 +70,10 @@ export default function BookDetail({ navigation: { goBack } }) {
           }}
         />
         <ViewIconShare>
-          <Share style={{ marginRight: 80 }} width={20} height={20} />
-          <LikeLibrary width={20} height={20} />
+          <Share width={20} height={20} />
+          <LikeLibrary onPress={() => AddBookLike()} width={20} height={20} />
+          <ReadIcon onPress={() => AddBookRead()} width={20} height={20} />
+          <FinishIcon onPress={() => AddBookFinish()} width={30} height={30} />
         </ViewIconShare>
       </ViewBook>
       <ViewInfo>
@@ -63,7 +88,9 @@ export default function BookDetail({ navigation: { goBack } }) {
         <Text>
           <TitleBook>Auteur: </TitleBook> {bookDetails.authors}
         </Text>
-
+        <Text>
+          <TitleBook>Genre: </TitleBook> {bookDetails.categories}
+        </Text>
         <ViewPublish>
           <Text>
             <TitleBook>Pages:</TitleBook> {bookDetails.pageCount}
@@ -134,6 +161,8 @@ const ViewBook = styled.View`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 90%;
+  margin: auto;
 `;
 
 const BookImg = styled.Image`
@@ -147,9 +176,9 @@ const ViewIconShare = styled.View`
   flex: 0.8;
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  width: 30%;
-  margin: auto;
+  justify-content: space-between;
+  width: 70%;
+  margin: 20px;
 `;
 
 const ViewInfo = styled.View`

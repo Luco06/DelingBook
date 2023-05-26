@@ -5,6 +5,7 @@ import MyLibrary from "../Pages/App_Pages/MyLibrary";
 import MyMessage from "../Pages/App_Pages/MyMessage";
 import SearchBook from "../Pages/App_Pages/SearchBook";
 import MyUserProfil from "../Pages/App_Pages/MyUserProfil";
+import BookDetail from "../components/BookDetail";
 
 const Tabs = createNativeStackNavigator();
 const AuthNav = () => {
@@ -20,6 +21,7 @@ const AuthNav = () => {
       <Tabs.Screen name="MyMessage" component={MyMessage} />
       <Tabs.Screen name="SearchBook" component={SearchBook} />
       <Tabs.Screen name="MyUserProfil" component={MyUserProfil} />
+      <Tabs.Screen name="BookDetail" component={BookDetail} />
     </Tabs.Navigator>
   );
 };

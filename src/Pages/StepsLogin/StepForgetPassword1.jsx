@@ -146,11 +146,6 @@ const TextCondition2 = styled.Text`
   margin-bottom: 20px;
   margin-top: 5px;
 `;
-const TextPressable = styled.Text`
-  color: #287dc0;
-  font-size: 13px;
-  text-align: center;
-`;
 const Title = styled.Text`
   font-weight: 400;
   font-size: 36px;
