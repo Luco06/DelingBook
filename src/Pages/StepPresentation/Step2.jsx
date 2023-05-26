@@ -67,10 +67,6 @@ const TextStep = styled.Text`
   font-size: 20px;
   margin-bottom: 60px;
 `;
-const ImgStep = styled.Image`
-  margin-bottom: 30px;
-  margin-top: 80px;
-`;
 const BtnPrez = styled.Pressable`
   width: 50px;
   height: 50px;
@@ -85,4 +81,3 @@ const BtnPrez = styled.Pressable`
 const TextId = styled.Text`
   display: none;
 `;
-const Stepper = styled.Image``;

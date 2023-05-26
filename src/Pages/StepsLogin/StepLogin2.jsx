@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import { useForm, Controller } from "react-hook-form";
-import { StyleSheet, Image, View, TextInput, Text } from "react-native";
+import { StyleSheet, View, TextInput, Text } from "react-native";
 import MAil from "../../../assets/Img_Presentation/Letter.svg";
 import Lock from "../../../assets/Img_Presentation/lock.svg";
 import { LinearGradient } from "expo-linear-gradient";

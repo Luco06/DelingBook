@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useForm, Controller } from "react-hook-form";
 import { StyleSheet, View, TextInput, Text } from "react-native";
-import MAil from "../../../assets/Img_Presentation/Letter.svg";
 import { LinearGradient } from "expo-linear-gradient";
 import XCircle from "../../../assets/Img_Presentation/x-circle.svg";
 import Lock from "../../../assets/Img_Presentation/lock.svg";

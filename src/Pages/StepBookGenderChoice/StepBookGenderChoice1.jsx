@@ -1,13 +1,6 @@
 import React, { useState } from "react";
 import OriginalLogoWTtxt from "../../../assets/Img_Presentation/OrignalLogoWTtxt.svg";
-import {
-  StyleSheet,
-  View,
-  FlatList,
-  Text,
-  Pressable,
-  Button,
-} from "react-native";
+import { StyleSheet, View, FlatList, Text, Pressable } from "react-native";
 import styled from "styled-components";
 import GenderBookChoice1 from "../../../Api/Mock/GenderBookChoice1";
 import { LinearGradient } from "expo-linear-gradient";
@@ -30,9 +23,6 @@ export default function StepBookGenderChoice1({ navigation }) {
           }}
           colors={["rgba(40, 125, 192, 0.8)", "rgba(19, 164, 132, 0.8)"]}
         >
-          {/* <TextBookChoice style={[styles.item, textColor]}>
-            {item.txt}
-          </TextBookChoice> */}
           <Text onPress={() => logPress(item.txt)} style={styles.visit}>
             {item.txt}
           </Text>
