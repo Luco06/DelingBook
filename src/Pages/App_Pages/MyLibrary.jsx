@@ -6,28 +6,35 @@ import ArrowReturn from "../../../assets/Img_Presentation/Shape.svg";
 import Avatar from "../../../assets/Img_Presentation/Avatar.svg";
 import Share from "../../../assets/Img_Presentation/Share.svg";
 import Pencil from "../../../assets/Img_Presentation/pencil.svg";
-import GenrderListeBook from "../../../Api/Mock/GenderListeBook";
-import GenderListeBook3 from "../../../Api/Mock/GenderListeBook3";
-import ArrowPrez from "../../../assets/next_selection.svg";
-import GenderListeBook4 from "../../../Api/Mock/GenderListeBook4";
 import Footer from "./Footer";
 import { useNavigation } from "@react-navigation/native";
+import {
+  MyLibraryLikeState,
+  MyLibraryFinishState,
+  MyLibraryReadState,
+} from "../../recoil";
+import { useRecoilValue } from "recoil";
 export default function MyLibrary({ navigation: { goBack } }) {
   const [MyLibrary, setMyLibrary] = useState("MyBookSpace");
+  const MyLibraryLike = useRecoilValue(MyLibraryLikeState);
+  const MyLibraryFinsh = useRecoilValue(MyLibraryFinishState);
+  const MyLibraryRead = useRecoilValue(MyLibraryReadState);
   const navigation = useNavigation();
   const Item = ({ item }) => (
     <ViewChoiceBook key={item.id}>
       <ViexTextFlat>
-        <TexFlat>{item.text}</TexFlat>
+        <TexFlat numberOfLines={1} ellipsizeMode="tail">
+          {item.title}
+        </TexFlat>
       </ViexTextFlat>
       <View style={styles.shadow}>
-        <ImgChoiceBook source={item.book1} />
-        <ImgChoiceBook source={item.book2} />
-        <ImgChoiceBook source={item.book3} />
-        <ArrowPrez
-          width={30}
-          height={30}
-          onPress={() => console.log("next secletion")}
+        <ImgChoiceBook
+          source={{
+            uri: `${
+              (item.imageLinks ?? {}).thumbnail ??
+              require("../../../assets/ImgNotFound.png")
+            }`,
+          }}
         />
       </View>
     </ViewChoiceBook>
@@ -49,13 +56,31 @@ export default function MyLibrary({ navigation: { goBack } }) {
         </ViewBtnShare>
       </ViewBtn>
       <ViewLibrary>
+        <Text>Mes envies</Text>
         <FlatList
-          data={GenrderListeBook}
+          data={MyLibraryLike}
           horizontal={true}
           keyExtractor={Item.id}
           renderItem={Item}
         />
+
+        <Text>En cours</Text>
         <FlatList
+          data={MyLibraryRead}
+          horizontal={true}
+          keyExtractor={Item.id}
+          renderItem={Item}
+        />
+
+        <Text>Déjà lu</Text>
+        <FlatList
+          data={MyLibraryFinsh}
+          horizontal={true}
+          keyExtractor={Item.id}
+          renderItem={Item}
+        />
+      </ViewLibrary>
+      {/* <FlatList
           data={GenderListeBook3}
           horizontal={true}
           keyExtractor={Item.id}
@@ -66,8 +91,8 @@ export default function MyLibrary({ navigation: { goBack } }) {
           horizontal={true}
           keyExtractor={Item.id}
           renderItem={Item}
-        />
-      </ViewLibrary>
+        /> */}
+
       <Footer />
     </View>
   );
@@ -96,7 +121,8 @@ const styles = StyleSheet.create({
     borderRightWidth: 1,
     borderRightColor: "whitesmoke",
     borderLeftColor: "whitesmoke",
-    padding: 10,
+    padding: 1,
+    borderRadius: 5,
   },
 });
 const ViewBtn = styled.View`
@@ -136,22 +162,29 @@ const ViewLibrary = styled.View`
   flex: 2.5;
   display: flex;
   flex-direction: column;
+  width: 95%;
+  margin: auto;
 `;
 const ViewChoiceBook = styled.View`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  width: 120px;
+  margin: 5px;
 `;
 const ImgChoiceBook = styled.Image`
-  margin: 20px;
+  padding: 10px;
   margin-top: 10px;
   width: 66px;
   height: 100px;
 `;
 const ViexTextFlat = styled.View`
   text-align: start;
-  width: 100%;
+
   margin-bottom: 5px;
+  overflow: hidden;
+  align-items: center;
 `;
 const TexFlat = styled.Text`
   font-weight: bold;
