@@ -55,43 +55,41 @@ export default function MyLibrary({ navigation: { goBack } }) {
           <Pencil width={20} height={20} />
         </ViewBtnShare>
       </ViewBtn>
-      <ViewLibrary>
-        <Text>Mes envies</Text>
-        <FlatList
-          data={MyLibraryLike}
-          horizontal={true}
-          keyExtractor={Item.id}
-          renderItem={Item}
-        />
-
-        <Text>En cours</Text>
-        <FlatList
-          data={MyLibraryRead}
-          horizontal={true}
-          keyExtractor={Item.id}
-          renderItem={Item}
-        />
-
-        <Text>Déjà lu</Text>
-        <FlatList
-          data={MyLibraryFinsh}
-          horizontal={true}
-          keyExtractor={Item.id}
-          renderItem={Item}
-        />
-      </ViewLibrary>
-      {/* <FlatList
-          data={GenderListeBook3}
-          horizontal={true}
-          keyExtractor={Item.id}
-          renderItem={Item}
-        />
-        <FlatList
-          data={GenderListeBook4}
-          horizontal={true}
-          keyExtractor={Item.id}
-          renderItem={Item}
-        /> */}
+      <BoxLib>
+        <ViewLibrary>
+          <PressablePage onPress={() => navigation.navigate("MyLikePage")}>
+            <Text>Mes envies</Text>
+          </PressablePage>
+          <FlatList
+            data={MyLibraryLike}
+            horizontal={true}
+            keyExtractor={Item.id}
+            renderItem={Item}
+          />
+        </ViewLibrary>
+        <ViewLibrary>
+          <PressablePage onPress={() => navigation.navigate("MyReadPage")}>
+            <Text>En cours</Text>
+          </PressablePage>
+          <FlatList
+            data={MyLibraryRead}
+            horizontal={true}
+            keyExtractor={Item.id}
+            renderItem={Item}
+          />
+        </ViewLibrary>
+        <ViewLibrary>
+          <PressablePage onPress={() => navigation.navigate("MyFinishPage")}>
+            <Text>Déjà lu</Text>
+          </PressablePage>
+          <FlatList
+            data={MyLibraryFinsh}
+            horizontal={true}
+            keyExtractor={Item.id}
+            renderItem={Item}
+          />
+        </ViewLibrary>
+      </BoxLib>
 
       <Footer />
     </View>
@@ -159,6 +157,16 @@ const ViewBtnShare = styled.View`
 `;
 
 const ViewLibrary = styled.View`
+  flex-direction: column;
+  width: 95%;
+  margin: auto;
+  border-color: black;
+  border-radius: 5px;
+  padding: 5px;
+  margin-bottom: 5px;
+  box-shadow: 10px 5px 5px black;
+`;
+const BoxLib = styled.View`
   flex: 2.5;
   display: flex;
   flex-direction: column;
@@ -169,7 +177,6 @@ const ViewChoiceBook = styled.View`
   display: flex;
   flex-direction: column;
   align-items: center;
-
   width: 120px;
   margin: 5px;
 `;
@@ -181,7 +188,6 @@ const ImgChoiceBook = styled.Image`
 `;
 const ViexTextFlat = styled.View`
   text-align: start;
-
   margin-bottom: 5px;
   overflow: hidden;
   align-items: center;
@@ -192,4 +198,12 @@ const TexFlat = styled.Text`
 const LibraryTitle = styled.Text`
   font-size: 20px;
   font-weight: bold;
+`;
+
+const PressablePage = styled.TouchableOpacity`
+  width: 22%;
+  border-radius: 10px;
+  justify-content: center;
+  align-items: center;
+  background-color: whitesmoke;
 `;
