@@ -1,7 +1,7 @@
 const Message = [
   {
     id: 1,
-    img: require("../../assets/Img_story/Avatar1.png"),
+    img: require("../../../assets/Img_story/Avatar1.png"),
     pseudo: "Reader",
     mess1:
       "Il a l’air excellent celuis la aussi, mais je ne l’ai pas trouvée...Ça te  dit un  échange?  je te laisse regarder ma bibliothèque.@Dreamspace",

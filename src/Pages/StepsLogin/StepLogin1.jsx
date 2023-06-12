@@ -19,26 +19,82 @@ export default function StepLogin1({ navigation }) {
   const [email, setEmail] = useState("");
   const [telephone, setTelephone] = useState("");
 
-  const onSubmit = async () => {
+  const onSubmit = () => {
     // const AddUser = {
     //   method: "POST",
     //   headers: {
     //     Accept: "application/json",
     //     "Content-Type": "application/json",
+    //     "Access-Control-Request-Headers": "*",
+    //     "api-key": "64790224e0c5a553ae57f1cf",
     //   },
     //   body: JSON.stringify({
-    //     email: email,
-    //     telephone: telephone,
-    //     mdp: mdp,
+    //     email,
+    //     telephone,
+    //     mdp,
     //   }),
     // };
-    // fetch(
-    //   "http://127.0.0.1:5001/delingbook/us-central1/AddUser/createUser",
-    //   AddUser
-    // )
-    //   .then((res) => res.json())
-    //   .then((data) => console.log(data));
+    // const res = await fetch(User.create(), AddUser);
+    // res = await res.json();
+    // console.log(res);
+    // const addUser = async () => {
+    //   await fetch("http://localhost:3000/createUser", {
+    //     method: " POST",
+    //     headers: {
+    //       Accept: "application/json",
+    //       "Content-Type": "application/json",
+    //       "Access-Control-Request-Headers": "*",
+    //       "api-key": "64790224e0c5a553ae57f1cf",
+    //     },
+    //     body: JSON.stringify({
+    //       email: email,
+    //       telephone: telephone,
+    //       mdp: mdp,
+    //     })
+    //   }).then(res =>res.json())
+    // };
+    // addUser();
+    // console.log(email, telephone, mdp);
   };
+
+  const data = JSON.stringify({
+    collection: "users",
+    database: "test",
+    dataSource: "Cluster0",
+    projection: {
+      _id: 1,
+    },
+  });
+  const createUser = async () => {
+    const userData = {
+      email: email,
+      mdp: mdp,
+      telephone: telephone,
+      // Autres informations d'utilisateur à envoyer
+    };
+
+    await fetch("http://localhost:3000/createUser", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Request-Headers": "*",
+        "api-key": "64790224e0c5a553ae57f1cf",
+      },
+      data: data,
+      body: JSON.stringify(userData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("User created:", data);
+        // Traitez la réponse de la création de l'utilisateur
+      })
+      .catch((error) => {
+        console.error("Error creating user:", error);
+        // Traitez les erreurs lors de la création de l'utilisateur
+      });
+  };
+
+  // Utilisation de la fonction pour créer un utilisateur
 
   const [showPassword, setShowPassword] = useState(true);
   const showMdp = () => {
@@ -90,7 +146,7 @@ export default function StepLogin1({ navigation }) {
 
         <LinearGradient colors={["#287DC0", "#13A484"]} style={styles.BtnPrez}>
           <TouchableOpacity>
-            <BtnPrez title="Submit" onPress={onSubmit}>
+            <BtnPrez title="Submit" onPress={createUser}>
               <TextBtn>S'inscrire</TextBtn>
             </BtnPrez>
           </TouchableOpacity>

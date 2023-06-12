@@ -1,6 +1,6 @@
 const BookDetail = {
   id: 1,
-  img: require("../../assets/scumbag.png"),
+  img: require("../../../assets/scumbag.png"),
   title: "The Scumbag T.1",
   rate: 4.6,
   author: "Rick Remender",

@@ -8,7 +8,7 @@ import {
   Text,
 } from "react-native";
 import styled from "styled-components";
-import Post from "../../Api/Mock/Post";
+import Post from "../../public/Api/Mock/Post";
 import Like from "../../assets/Img_Presentation/like.svg";
 import Share from "../../assets/Img_Presentation/Share.svg";
 import Comment from "../../assets/Img_Presentation/Comment.svg";

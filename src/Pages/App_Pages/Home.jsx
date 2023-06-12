@@ -3,7 +3,7 @@ import { Platform, View } from "react-native";
 import { ScrollView, StyleSheet, FlatList } from "react-native";
 import styled from "styled-components";
 import Footer from "./Footer";
-import Story from "../../../Api/Mock/Story";
+import Story from "../../../public/Api/Mock/Story";
 import BoxPost from "../../components/BoxPost";
 import { AuthProvider } from "../../context/AuthContext";
 

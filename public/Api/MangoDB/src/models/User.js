@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
+const SECRET = process.env.TOKEN_KEY;
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -25,20 +27,34 @@ const userSchema = new mongoose.Schema({
   mdp: {
     type: String,
     required: true,
-    validate(v) {
-      if (!validator.isLength(v, { min: 6, max: 32 }))
-        throw new Error("Le mot de passe doit être entre 6 et 20 caratères !");
-    },
   },
   authTokens: [
     {
-      authToken: { type: String, required: true },
+      authToken: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
+  authTokens: [
+    {
+      authToken: {
+        type: String,
+        required: true,
+      },
     },
   ],
 });
 
+userSchema.methods.toJSON = function () {
+  const user = this.toObject();
+  delete user.mdp;
+  delete user.authTokens;
+  return user;
+};
+
 userSchema.methods.generateAuthTokenAndSaveUser = async function () {
-  const authToken = jwt.sign({ _id: this._id.toString() }, "moulachups");
+  const authToken = jwt.sign({ _id: this._id.toString() }, SECRET);
   this.authTokens.push({ authToken });
   await this.save();
   return authToken;

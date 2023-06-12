@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import OriginalLogoWTtxt from "../../../assets/Img_Presentation/OrignalLogoWTtxt.svg";
 import { StyleSheet, View, FlatList, Text, Pressable } from "react-native";
 import styled from "styled-components";
-import GenderBookChoice1 from "../../../Api/Mock/GenderBookChoice1";
+import GenderBookChoice1 from "../../../public/Api/Mock/GenderBookChoice1";
 import { LinearGradient } from "expo-linear-gradient";
-import GenderBookChoice2 from "../../../Api/Mock/GenderBookChoice2";
+import GenderBookChoice2 from "../../../public/Api/Mock/GenderBookChoice2";
 
 export default function StepBookGenderChoice1({ navigation }) {
   const DATA1 = GenderBookChoice1;
