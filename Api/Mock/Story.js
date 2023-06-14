@@ -16,7 +16,7 @@ const Story = [
   },
   {
     id: 4,
-    img: require("../../assets/Img_story/Avatar4.png"),
+    img: require("../../assets/Img_story/Avatar5.png"),
     pseudo: "Bookinglove",
   },
   {
@@ -31,7 +31,7 @@ const Story = [
   },
   {
     id: 7,
-    img: require("../../assets/Img_story/Avatar4.png"),
+    img: require("../../assets/Img_story/Avatar5.png"),
     pseudo: "DBook",
   },
 ];

@@ -29,3 +29,13 @@ export const MyLibraryFinishState = atom({
   key: "MyLibraryFinish",
   default: [],
 });
+
+export const MyAuthTokens = atom({
+  key: "MyAuthTokens",
+  default: [],
+});
+
+export const PreToken = atom({
+  key: "PreToken",
+  default: [],
+});

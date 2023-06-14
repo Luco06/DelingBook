@@ -6,10 +6,13 @@ import MAil from "../../../assets/Img_Presentation/Letter.svg";
 import Lock from "../../../assets/Img_Presentation/lock.svg";
 import { LinearGradient } from "expo-linear-gradient";
 import OriginalLogo from "../../../assets/Img_Presentation/OriginalLogo.svg";
-import { AuthProvider } from "../../context/AuthContext";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { MyAuthTokens } from "../../recoil";
+import { userLogin } from "../../../Api/RPC/api";
 
 export default function StepLogin2({ navigation }) {
-  const { isLoging, setIsLoging } = useContext(AuthProvider);
+  const MyTokens = useRecoilValue(MyAuthTokens);
+  const setMyTokens = useSetRecoilState(MyAuthTokens);
   const {
     control,
     handleSubmit,
@@ -20,7 +23,13 @@ export default function StepLogin2({ navigation }) {
       mdp: "",
     },
   });
-  const onSubmit = (data) => () => setIsLoging(true);
+  const onSubmit = (data) => {
+    userLogin(data).then((res) => {
+      console.log("User connected", res);
+      setMyTokens((token) => [...token, res.authToken]);
+      console.log(MyTokens);
+    });
+  };
   const [showPassword, setShowPassword] = useState(true);
   const showMdp = () => {
     setShowPassword(!showPassword);
@@ -77,12 +86,7 @@ export default function StepLogin2({ navigation }) {
         {errors.mdp && <Text>This is required.</Text>}
 
         <LinearGradient colors={["#287DC0", "#13A484"]} style={styles.BtnPrez}>
-          <BtnPrez
-            title="Submit"
-            onPress={
-              (() => setIsLoging(true), () => navigation.navigate("Auth"))
-            }
-          >
+          <BtnPrez title="Submit" onPress={handleSubmit(onSubmit)}>
             <TextBtn>Se connecter</TextBtn>
           </BtnPrez>
         </LinearGradient>

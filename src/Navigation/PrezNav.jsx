@@ -8,18 +8,18 @@ import ChoiceBookNav from "./GenderChoiceNav";
 
 const Tabs = createNativeStackNavigator();
 const PrezNav = () => {
-  return (
-    <Tabs.Navigator
-      initialRouteName="Step1"
-      screenOptions={{ headerShown: false }}
-    >
-      <Tabs.Screen name="Step1" component={Step1} />
-      <Tabs.Screen name="Step2" component={Step2} />
-      <Tabs.Screen name="Step3" component={Step3} />
-      <Tabs.Screen name="Step4" component={Step4} />
-      <Tabs.Screen name="ChoiceBookNav" component={ChoiceBookNav} />
-    </Tabs.Navigator>
-  );
+  // return (
+  //   <Tabs.Navigator
+  //     initialRouteName="Step1"
+  //     screenOptions={{ headerShown: false }}
+  //   >
+  //     <Tabs.Screen name="Step1" component={Step1} />
+  //     <Tabs.Screen name="Step2" component={Step2} />
+  //     <Tabs.Screen name="Step3" component={Step3} />
+  //     <Tabs.Screen name="Step4" component={Step4} />
+  //     <Tabs.Screen name="ChoiceBookNav" component={ChoiceBookNav} />
+  //   </Tabs.Navigator>
+  // );
 };
 
 export default PrezNav;

@@ -15,26 +15,26 @@ import BookDetailFinish from "../components/BookDetailLib/BookDetailFinish";
 
 const Tabs = createNativeStackNavigator();
 const AuthNav = () => {
-  return (
-    <Tabs.Navigator
-      initialRouteName="Home"
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      <Tabs.Screen name="Home" component={Home} />
-      <Tabs.Screen name="MyLibrary" component={MyLibrary} />
-      <Tabs.Screen name="MyMessage" component={MyMessage} />
-      <Tabs.Screen name="SearchBook" component={SearchBook} />
-      <Tabs.Screen name="MyUserProfil" component={MyUserProfil} />
-      <Tabs.Screen name="BookDetail" component={BookDetail} />
-      <Tabs.Screen name="MyLikePage" component={MyLikePage} />
-      <Tabs.Screen name="MyReadPage" component={MyReadPage} />
-      <Tabs.Screen name="MyFinishPage" component={MyFinishPage} />
-      <Tabs.Screen name="BookDetailLike" component={BookDetailLike} />
-      <Tabs.Screen name="BookDetailRead" component={BookDetailRead} />
-      <Tabs.Screen name="BookDetailFinish" component={BookDetailFinish} />
-    </Tabs.Navigator>
-  );
+  // return (
+  //   <Tabs.Navigator
+  //     initialRouteName="Home"
+  //     screenOptions={{
+  //       headerShown: false,
+  //     }}
+  //   >
+  //     <Tabs.Screen name="Home" component={Home} />
+  //     <Tabs.Screen name="MyLibrary" component={MyLibrary} />
+  //     <Tabs.Screen name="MyMessage" component={MyMessage} />
+  //     <Tabs.Screen name="SearchBook" component={SearchBook} />
+  //     <Tabs.Screen name="MyUserProfil" component={MyUserProfil} />
+  //     <Tabs.Screen name="BookDetail" component={BookDetail} />
+  //     <Tabs.Screen name="MyLikePage" component={MyLikePage} />
+  //     <Tabs.Screen name="MyReadPage" component={MyReadPage} />
+  //     <Tabs.Screen name="MyFinishPage" component={MyFinishPage} />
+  //     <Tabs.Screen name="BookDetailLike" component={BookDetailLike} />
+  //     <Tabs.Screen name="BookDetailRead" component={BookDetailRead} />
+  //     <Tabs.Screen name="BookDetailFinish" component={BookDetailFinish} />
+  //   </Tabs.Navigator>
+  // );
 };
 export default AuthNav;

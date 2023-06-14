@@ -1,12 +1,8 @@
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StyleSheet } from "react-native";
 import { RecoilRoot } from "recoil";
-import AuthContext from "./src/context/AuthContext";
 import Nav from "./src/Navigation/Nav";
 
 export default function App() {
-  const Stack = createNativeStackNavigator();
   function LogoTitile() {
     return (
       <Image
@@ -17,11 +13,7 @@ export default function App() {
   }
   return (
     <RecoilRoot>
-      <NavigationContainer>
-        <AuthContext>
-          <Nav />
-        </AuthContext>
-      </NavigationContainer>
+      <Nav />
     </RecoilRoot>
   );
 }

@@ -8,7 +8,6 @@ import BoxPost from "../../components/BoxPost";
 import { AuthProvider } from "../../context/AuthContext";
 
 export default function Home({ navigation }) {
-  const { setIsLoading } = useContext(AuthProvider);
   const Item = ({ item }) => (
     <BoxStory key={item.id}>
       <ImgStory source={item.img} />

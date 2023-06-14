@@ -1,29 +1,60 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useForm, Controller } from "react-hook-form";
-import { StyleSheet, View, TextInput, Text } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import MAil from "../../../assets/Img_Presentation/Letter.svg";
 import Tel from "../../../assets/Img_Presentation/smartphone.svg";
 import Lock from "../../../assets/Img_Presentation/lock.svg";
 import { LinearGradient } from "expo-linear-gradient";
 import { CheckBox } from "@rneui/themed";
 import OriginalLogoWTtxt from "../../../assets/Img_Presentation/OrignalLogoWTtxt.svg";
+import { createUser } from "../../../Api/RPC/api";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { PreToken } from "../../recoil";
 
 export default function StepLogin1({ navigation }) {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      email: "",
-      telephone: "",
-      mdp: "",
-    },
-  });
-  const onSubmit = (data) => {
-    navigation.navigate("PrezNav");
+  const MyPreTokens = useRecoilValue(PreToken);
+  const setMyPreTokens = useSetRecoilState(PreToken);
+  const [mdp, setMdp] = useState("");
+  const [email, setEmail] = useState("");
+  const [telephone, setTelephone] = useState("");
+
+  const userData = {
+    email: email,
+    telephone: telephone,
+    mdp: mdp,
   };
+
+  const onSubmit = () => {
+    createUser(userData)
+      .then((res) => {
+        console.log("User created:", res);
+        // Traitez la réponse de la création de l'utilisateur
+        if (res.code == 11000) {
+          alert("Votre email est déja utilisée");
+        } else {
+          alert("Votre compte à bien été créer");
+          setMyPreTokens((token) => [...token, res.authToken]);
+          console.log("Pre", MyPreTokens);
+          navigation.navigate("Step1");
+        }
+      })
+      .catch((error) => {
+        console.error(
+          "Une erreur s'est produite lors de la création de l'utilisateur :",
+          error
+        );
+        // Gérez l'erreur ici
+      });
+  };
+
+  // Utilisation de la fonction pour créer un utilisateur
+
   const [showPassword, setShowPassword] = useState(true);
   const showMdp = () => {
     setShowPassword(!showPassword);
@@ -37,76 +68,47 @@ export default function StepLogin1({ navigation }) {
       </ViewImg>
       <ViewStep>
         <Title>Crée votre compte gratuitement</Title>
-        <Controller
-          control={control}
-          rules={{
-            required: true,
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <View style={styles.viewInput}>
-              <TextInput
-                placeholder="Email"
-                style={styles.input}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                keyboardType="email-address"
-              />
-              <MAil width={25} height={20} />
-            </View>
-          )}
-          name="email"
-        />
-        {errors.email && <Text>This is required.</Text>}
 
-        <Controller
-          control={control}
-          rules={{
-            maxLength: 100,
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <View style={styles.viewInput}>
-              <TextInput
-                placeholder="Téléphone"
-                style={styles.input}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                keyboardType="phone-pad"
-              />
-              <Tel width={25} height={20} />
-            </View>
-          )}
-          name="telephone"
-        />
-        {errors.telephone && <Text>This is required.</Text>}
-        <Controller
-          control={control}
-          rules={{
-            maxLength: 100,
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <View style={styles.viewInput}>
-              <TextInput
-                placeholder="Mot de passe"
-                style={styles.input}
-                size={300}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                secureTextEntry={showPassword}
-              />
-              <Lock width={25} height={20} onPress={() => showMdp()} />
-            </View>
-          )}
-          name="mdp"
-        />
-        {errors.mdp && <Text>This is required.</Text>}
+        <View style={styles.viewInput}>
+          <TextInput
+            placeholder="Email"
+            style={styles.input}
+            keyboardType="email-address"
+            onChangeText={(email) => setEmail(email)}
+            value={email}
+          />
+          <MAil width={25} height={20} />
+        </View>
+
+        <View style={styles.viewInput}>
+          <TextInput
+            placeholder="Téléphone"
+            style={styles.input}
+            keyboardType="phone-pad"
+            onChangeText={(tel) => setTelephone(tel)}
+            value={telephone}
+          />
+          <Tel width={25} height={20} />
+        </View>
+
+        <View style={styles.viewInput}>
+          <TextInput
+            placeholder="Mot de passe"
+            style={styles.input}
+            size={300}
+            secureTextEntry={showPassword}
+            onChangeText={(mdp) => setMdp(mdp)}
+            value={mdp}
+          />
+          <Lock width={25} height={20} onPress={() => showMdp()} />
+        </View>
 
         <LinearGradient colors={["#287DC0", "#13A484"]} style={styles.BtnPrez}>
-          <BtnPrez title="Submit" onPress={handleSubmit(onSubmit)}>
-            <TextBtn>S'inscrire</TextBtn>
-          </BtnPrez>
+          <TouchableOpacity>
+            <BtnPrez title="Submit" onPress={onSubmit}>
+              <TextBtn>S'inscrire</TextBtn>
+            </BtnPrez>
+          </TouchableOpacity>
         </LinearGradient>
         <ViewCondition>
           <CheckBox
