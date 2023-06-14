@@ -9,20 +9,20 @@ import PrezNav from "./PrezNav";
 
 const Tabs = createNativeStackNavigator();
 const NoAuthNav = () => {
-  return (
-    <Tabs.Navigator
-      initialRouteName="Login2"
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      <Tabs.Screen name="Login1" component={StepLogin1} />
-      <Tabs.Screen name="Login2" component={StepLogin2} />
-      <Tabs.Screen name="ForgetPassword1" component={StepForgetPassword1} />
-      <Tabs.Screen name="ForgetPassword2" component={StepForgetPassword2} />
-      <Tabs.Screen name="Auth" component={AuthNav} />
-      <Tabs.Screen name="PrezNav" component={PrezNav} />
-    </Tabs.Navigator>
-  );
+  // return (
+  //   <Tabs.Navigator
+  //     initialRouteName="Login2"
+  //     screenOptions={{
+  //       headerShown: false,
+  //     }}
+  //   >
+  //     <Tabs.Screen name="Login1" component={StepLogin1} />
+  //     <Tabs.Screen name="Login2" component={StepLogin2} />
+  //     <Tabs.Screen name="ForgetPassword1" component={StepForgetPassword1} />
+  //     <Tabs.Screen name="ForgetPassword2" component={StepForgetPassword2} />
+  //     <Tabs.Screen name="Auth" component={AuthNav} />
+  //     <Tabs.Screen name="PrezNav" component={PrezNav} />
+  //   </Tabs.Navigator>
+  // );
 };
 export default NoAuthNav;

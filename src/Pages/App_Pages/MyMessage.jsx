@@ -11,7 +11,7 @@ import {
 import styled from "styled-components";
 import ArrowReturn from "../../../assets/Img_Presentation/Shape.svg";
 import { SearchBar } from "@rneui/themed";
-import PrevMessage from "../../../public/Api/Mock/PrevMessage";
+import PrevMessage from "../../../Api/Mock/PrevMessage";
 import { useNavigation } from "@react-navigation/native";
 
 export default function MyMessage({ navigation: { goBack } }) {

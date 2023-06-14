@@ -10,6 +10,9 @@ import Share from "../../../assets/Img_Presentation/Share.svg";
 import Footer from "./Footer";
 import { useNavigation } from "@react-navigation/native";
 import { BottomSheet, Button, ListItem } from "@rneui/themed";
+import { logoutUser } from "../../../Api/RPC/api";
+import { useRecoilValue, useResetRecoilState } from "recoil";
+import { MyAuthTokens } from "../../recoil";
 
 export default function MyUserProfil({ navigation: { goBack } }) {
   const navigation = useNavigation();
@@ -19,13 +22,19 @@ export default function MyUserProfil({ navigation: { goBack } }) {
   const [followers, setFollowwers] = useState(350);
   const [follow, setFollow] = useState(330);
   const [isVisible, setIsVisible] = useState(false);
+  const MyTokens = useRecoilValue(MyAuthTokens);
+  const ClearToken = useResetRecoilState(MyAuthTokens);
+  const token = `Bearer ${MyTokens}`;
   const list = [
     { title: "Espace comptes" },
     { title: "Notifications" },
     { title: "Gestions des groupes" },
     { title: "Bloqué/restreints" },
     { title: "Supprimer son compte" },
-    { title: "Se déconnecter" },
+    {
+      title: "Se déconnecter",
+      onPress: () => handleLogout(),
+    },
     {
       title: "Fermer",
       containerStyle: { backgroundColor: "red" },
@@ -33,6 +42,17 @@ export default function MyUserProfil({ navigation: { goBack } }) {
       onPress: () => setIsVisible(false),
     },
   ];
+  const handleLogout = () => {
+    logoutUser(token)
+      .then(() => {
+        ClearToken();
+        console.log("Déco réussie");
+      })
+      .catch((error) => {
+        console.error("Une erreur est survenue", error);
+      });
+  };
+  console.log(token);
   return (
     <View style={styles.container}>
       <ViewBtn>

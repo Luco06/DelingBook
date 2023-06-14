@@ -13,84 +13,43 @@ import Lock from "../../../assets/Img_Presentation/lock.svg";
 import { LinearGradient } from "expo-linear-gradient";
 import { CheckBox } from "@rneui/themed";
 import OriginalLogoWTtxt from "../../../assets/Img_Presentation/OrignalLogoWTtxt.svg";
+import { createUser } from "../../../Api/RPC/api";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { PreToken } from "../../recoil";
 
 export default function StepLogin1({ navigation }) {
+  const MyPreTokens = useRecoilValue(PreToken);
+  const setMyPreTokens = useSetRecoilState(PreToken);
   const [mdp, setMdp] = useState("");
   const [email, setEmail] = useState("");
   const [telephone, setTelephone] = useState("");
 
-  const onSubmit = () => {
-    // const AddUser = {
-    //   method: "POST",
-    //   headers: {
-    //     Accept: "application/json",
-    //     "Content-Type": "application/json",
-    //     "Access-Control-Request-Headers": "*",
-    //     "api-key": "64790224e0c5a553ae57f1cf",
-    //   },
-    //   body: JSON.stringify({
-    //     email,
-    //     telephone,
-    //     mdp,
-    //   }),
-    // };
-    // const res = await fetch(User.create(), AddUser);
-    // res = await res.json();
-    // console.log(res);
-    // const addUser = async () => {
-    //   await fetch("http://localhost:3000/createUser", {
-    //     method: " POST",
-    //     headers: {
-    //       Accept: "application/json",
-    //       "Content-Type": "application/json",
-    //       "Access-Control-Request-Headers": "*",
-    //       "api-key": "64790224e0c5a553ae57f1cf",
-    //     },
-    //     body: JSON.stringify({
-    //       email: email,
-    //       telephone: telephone,
-    //       mdp: mdp,
-    //     })
-    //   }).then(res =>res.json())
-    // };
-    // addUser();
-    // console.log(email, telephone, mdp);
+  const userData = {
+    email: email,
+    telephone: telephone,
+    mdp: mdp,
   };
 
-  const data = JSON.stringify({
-    collection: "users",
-    database: "test",
-    dataSource: "Cluster0",
-    projection: {
-      _id: 1,
-    },
-  });
-  const createUser = async () => {
-    const userData = {
-      email: email,
-      mdp: mdp,
-      telephone: telephone,
-      // Autres informations d'utilisateur à envoyer
-    };
-
-    await fetch("http://localhost:3000/createUser", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Request-Headers": "*",
-        "api-key": "64790224e0c5a553ae57f1cf",
-      },
-      data: data,
-      body: JSON.stringify(userData),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("User created:", data);
+  const onSubmit = () => {
+    createUser(userData)
+      .then((res) => {
+        console.log("User created:", res);
         // Traitez la réponse de la création de l'utilisateur
+        if (res.code == 11000) {
+          alert("Votre email est déja utilisée");
+        } else {
+          alert("Votre compte à bien été créer");
+          setMyPreTokens((token) => [...token, res.authToken]);
+          console.log("Pre", MyPreTokens);
+          navigation.navigate("Step1");
+        }
       })
       .catch((error) => {
-        console.error("Error creating user:", error);
-        // Traitez les erreurs lors de la création de l'utilisateur
+        console.error(
+          "Une erreur s'est produite lors de la création de l'utilisateur :",
+          error
+        );
+        // Gérez l'erreur ici
       });
   };
 
@@ -146,7 +105,7 @@ export default function StepLogin1({ navigation }) {
 
         <LinearGradient colors={["#287DC0", "#13A484"]} style={styles.BtnPrez}>
           <TouchableOpacity>
-            <BtnPrez title="Submit" onPress={createUser}>
+            <BtnPrez title="Submit" onPress={onSubmit}>
               <TextBtn>S'inscrire</TextBtn>
             </BtnPrez>
           </TouchableOpacity>

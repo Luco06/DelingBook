@@ -3,8 +3,17 @@ import { StyleSheet, View, Text } from "react-native";
 import styled from "styled-components";
 import { LinearGradient } from "expo-linear-gradient";
 import OriginalLogo from "../../../assets/Img_Presentation/OriginalLogo.svg";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { PreToken, MyAuthTokens } from "../../recoil";
 
 export default function StepBookGenderChoice3({ navigation }) {
+  const MyPreTokens = useRecoilValue(PreToken);
+  const setMyTokens = useSetRecoilState(MyAuthTokens);
+  const MyTokens = useRecoilValue(MyAuthTokens);
+  const finishPrez = () => {
+    setMyTokens((token) => [...token, MyPreTokens]);
+    console.log(MyTokens);
+  };
   return (
     <View style={styles.container}>
       <ViewImg>
@@ -15,7 +24,7 @@ export default function StepBookGenderChoice3({ navigation }) {
         </TextBook>
       </ViewImg>
       <ViewBtn>
-        <PressableNext onPress={() => navigation.navigate("AuthNav")}>
+        <PressableNext onPress={() => finishPrez()}>
           <LinearGradient
             style={{
               borderRadius: 15,

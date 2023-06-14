@@ -4,8 +4,8 @@ import { StyleSheet, View, FlatList, Text, Platform } from "react-native";
 import styled from "styled-components";
 import { LinearGradient } from "expo-linear-gradient";
 import { SearchBar } from "@rneui/base";
-import GenderListeBook from "../../../public/Api/Mock/GenderListeBook";
-import GenderListeBook2 from "../../../public/Api/Mock/GenderListeBook2";
+import GenderListeBook from "../../../Api/Mock/GenderListeBook";
+import GenderListeBook2 from "../../../Api/Mock/GenderListeBook2";
 import ArrowPrez from "../../../assets/next_selection.svg";
 
 export default function StepBookGenderChoice2({ navigation }) {

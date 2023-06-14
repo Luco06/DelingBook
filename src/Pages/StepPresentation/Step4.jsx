@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Image } from "react-native";
-import StepPresentation from "../../../public/Api/Mock/StepPresentations";
+import StepPresentation from "../../../Api/Mock/StepPresentations";
 import styled from "styled-components/native";
 import ArrowPrez from "../../../assets/Img_Presentation/ArrowPrez.png";
 import ImgPrez4 from "../../../assets/Img_Presentation/ImgPrez4.svg";
@@ -18,7 +18,9 @@ export default function Step4({ navigation }) {
                 <TextStep>{step4.text}</TextStep>
                 <TextId>{step4.id}</TextId>
                 <ViewBtn>
-                  <BtnPrez onPress={() => navigation.navigate("ChoiceBookNav")}>
+                  <BtnPrez
+                    onPress={() => navigation.navigate("StepGenderBookChoice1")}
+                  >
                     <Image source={ArrowPrez} />
                   </BtnPrez>
                 </ViewBtn>
