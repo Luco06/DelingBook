@@ -33,10 +33,10 @@ export default function MyReadPage({ navigation: { goBack } }) {
         <ViewLike>
           {MyLibraryRead.map((item) => {
             return (
-              <ViewChoiceBook key={item.id}>
+              <ViewChoiceBook key={item._id}>
                 <ViexTextFlat>
                   <TexFlat numberOfLines={1} ellipsizeMode="tail">
-                    {item.title}
+                    {item.titre}
                   </TexFlat>
                 </ViexTextFlat>
                 <View style={styles.shadow}>
@@ -49,7 +49,7 @@ export default function MyReadPage({ navigation: { goBack } }) {
                     <ImgChoiceBook
                       source={{
                         uri: `${
-                          (item.imageLinks ?? {}).thumbnail ??
+                          item.image ??
                           require("../../../assets/ImgNotFound.png")
                         }`,
                       }}

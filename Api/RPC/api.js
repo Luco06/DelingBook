@@ -67,3 +67,71 @@ export const createUser = (payload) => {
       throw error;
     });
 };
+
+export const addBook = (userId, payload, token) => {
+  return fetch(`http://192.168.0.20:3000/addBook/${userId}`, {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+      Accept: "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify(payload),
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(" Vous n'avez pas pu ajouter ce livre");
+      }
+      return res.json();
+    })
+    .catch((error) => {
+      console.error("Une erreur s'est produite lors de la requête :", error);
+      throw error;
+    });
+};
+
+export const getBookInMyLibrary = (tag, token) => {
+  return fetch(`http://192.168.0.20:3000/booksByTag/${tag}`, {
+    method: "GET",
+    headers: {
+      "Content-type": "application/json",
+      Accept: "application/json",
+      Authorization: token,
+    },
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(
+          " Une erreur s'est produite lors de la récupération des livres par tag"
+        );
+      }
+      return res.json();
+    })
+    .catch((error) => {
+      console.error("Une erreur s'est produite lors de la requête :", error);
+      throw error;
+    });
+};
+
+export const deleteBookInMyLbrary = (userId, bookId, token) => {
+  return fetch(`http://192.168.0.20:3000/deleteBook/${userId}/${bookId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-type": "application/json",
+      Accept: "application/json",
+      Authorization: token,
+    },
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(
+          " Une erreur s'est produite lors de la suppression du livre"
+        );
+      }
+      return res.json();
+    })
+    .catch((error) => {
+      console.error("Une erreur s'est produite lors de la requête :", error);
+      throw error;
+    });
+};

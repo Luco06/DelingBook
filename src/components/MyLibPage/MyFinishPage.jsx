@@ -33,7 +33,7 @@ export default function MyFinishPage({ navigation: { goBack } }) {
         <ViewLike>
           {MyLibraryFinish.map((item) => {
             return (
-              <ViewChoiceBook key={item.id}>
+              <ViewChoiceBook key={item._id}>
                 <ViexTextFlat>
                   <TexFlat numberOfLines={1} ellipsizeMode="tail">
                     {item.title}
@@ -49,7 +49,7 @@ export default function MyFinishPage({ navigation: { goBack } }) {
                     <ImgChoiceBook
                       source={{
                         uri: `${
-                          (item.imageLinks ?? {}).thumbnail ??
+                          item.image ??
                           require("../../../assets/ImgNotFound.png")
                         }`,
                       }}

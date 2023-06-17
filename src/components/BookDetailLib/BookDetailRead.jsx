@@ -48,8 +48,7 @@ export default function BookDetailRead({ navigation: { goBack } }) {
         <BookImg
           source={{
             uri: `${
-              (bookDetails.imageLinks ?? {}).thumbnail ??
-              require("../../../assets/ImgNotFound.png")
+              bookDetails.image ?? require("../../../assets/ImgNotFound.png")
             }`,
           }}
         />
@@ -60,25 +59,26 @@ export default function BookDetailRead({ navigation: { goBack } }) {
       </ViewBook>
       <ViewInfo>
         <ViewTitle>
-          <TitleBook numberOfLines={1}>Titre: {bookDetails.title}</TitleBook>
+          <TitleBook numberOfLines={1}>Titre: {bookDetails.titre}</TitleBook>
           <ViewRate>
             <Rate width={20} height={20} />
-            <TextRate>{bookDetails.averageRating ?? "néant"}</TextRate>
+            <TextRate>{bookDetails.note}</TextRate>
           </ViewRate>
         </ViewTitle>
 
         <Text>
-          <TitleBook>Auteur: </TitleBook> {bookDetails.authors}
+          <TitleBook>Auteur: </TitleBook> {bookDetails.auteur.auteur1},{" "}
+          {bookDetails.auteur.auteur2}
         </Text>
         <Text>
-          <TitleBook>Genre: </TitleBook> {bookDetails.categories}
+          <TitleBook>Genre: </TitleBook> {bookDetails.genre}
         </Text>
         <ViewPublish>
           <Text>
-            <TitleBook>Pages:</TitleBook> {bookDetails.pageCount}
+            <TitleBook>Pages:</TitleBook> {bookDetails.pages}
           </Text>
           <Text>
-            <TitleBook>Date de sortie:</TitleBook> {dateString}
+            <TitleBook>Date de sortie:</TitleBook> {bookDetails.date}
           </Text>
         </ViewPublish>
       </ViewInfo>

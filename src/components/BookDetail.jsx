@@ -15,8 +15,11 @@ import {
   MyLibraryLikeState,
   MyLibraryReadState,
   MyLibraryFinishState,
+  MyId,
+  MyAuthTokens,
 } from "../recoil";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState, useResetRecoilState } from "recoil";
+import { addBook } from "../../Api/RPC/api";
 
 export default function BookDetail({ navigation: { goBack } }) {
   const navigation = useNavigation();
@@ -27,6 +30,11 @@ export default function BookDetail({ navigation: { goBack } }) {
   const MyLibraryLike = useRecoilValue(MyLibraryLikeState);
   const MyLibraryFinsh = useRecoilValue(MyLibraryFinishState);
   const MyLibraryRead = useRecoilValue(MyLibraryReadState);
+  const MyUserId = useRecoilValue(MyId);
+  const MyTokens = useRecoilValue(MyAuthTokens);
+  const ClearLikeList = useResetRecoilState(MyLibraryLikeState);
+  const ClearReadList = useResetRecoilState(MyLibraryReadState);
+  const ClearFinish = useResetRecoilState(MyLibraryFinishState);
   const date = Date.parse(bookDetails.publishedDate);
   const dateConvert = new Date(date);
   const dateString =
@@ -35,7 +43,7 @@ export default function BookDetail({ navigation: { goBack } }) {
     (dateConvert.getMonth() + 1) +
     "/" +
     dateConvert.getFullYear();
-
+  const token = `Bearer ${MyTokens}`;
   function AddBookLike() {
     setMyLibraryLike((bookslike) => [...bookslike, bookDetails]);
     console.log("MyLibLike", MyLibraryLike);
@@ -51,6 +59,119 @@ export default function BookDetail({ navigation: { goBack } }) {
     console.log("MyLibFinish", MyLibraryFinsh);
     alert(bookDetails.title, +"ajouter");
   }
+  const addBookInDbEncours = () => {
+    const bookDetailEnCours = {
+      tag: "encours",
+      titre: bookDetails.title,
+      note:
+        bookDetails.averageRating !== undefined
+          ? bookDetails.averageRating
+          : "néant",
+      auteur: {
+        auteur1: bookDetails.authors[0],
+        auteur2: bookDetails.authors[1],
+      },
+      genre: bookDetails.categories.join(),
+      pages: bookDetails.pageCount,
+      date: dateString,
+      description: bookDetails.description,
+      image:
+        bookDetails.imageLinks && bookDetails.imageLinks.thumbnail
+          ? bookDetails.imageLinks.thumbnail
+          : "../../../assets/ImgNotFound.png",
+    };
+
+    addBook(MyUserId, bookDetailEnCours, token)
+      .then((res) => {
+        console.log("Livre ajouté avec succès", res);
+        ClearLikeList();
+      })
+      .catch((error) => {
+        console.log(MyUserId);
+        console.log(bookDetailEnCours);
+        console.log(token);
+        console.log(
+          "Une erreur s'est produite lors de l'ajout du livre",
+          error
+        );
+      });
+  };
+  const addBookInDbDejaLu = () => {
+    const bookDetailDejaLu = {
+      tag: "dejalu",
+      titre: bookDetails.title,
+      note:
+        bookDetails.averageRating !== undefined
+          ? bookDetails.averageRating
+          : "néant",
+      auteur: {
+        auteur1: bookDetails.authors[0],
+        auteur2: bookDetails.authors[1],
+      },
+      genre: bookDetails.categories.join(),
+      pages: bookDetails.pageCount,
+      date: dateString,
+      description: bookDetails.description,
+      image:
+        bookDetails.imageLinks && bookDetails.imageLinks.thumbnail
+          ? bookDetails.imageLinks.thumbnail
+          : "URL de l'image par défaut",
+    };
+
+    addBook(MyUserId, bookDetailDejaLu, token)
+      .then((res) => {
+        console.log("Livre ajouté avec succès", res);
+        ClearFinish();
+      })
+      .catch((error) => {
+        console.log(MyUserId);
+        console.log(bookDetailDejaLu);
+        console.log(token);
+        console.log(
+          "Une erreur s'est produite lors de l'ajout du livre",
+          error
+        );
+      });
+  };
+
+  const addBookInDbEnvie = () => {
+    const bookDetailEnvie = {
+      tag: "mesenvies",
+      titre: bookDetails.title,
+      note:
+        bookDetails.averageRating !== undefined
+          ? bookDetails.averageRating
+          : "néant",
+      auteur: {
+        auteur1: bookDetails.authors[0],
+        auteur2: bookDetails.authors[1],
+      },
+      genre: bookDetails.categories.join(),
+      pages: bookDetails.pageCount,
+      date: dateString,
+      description: bookDetails.description,
+      image:
+        bookDetails.imageLinks && bookDetails.imageLinks.thumbnail
+          ? bookDetails.imageLinks.thumbnail
+          : "URL de l'image par défaut",
+    };
+
+    addBook(MyUserId, bookDetailEnvie, token)
+      .then((res) => {
+        console.log("Livre ajouté avec succès", res);
+        ClearReadList();
+      })
+      .catch((error) => {
+        console.log(MyUserId);
+        console.log(bookDetailEnvie);
+        console.log(token);
+        console.log(
+          "Une erreur s'est produite lors de l'ajout du livre",
+          error
+        );
+      });
+  };
+
   return (
     <View style={styles.container}>
       <ViewIcon>
@@ -71,9 +192,21 @@ export default function BookDetail({ navigation: { goBack } }) {
         />
         <ViewIconShare>
           <Share width={20} height={20} />
-          <LikeLibrary onPress={() => AddBookLike()} width={20} height={20} />
-          <ReadIcon onPress={() => AddBookRead()} width={20} height={20} />
-          <FinishIcon onPress={() => AddBookFinish()} width={30} height={30} />
+          <LikeLibrary
+            onPress={() => addBookInDbEnvie()}
+            width={20}
+            height={20}
+          />
+          <ReadIcon
+            onPress={() => addBookInDbEncours()}
+            width={20}
+            height={20}
+          />
+          <FinishIcon
+            onPress={() => addBookInDbDejaLu()}
+            width={30}
+            height={30}
+          />
         </ViewIconShare>
       </ViewBook>
       <ViewInfo>

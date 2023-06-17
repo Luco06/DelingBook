@@ -8,14 +8,22 @@ import Share from "../../../assets/Img_Presentation/Share.svg";
 import Delete from "../../../assets/delete.svg";
 import Rate from "../../../assets/star_rate.svg";
 import { useNavigation } from "@react-navigation/native";
-import { BookDetailsState, MyLibraryFinishState } from "../../recoil";
+import {
+  BookDetailsState,
+  MyLibraryFinishState,
+  MyId,
+  MyAuthTokens,
+} from "../../recoil";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+import { deleteBookInMyLbrary } from "../../../Api/RPC/api";
 
 export default function BookDetailFinish({ navigation: { goBack } }) {
   const navigation = useNavigation();
   const MyLibraryFinish = useRecoilValue(MyLibraryFinishState);
   const setMyLibraryFinish = useSetRecoilState(MyLibraryFinishState);
   const bookDetails = useRecoilValue(BookDetailsState);
+  const MyUserId = useRecoilValue(MyId);
+  const MyTokens = useRecoilValue(MyAuthTokens);
   const date = Date.parse(bookDetails.publishedDate);
   const dateConvert = new Date(date);
   const dateString =
@@ -32,11 +40,26 @@ export default function BookDetailFinish({ navigation: { goBack } }) {
   function removeItemAtIndex(arr, index) {
     return [...arr.slice(0, index), ...arr.slice(index + 1)];
   }
-  const deleteBook = () => {
-    const newBookList = removeItemAtIndex(MyLibraryFinish, index);
-    setMyLibraryFinish(newBookList);
+  // const deleteBook = () => {const newBookList = removeItemAtIndex(MyLibraryFinish, index);
+  //   setMyLibraryFinish(newBookList);};
+  const token = `Bearer ${MyTokens}`;
+  const deleteBookinDb = () => {
+    deleteBookInMyLbrary(MyUserId, bookDetails._id, token)
+      .then((res) => {
+        const newBookList = removeItemAtIndex(MyLibraryFinish, index);
+        setMyLibraryFinish(newBookList);
+        console.log("Le livre a bien été supprimer", res);
+      })
+      .catch((error) => {
+        console.log(MyUserId);
+        console.log(bookDetails._id);
+        console.log(token);
+        console.error(
+          "Une erreur s'est produite lors de l'ajout du livre",
+          error
+        );
+      });
   };
-
   return (
     <View style={styles.container}>
       <ViewIcon>
@@ -50,37 +73,37 @@ export default function BookDetailFinish({ navigation: { goBack } }) {
         <BookImg
           source={{
             uri: `${
-              (bookDetails.imageLinks ?? {}).thumbnail ??
-              require("../../../assets/ImgNotFound.png")
+              bookDetails.image ?? require("../../../assets/ImgNotFound.png")
             }`,
           }}
         />
         <ViewIconShare>
           <Share width={20} height={20} />
-          <Delete onPress={() => deleteBook()} width={25} height={30} />
+          <Delete onPress={() => deleteBookinDb()} width={25} height={30} />
         </ViewIconShare>
       </ViewBook>
       <ViewInfo>
         <ViewTitle>
-          <TitleBook numberOfLines={1}>Titre: {bookDetails.title}</TitleBook>
+          <TitleBook numberOfLines={1}>Titre: {bookDetails.titre}</TitleBook>
           <ViewRate>
             <Rate width={20} height={20} />
-            <TextRate>{bookDetails.averageRating ?? "néant"}</TextRate>
+            <TextRate>{bookDetails.note}</TextRate>
           </ViewRate>
         </ViewTitle>
 
         <Text>
-          <TitleBook>Auteur: </TitleBook> {bookDetails.authors}
+          <TitleBook>Auteur: </TitleBook> {bookDetails.auteur.auteur1},{" "}
+          {bookDetails.auteur.auteur2}
         </Text>
         <Text>
-          <TitleBook>Genre: </TitleBook> {bookDetails.categories}
+          <TitleBook>Genre: </TitleBook> {bookDetails.genre}
         </Text>
         <ViewPublish>
           <Text>
-            <TitleBook>Pages:</TitleBook> {bookDetails.pageCount}
+            <TitleBook>Pages:</TitleBook> {bookDetails.pages}
           </Text>
           <Text>
-            <TitleBook>Date de sortie:</TitleBook> {dateString}
+            <TitleBook>Date de sortie:</TitleBook> {bookDetails.date}
           </Text>
         </ViewPublish>
       </ViewInfo>

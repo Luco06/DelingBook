@@ -39,3 +39,8 @@ export const PreToken = atom({
   key: "PreToken",
   default: [],
 });
+
+export const MyId = atom({
+  key: "MyId",
+  default: [],
+});

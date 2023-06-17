@@ -9,10 +9,13 @@ import OriginalLogo from "../../../assets/Img_Presentation/OriginalLogo.svg";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { MyAuthTokens } from "../../recoil";
 import { userLogin } from "../../../Api/RPC/api";
+import { MyId } from "../../recoil";
 
 export default function StepLogin2({ navigation }) {
   const MyTokens = useRecoilValue(MyAuthTokens);
   const setMyTokens = useSetRecoilState(MyAuthTokens);
+  const setMyId = useSetRecoilState(MyId);
+  const MyUserId = useRecoilValue(MyId);
   const {
     control,
     handleSubmit,
@@ -27,13 +30,15 @@ export default function StepLogin2({ navigation }) {
     userLogin(data).then((res) => {
       console.log("User connected", res);
       setMyTokens((token) => [...token, res.authToken]);
-      console.log(MyTokens);
+      setMyId((myid) => [...myid, res.user._id]);
     });
   };
   const [showPassword, setShowPassword] = useState(true);
   const showMdp = () => {
     setShowPassword(!showPassword);
   };
+  console.log("MyToken: ", MyTokens);
+  console.log("MyId: ", MyUserId);
   return (
     <View style={[styles.container]}>
       <ViewImg>
