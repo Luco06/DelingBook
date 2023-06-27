@@ -67,7 +67,48 @@ export const createUser = (payload) => {
       throw error;
     });
 };
-
+export const updateUser = (payload, token) => {
+  return fetch("http://192.168.0.20:3000/users/me", {
+    method: "PATCH",
+    headers: {
+      "Content-type": "application/json",
+      Accept: "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify(payload),
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error("Vérifier vos les informations saisie");
+      }
+      return res.json();
+    })
+    .catch((error) => {
+      console.error("Une erreur s'est produite lors de la requête :", error);
+      throw error;
+    });
+};
+export const getMyInfo = (token) => {
+  return fetch("http://192.168.0.20:3000/users/me", {
+    method: "GET",
+    headers: {
+      "Content-type": "application/json",
+      Accept: "application/json",
+      Authorization: token,
+    },
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error("Error");
+      }
+      return res.json();
+    })
+    .catch((error) => {
+      console.error("Une erreur s'est produite lors de la requête :", error);
+      throw error;
+    });
+};
+//BookApiCall
 export const addBook = (userId, payload, token) => {
   return fetch(`http://192.168.0.20:3000/addBook/${userId}`, {
     method: "POST",

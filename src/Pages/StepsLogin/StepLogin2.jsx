@@ -7,15 +7,17 @@ import Lock from "../../../assets/Img_Presentation/lock.svg";
 import { LinearGradient } from "expo-linear-gradient";
 import OriginalLogo from "../../../assets/Img_Presentation/OriginalLogo.svg";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { MyAuthTokens } from "../../recoil";
+
 import { userLogin } from "../../../Api/RPC/api";
-import { MyId } from "../../recoil";
+import { MyId, User, MyAuthTokens } from "../../recoil";
 
 export default function StepLogin2({ navigation }) {
   const MyTokens = useRecoilValue(MyAuthTokens);
   const setMyTokens = useSetRecoilState(MyAuthTokens);
   const setMyId = useSetRecoilState(MyId);
   const MyUserId = useRecoilValue(MyId);
+  const MyUser = useRecoilValue(User);
+  const setMyUser = useSetRecoilState(User);
   const {
     control,
     handleSubmit,
@@ -29,16 +31,19 @@ export default function StepLogin2({ navigation }) {
   const onSubmit = (data) => {
     userLogin(data).then((res) => {
       console.log("User connected", res);
-      setMyTokens((token) => [...token, res.authToken]);
-      setMyId((myid) => [...myid, res.user._id]);
+      setMyTokens(res.authTokens);
+      setMyId(res.user._id);
+      setMyUser(res);
+      console.log("MyToken: ", MyTokens);
+      console.log("MyId: ", MyUserId);
+      console.log("MyUser", MyUser);
     });
   };
   const [showPassword, setShowPassword] = useState(true);
   const showMdp = () => {
     setShowPassword(!showPassword);
   };
-  console.log("MyToken: ", MyTokens);
-  console.log("MyId: ", MyUserId);
+
   return (
     <View style={[styles.container]}>
       <ViewImg>

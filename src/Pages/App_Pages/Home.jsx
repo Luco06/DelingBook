@@ -1,13 +1,35 @@
-import React, { useContext } from "react";
+import React, { useEffect } from "react";
 import { Platform, View } from "react-native";
 import { ScrollView, StyleSheet, FlatList } from "react-native";
 import styled from "styled-components";
 import Footer from "./Footer";
 import Story from "../../../Api/Mock/Story";
 import BoxPost from "../../components/BoxPost";
-import { AuthProvider } from "../../context/AuthContext";
+import { getMyInfo } from "../../../Api/RPC/api";
+import { MyAuthTokens, User } from "../../recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
 export default function Home({ navigation }) {
+  const setMyInfo = useSetRecoilState(User);
+  const MyInfo = useRecoilValue(User);
+  const MyToken = useRecoilValue(MyAuthTokens);
+  const token = `Bearer ${MyToken}`;
+  const userInfo = () => {
+    getMyInfo(token)
+      .then((res) => {
+        console.log("Mes info", res);
+        setMyInfo(res);
+        console.log(MyInfo);
+      })
+      .catch((error) => {
+        console.error("Une erreur est survenue", error);
+      });
+  };
+  useEffect(() => {
+    console.log(token);
+    console.log("Mes info", MyInfo);
+    userInfo();
+  }, []);
   const Item = ({ item }) => (
     <BoxStory key={item.id}>
       <ImgStory source={item.img} />

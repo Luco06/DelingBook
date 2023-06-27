@@ -44,3 +44,8 @@ export const MyId = atom({
   key: "MyId",
   default: [],
 });
+
+export const User = atom({
+  key: "User",
+  default: [],
+});

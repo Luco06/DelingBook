@@ -11,8 +11,8 @@ import Footer from "./Footer";
 import { useNavigation } from "@react-navigation/native";
 import { BottomSheet, Button, ListItem } from "@rneui/themed";
 import { logoutUser } from "../../../Api/RPC/api";
-import { useRecoilValue, useResetRecoilState } from "recoil";
-import { MyAuthTokens } from "../../recoil";
+import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
+import { MyAuthTokens, User } from "../../recoil";
 
 export default function MyUserProfil({ navigation: { goBack } }) {
   const navigation = useNavigation();
@@ -22,8 +22,10 @@ export default function MyUserProfil({ navigation: { goBack } }) {
   const [followers, setFollowwers] = useState(350);
   const [follow, setFollow] = useState(330);
   const [isVisible, setIsVisible] = useState(false);
+  const MyUser = useRecoilValue(User);
   const MyTokens = useRecoilValue(MyAuthTokens);
   const ClearToken = useResetRecoilState(MyAuthTokens);
+
   const token = `Bearer ${MyTokens}`;
   const list = [
     { title: "Espace comptes" },
@@ -53,6 +55,7 @@ export default function MyUserProfil({ navigation: { goBack } }) {
       });
   };
   console.log(token);
+  console.log(MyUser.user);
   return (
     <View style={styles.container}>
       <ViewBtn>
@@ -65,8 +68,8 @@ export default function MyUserProfil({ navigation: { goBack } }) {
         <ViewAvatar>
           <Avatar width={200} height={200} />
         </ViewAvatar>
-        <PseudoProfil>{pseudo}</PseudoProfil>
-        <Resume>{resume}</Resume>
+        <PseudoProfil>{MyUser.user.pseudo}</PseudoProfil>
+        <Resume>{MyUser.user.description}</Resume>
         <BoxInfo>
           <BoxInfoIntStr>
             <Text>{publication}</Text>
