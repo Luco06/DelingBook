@@ -4,7 +4,7 @@ import { StyleSheet, View, TextInput } from "react-native";
 import styled from "styled-components";
 import { LinearGradient } from "expo-linear-gradient";
 import { updateUser } from "../../../Api/RPC/api";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import { User } from "../../recoil";
 
 export default function StepBookGenderChoice1({ navigation }) {

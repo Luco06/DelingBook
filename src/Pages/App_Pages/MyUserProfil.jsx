@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Platform, View } from "react-native";
 import { Text, StyleSheet, Image } from "react-native";
 import styled from "styled-components";
@@ -13,6 +13,7 @@ import { BottomSheet, Button, ListItem } from "@rneui/themed";
 import { logoutUser } from "../../../Api/RPC/api";
 import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import { MyAuthTokens, User } from "../../recoil";
+import { getMyInfo } from "../../../Api/RPC/api";
 
 export default function MyUserProfil({ navigation: { goBack } }) {
   const navigation = useNavigation();
@@ -23,10 +24,27 @@ export default function MyUserProfil({ navigation: { goBack } }) {
   const [follow, setFollow] = useState(330);
   const [isVisible, setIsVisible] = useState(false);
   const MyUser = useRecoilValue(User);
+  const setMyUser = useSetRecoilState(User);
   const MyTokens = useRecoilValue(MyAuthTokens);
   const ClearToken = useResetRecoilState(MyAuthTokens);
 
-  const token = `Bearer ${MyTokens}`;
+  const token = `Bearer ${MyUser.authToken}`;
+  // const userInfo = () => {
+  //   getMyInfo(token)
+  //     .then((res) => {
+  //       console.log("Mes info", res);
+  //       setMyUser(res);
+  //       console.log(MyUser);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Une erreur est survenue", error);
+  //     });
+  // };
+  // useEffect(() => {
+  //   console.log(token);
+  //   console.log("Mes info", MyUser);
+  //   userInfo();
+  // }, []);
   const list = [
     { title: "Espace comptes" },
     { title: "Notifications" },
@@ -55,7 +73,7 @@ export default function MyUserProfil({ navigation: { goBack } }) {
       });
   };
   console.log(token);
-  console.log(MyUser.user);
+  console.log(MyUser);
   return (
     <View style={styles.container}>
       <ViewBtn>
@@ -68,8 +86,8 @@ export default function MyUserProfil({ navigation: { goBack } }) {
         <ViewAvatar>
           <Avatar width={200} height={200} />
         </ViewAvatar>
-        <PseudoProfil>{MyUser.user.pseudo}</PseudoProfil>
-        <Resume>{MyUser.user.description}</Resume>
+        <PseudoProfil>{MyUser.pseudo}</PseudoProfil>
+        <Resume>{MyUser.description}</Resume>
         <BoxInfo>
           <BoxInfoIntStr>
             <Text>{publication}</Text>

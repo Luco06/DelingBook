@@ -26,8 +26,8 @@ export default function MyMessage({ navigation: { goBack } }) {
     setSearch(Search);
   };
 
-  const userID = MyUser.user._id;
-  const userAuthToken = MyUser.user.authTokens[0].authToken;
+  const userID = MyUser._id;
+  const userAuthToken = MyUser.authToken;
 
   useEffect(() => {}, []);
   return (

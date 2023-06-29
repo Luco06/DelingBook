@@ -24,7 +24,7 @@ export default function Chat({ navigation: { goBack } }) {
   const MyUser = useRecoilValue(User);
 
   useEffect(() => {
-    console.log(MyUser.user._id);
+    console.log(MyUser._id);
     // socket.on("message", (message) => {
     //   setMessages((previousMessages) =>
     //     GiftedChat.append(previousMessages, message)

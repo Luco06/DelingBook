@@ -20,7 +20,6 @@ export default function SearchBook({ navigation: { goBack } }) {
   const setBookList = useSetRecoilState(BookListState);
   const bookList = useRecoilValue(BookListState);
   const setDetailsBook = useSetRecoilState(BookDetailsState);
-  const bookDetails = useRecoilValue(BookDetailsState);
   const navigation = useNavigation();
   const [query, setQuery] = useState("");
 
