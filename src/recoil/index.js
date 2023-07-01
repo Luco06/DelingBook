@@ -49,3 +49,8 @@ export const User = atom({
   key: "User",
   default: [],
 });
+
+export const SearchUserResult = atom({
+  key: "ResultUser",
+  default: [],
+});

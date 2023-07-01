@@ -31,7 +31,7 @@ export default function StepLogin2({ navigation }) {
   const onSubmit = (data) => {
     userLogin(data).then((res) => {
       console.log("User connected", res);
-      setMyTokens(res.authTokens);
+      setMyTokens(res.authToken);
       setMyId(res.user._id);
       setMyUser(res);
       console.log("MyToken: ", MyTokens);

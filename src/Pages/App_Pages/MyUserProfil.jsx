@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Platform, View } from "react-native";
 import { Text, StyleSheet, Image } from "react-native";
 import styled from "styled-components";
@@ -28,23 +28,8 @@ export default function MyUserProfil({ navigation: { goBack } }) {
   const MyTokens = useRecoilValue(MyAuthTokens);
   const ClearToken = useResetRecoilState(MyAuthTokens);
 
-  const token = `Bearer ${MyUser.authToken}`;
-  // const userInfo = () => {
-  //   getMyInfo(token)
-  //     .then((res) => {
-  //       console.log("Mes info", res);
-  //       setMyUser(res);
-  //       console.log(MyUser);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Une erreur est survenue", error);
-  //     });
-  // };
-  // useEffect(() => {
-  //   console.log(token);
-  //   console.log("Mes info", MyUser);
-  //   userInfo();
-  // }, []);
+  const token = `Bearer ${MyTokens || MyUser.authToken}`;
+
   const list = [
     { title: "Espace comptes" },
     { title: "Notifications" },
@@ -72,8 +57,6 @@ export default function MyUserProfil({ navigation: { goBack } }) {
         console.error("Une erreur est survenue", error);
       });
   };
-  console.log(token);
-  console.log(MyUser);
   return (
     <View style={styles.container}>
       <ViewBtn>

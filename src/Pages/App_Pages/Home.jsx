@@ -15,19 +15,17 @@ export default function Home({ navigation }) {
   const MyToken = useRecoilValue(MyAuthTokens);
   const token = `Bearer ${MyToken}`;
   const userInfo = () => {
-    getMyInfo(token)
-      .then((res) => {
-        console.log("Mes info", res);
-        setMyInfo(res);
-        console.log(MyInfo);
-      })
-      .catch((error) => {
-        console.error("Une erreur est survenue", error);
-      });
+    setInterval(() => {
+      getMyInfo(token)
+        .then((res) => {
+          setMyInfo(res);
+        })
+        .catch((error) => {
+          console.error("Une erreur est survenue", error);
+        });
+    }, 3000);
   };
   useEffect(() => {
-    console.log(token);
-    console.log("Mes info", MyInfo);
     userInfo();
   }, []);
   const Item = ({ item }) => (
