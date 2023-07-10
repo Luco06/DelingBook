@@ -6,7 +6,6 @@ import {
   Pressable,
   StyleSheet,
   Image,
-  ScrollView,
 } from "react-native";
 import styled from "styled-components";
 import ArrowReturn from "../../../assets/Img_Presentation/Shape.svg";
@@ -15,26 +14,39 @@ import AvatarUser from "../../../assets/Img_Presentation/AvatarUser.svg";
 import Like from "../../../assets/Img_Presentation/like.svg";
 import Comment from "../../../assets/Img_Presentation/Comment.svg";
 import Share from "../../../assets/Img_Presentation/Share.svg";
-import Library from "../../../assets/Img_Presentation/Library.svg";
-import Home from "../../../assets/Img_Presentation/Home.svg";
-import Account from "../../../assets/Img_Presentation/Account.svg";
-import Message from "../../../assets/Img_Presentation/Message.svg";
-import Search from "../../../assets/Img_Presentation/Search.svg";
-import Video from "../../../assets/Img_Presentation/Video.svg";
 import Footer from "./Footer";
 import { LinearGradient } from "expo-linear-gradient";
-import { useRecoilValue } from "recoil";
-import { SearchUserResult } from "../../recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { SearchUserResult, FriendList, MyAuthTokens } from "../../recoil";
 import { useNavigation } from "@react-navigation/native";
+import { addUser } from "../../../Api/RPC/api";
 
 export default function UserProfil({ navigation: { goBack } }) {
-  const [pseudo, setPseudo] = useState("BookLover30");
-  const [resume, setResume] = useState("Lire est une passion indélébile❤️😁");
   const [publication, setPublication] = useState(28);
   const [followers, setFollowwers] = useState(401);
   const [follow, setFollow] = useState(412);
   const InfoOtherUser = useRecoilValue(SearchUserResult);
+  const setListAmi = useSetRecoilState(FriendList);
+  const ListAmi = useRecoilValue(FriendList);
   console.log("OtherUser", InfoOtherUser);
+
+  const MyTokens = useRecoilValue(MyAuthTokens);
+  const token = `Bearer ${MyTokens}`;
+  const friendId = InfoOtherUser._id;
+
+  const ajoutAmi = () => {
+    console.log(friendId);
+    addUser({ friendId: friendId }, token)
+      .then((response) => {
+        console.log(response);
+        setListAmi(response);
+        alert(`${InfoOtherUser.pseudo} a bien été ajouté`);
+      })
+      .catch((error) => {
+        alert("Une erreur s'est produite lors de l'ajout");
+      });
+  };
+  console.log("Ma liste d'amis", ListAmi);
   return (
     <View style={styles.container}>
       <ViewBtn>
@@ -50,7 +62,7 @@ export default function UserProfil({ navigation: { goBack } }) {
           <Resume>{InfoOtherUser.description}</Resume>
         </ViewDescription>
         <ViewFollow>
-          <Pressable style={styles.BtnPrez}>
+          <Pressable style={styles.BtnPrez} onPress={() => ajoutAmi()}>
             <LinearGradient
               style={{
                 borderRadius: 15,
@@ -59,7 +71,7 @@ export default function UserProfil({ navigation: { goBack } }) {
               }}
               colors={["rgba(40, 125, 192, 0.8)", "rgba(19, 164, 132, 0.8)"]}
             >
-              <TextFollow>Suivre</TextFollow>
+              <TextFollow>Ajouter</TextFollow>
             </LinearGradient>
           </Pressable>
           <Pressable style={styles.BtnPrez}>

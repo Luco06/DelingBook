@@ -83,8 +83,8 @@ export default function MyUserProfil({ navigation: { goBack } }) {
             <Text>Publications</Text>
           </BoxInfoIntStr>
           <BoxInfoIntStr>
-            <Text>{followers}</Text>
-            <Text>Followers</Text>
+            <Text>{MyUser.friends.length}</Text>
+            <Text>Ami(e)s</Text>
           </BoxInfoIntStr>
           <BoxInfoIntStr>
             <Text>{follow}</Text>

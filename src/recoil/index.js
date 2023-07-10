@@ -54,3 +54,8 @@ export const SearchUserResult = atom({
   key: "ResultUser",
   default: [],
 });
+
+export const FriendList = atom({
+  key: "ListeAmi",
+  default: [],
+});
