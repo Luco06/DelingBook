@@ -32,7 +32,11 @@ export default function SearchUser({ navigation: { goBack } }) {
           uri: `${item.avatar ?? require("../../../assets/ImgNotFound.png")}`,
         }}
       />
-      <UserPseudo>{item.pseudo}</UserPseudo>
+      <Pressable
+        onPress={() => (SetResultInfo(item), navigation.navigate("UserProfil"))}
+      >
+        <UserPseudo>{item.pseudo}</UserPseudo>
+      </Pressable>
     </ViewUserSearch>
   );
   //   const search = (searchTerm) => {

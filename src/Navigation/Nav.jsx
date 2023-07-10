@@ -28,6 +28,8 @@ import StepBookGenderChoice2 from "../Pages/StepBookGenderChoice/StepBookGenderC
 import StepBookGenderChoice3 from "../Pages/StepBookGenderChoice/StepBookGenderChoice3";
 import Chat from "../components/Chat";
 import SearchUser from "../Pages/App_Pages/SearchUser";
+import UserProfil from "../Pages/App_Pages/UserProfil";
+import UpdateUser from "../components/UpdateUser";
 
 const Nav = () => {
   const Stack = createNativeStackNavigator();
@@ -89,6 +91,8 @@ const Nav = () => {
             />
             <Stack.Screen name="Chat" component={Chat} />
             <Stack.Screen name="SearchUser" component={SearchUser} />
+            <Stack.Screen name="UserProfil" component={UserProfil} />
+            <Stack.Screen name="UpdateUser" component={UpdateUser} />
           </>
         )}
       </Stack.Navigator>

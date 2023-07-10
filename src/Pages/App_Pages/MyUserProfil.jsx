@@ -31,7 +31,10 @@ export default function MyUserProfil({ navigation: { goBack } }) {
   const token = `Bearer ${MyTokens || MyUser.authToken}`;
 
   const list = [
-    { title: "Espace comptes" },
+    {
+      title: "Espace comptes",
+      onPress: () => navigation.navigate("UpdateUser"),
+    },
     { title: "Notifications" },
     { title: "Gestions des groupes" },
     { title: "Bloqué/restreints" },
@@ -67,7 +70,10 @@ export default function MyUserProfil({ navigation: { goBack } }) {
       </ViewBtn>
       <ViewInfoProfile>
         <ViewAvatar>
-          <Avatar width={200} height={200} />
+          <Image
+            source={{ uri: MyUser.avatar }}
+            style={{ width: 150, height: 150, borderRadius: 100 }}
+          />
         </ViewAvatar>
         <PseudoProfil>{MyUser.pseudo}</PseudoProfil>
         <Resume>{MyUser.description}</Resume>
@@ -87,7 +93,7 @@ export default function MyUserProfil({ navigation: { goBack } }) {
         </BoxInfo>
         <View style={{ overflow: "hidden", paddingBottom: 5 }}>
           <View style={styles.shadow}>
-            <Resume>{pseudo}</Resume>
+            <Resume>{MyUser.pseudo}</Resume>
             <Image
               style={{ height: 130, width: 90, alignSelf: "center", margin: 5 }}
               source={require("../../../assets/Img_Presentation/tokyo.png")}

@@ -13,8 +13,8 @@ export default function StepBookGenderChoice1({ navigation }) {
   const [userDescription, setUserDescription] = useState("");
 
   const userUpdate = {
-    description: userDescription,
-    pseudo: userPseudo,
+    description: userDescription.trim(),
+    pseudo: userPseudo.trim(),
   };
 
   const token = `Bearer ${MyUser.authToken}`;
