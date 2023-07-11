@@ -6,6 +6,7 @@ import {
   Platform,
   View,
   Pressable,
+  Image,
 } from "react-native";
 import styled from "styled-components/native";
 import { SearchBar } from "@rneui/base";
@@ -27,11 +28,7 @@ export default function SearchUser({ navigation: { goBack } }) {
 
   const userItem = ({ item }) => (
     <ViewUserSearch key={item._id}>
-      <UserImg
-        source={{
-          uri: `${item.avatar ?? require("../../../assets/ImgNotFound.png")}`,
-        }}
-      />
+      <UserImg source={{ uri: item.avatar }} />
       <Pressable
         onPress={() => (SetResultInfo(item), navigation.navigate("UserProfil"))}
       >
@@ -66,7 +63,7 @@ export default function SearchUser({ navigation: { goBack } }) {
       });
   };
   useEffect(() => {
-    if (user.length >= 3) {
+    if (user.length > 2) {
       search();
     }
   }, [user]);

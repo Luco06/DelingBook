@@ -1,6 +1,6 @@
 //UserCall Api
 export const userLogin = (payload) => {
-  return fetch("http://192.168.1.39:3000/login", {
+  return fetch("http://192.168.0.20:3000/login", {
     method: "POST",
     headers: {
       "Content-type": "application/json",
@@ -24,7 +24,7 @@ export const userLogin = (payload) => {
 
 export const logoutUser = (token) => {
   return new Promise((resolve, reject) => {
-    fetch("http://192.168.1.39:3000/logout", {
+    fetch("http://192.168.0.20:3000/logout", {
       method: "POST",
       headers: {
         Authorization: token,
@@ -47,7 +47,7 @@ export const logoutUser = (token) => {
 };
 
 export const createUser = (payload) => {
-  return fetch("http://192.168.1.39:3000/users", {
+  return fetch("http://192.168.0.20:3000/users", {
     method: "POST",
     headers: {
       "Content-type": "application/json",
@@ -68,7 +68,7 @@ export const createUser = (payload) => {
     });
 };
 export const updateUser = (payload, token) => {
-  return fetch("http://192.168.1.39:3000/users/me", {
+  return fetch("http://192.168.0.20:3000/users/me", {
     method: "PATCH",
     headers: {
       "Content-type": "application/json",
@@ -89,7 +89,7 @@ export const updateUser = (payload, token) => {
     });
 };
 export const getMyInfo = (token) => {
-  return fetch("http://192.168.1.39:3000/users/me", {
+  return fetch("http://192.168.0.20:3000/users/me", {
     method: "GET",
     headers: {
       "Content-type": "application/json",
@@ -109,7 +109,7 @@ export const getMyInfo = (token) => {
     });
 };
 export const searchUser = (payload, token) => {
-  return fetch("http://192.168.1.39:3000/users/searchuser", {
+  return fetch("http://192.168.0.20:3000/users/searchuser", {
     method: "POST",
     headers: {
       "Content-type": "application/json",
@@ -134,7 +134,7 @@ export const searchUser = (payload, token) => {
 };
 
 export const addUser = (payload, token) => {
-  return fetch("http://192.168.1.39:3000/users/addfriend", {
+  return fetch("http://192.168.0.20:3000/users/addfriend", {
     method: "POST",
     headers: {
       "Content-type": "application/json",
@@ -159,7 +159,7 @@ export const addUser = (payload, token) => {
 };
 //BookApiCall
 export const addBook = (userId, payload, token) => {
-  return fetch(`http://192.168.1.39:3000/addBook/${userId}`, {
+  return fetch(`http://192.168.0.20:3000/addBook/${userId}`, {
     method: "POST",
     headers: {
       "Content-type": "application/json",
@@ -180,8 +180,8 @@ export const addBook = (userId, payload, token) => {
     });
 };
 
-export const getBookInMyLibrary = (tag, token) => {
-  return fetch(`http://192.168.1.39:3000/booksByTag/${tag}`, {
+export const getBookInMyLibrary = (userId, tag, token) => {
+  return fetch(`http://192.168.0.20:3000/booksByTag/${userId}/${tag}`, {
     method: "GET",
     headers: {
       "Content-type": "application/json",
@@ -204,7 +204,7 @@ export const getBookInMyLibrary = (tag, token) => {
 };
 
 export const deleteBookInMyLbrary = (userId, bookId, token) => {
-  return fetch(`http://192.168.1.39:3000/deleteBook/${userId}/${bookId}`, {
+  return fetch(`http://192.168.0.20:3000/deleteBook/${userId}/${bookId}`, {
     method: "DELETE",
     headers: {
       "Content-type": "application/json",

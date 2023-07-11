@@ -1,5 +1,12 @@
 import React from "react";
-import { Platform, View, StyleSheet, Text, ScrollView } from "react-native";
+import {
+  Platform,
+  View,
+  StyleSheet,
+  Text,
+  ScrollView,
+  Image,
+} from "react-native";
 import styled from "styled-components/native";
 import ArrowReturn from "../../../assets/Img_Presentation/Shape.svg";
 import Avatar from "../../../assets/Img_Presentation/Avatar.svg";
@@ -13,6 +20,7 @@ import {
   MyLibraryFinishState,
   MyId,
   MyAuthTokens,
+  User,
 } from "../../recoil";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { deleteBookInMyLbrary } from "../../../Api/RPC/api";
@@ -24,6 +32,7 @@ export default function BookDetailFinish({ navigation: { goBack } }) {
   const bookDetails = useRecoilValue(BookDetailsState);
   const MyUserId = useRecoilValue(MyId);
   const MyTokens = useRecoilValue(MyAuthTokens);
+  const MyInfo = useRecoilValue(User);
   const date = Date.parse(bookDetails.publishedDate);
   const dateConvert = new Date(date);
   const dateString =
@@ -65,8 +74,11 @@ export default function BookDetailFinish({ navigation: { goBack } }) {
       <ViewIcon>
         <ArrowReturn onPress={() => goBack()} width={30} height={30} />
         <ViewAvatar>
-          <Avatar width={40} height={40} />
-          <Text>DcLover17</Text>
+          <Image
+            source={{ uri: MyInfo.avatar }}
+            style={{ width: 40, height: 40, borderRadius: 100 }}
+          />
+          <Text>{MyInfo.pseudo}</Text>
         </ViewAvatar>
       </ViewIcon>
       <ViewBook>

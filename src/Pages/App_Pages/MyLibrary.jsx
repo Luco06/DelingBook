@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Platform, View } from "react-native";
-import { Text, StyleSheet, FlatList } from "react-native";
+import { Text, StyleSheet, FlatList, Image } from "react-native";
 import styled from "styled-components";
 import ArrowReturn from "../../../assets/Img_Presentation/Shape.svg";
 import Avatar from "../../../assets/Img_Presentation/Avatar.svg";
@@ -13,6 +13,7 @@ import {
   MyLibraryFinishState,
   MyLibraryReadState,
   MyAuthTokens,
+  User,
 } from "../../recoil";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { getBookInMyLibrary } from "../../../Api/RPC/api";
@@ -26,15 +27,16 @@ export default function MyLibrary({ navigation: { goBack } }) {
   const MyLibraryFinsh = useRecoilValue(MyLibraryFinishState);
   const MyLibraryRead = useRecoilValue(MyLibraryReadState);
   const MyTokens = useRecoilValue(MyAuthTokens);
+  const MyInfo = useRecoilValue(User);
   const navigation = useNavigation();
+  const myId = MyInfo._id;
 
   const token = `Bearer ${MyTokens}`;
 
   const getMyLikeBook = () => {
-    getBookInMyLibrary("mesenvies", token)
+    getBookInMyLibrary(myId, "mesenvies", token)
       .then((res) => {
-        console.log("Vos livres likés", res);
-        setMyLibraryLike(res);
+        setMyLibraryLike(res.books);
         console.log("MyBookLike", MyLibraryLike);
       })
       .catch((error) => {
@@ -45,10 +47,9 @@ export default function MyLibrary({ navigation: { goBack } }) {
       });
   };
   const getMyProgressBook = () => {
-    getBookInMyLibrary("encours", token)
+    getBookInMyLibrary(myId, "encours", token)
       .then((res) => {
-        console.log("Vos lecteurs en cours", res);
-        setMyLibraryRead(res);
+        setMyLibraryRead(res.books);
         console.log("MyBookReadingProgress", MyLibraryRead);
       })
       .catch((error) => {
@@ -59,11 +60,10 @@ export default function MyLibrary({ navigation: { goBack } }) {
       });
   };
   const getMyFinishBook = () => {
-    getBookInMyLibrary("dejalu", token)
+    getBookInMyLibrary(myId, "dejalu", token)
       .then((res) => {
-        console.log("Vos livre déjà lu", res);
-        setMyLibraryFinsh(res);
-        console.log("MyBookFinish", MyLibraryFinsh);
+        setMyLibraryFinsh(res.books);
+        console.log("MyBookFinish", MyLibraryFinsh.books, "BobyFeeal");
       })
       .catch((error) => {
         console.error(
@@ -79,7 +79,7 @@ export default function MyLibrary({ navigation: { goBack } }) {
     getMyFinishBook();
   }, []);
   const Item = ({ item }) => (
-    <ViewChoiceBook key={item.id}>
+    <ViewChoiceBook key={item._id}>
       <ViexTextFlat>
         <TexFlat numberOfLines={1} ellipsizeMode="tail">
           {item.titre}
@@ -94,14 +94,18 @@ export default function MyLibrary({ navigation: { goBack } }) {
       </View>
     </ViewChoiceBook>
   );
+  const keyExtractor = (item) => item._id.toString();
   return (
     <View style={styles.container}>
       <ViewBtn>
         <ViewIcon>
           <ArrowReturn onPress={() => goBack()} width={30} height={30} />
           <ViewAvatar>
-            <Avatar width={40} height={40} />
-            <Text>DcLover17</Text>
+            <Image
+              source={{ uri: MyInfo.avatar }}
+              style={{ width: 40, height: 40, borderRadius: 100 }}
+            />
+            <Text>{MyInfo.pseudo}</Text>
           </ViewAvatar>
         </ViewIcon>
         <LibraryTitle>{MyLibrary}</LibraryTitle>
@@ -118,7 +122,7 @@ export default function MyLibrary({ navigation: { goBack } }) {
           <FlatList
             data={MyLibraryLike}
             horizontal={true}
-            keyExtractor={Item.id}
+            keyExtractor={keyExtractor}
             renderItem={Item}
           />
         </ViewLibrary>
@@ -129,7 +133,7 @@ export default function MyLibrary({ navigation: { goBack } }) {
           <FlatList
             data={MyLibraryRead}
             horizontal={true}
-            keyExtractor={Item.id}
+            keyExtractor={keyExtractor}
             renderItem={Item}
           />
         </ViewLibrary>
@@ -140,7 +144,7 @@ export default function MyLibrary({ navigation: { goBack } }) {
           <FlatList
             data={MyLibraryFinsh}
             horizontal={true}
-            keyExtractor={Item.id}
+            keyExtractor={keyExtractor}
             renderItem={Item}
           />
         </ViewLibrary>

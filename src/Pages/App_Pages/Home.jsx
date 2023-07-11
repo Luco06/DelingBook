@@ -23,7 +23,7 @@ export default function Home({ navigation }) {
         .catch((error) => {
           console.error("Une erreur est survenue", error);
         });
-    }, 3000);
+    }, 1000);
   };
   useEffect(() => {
     userInfo();

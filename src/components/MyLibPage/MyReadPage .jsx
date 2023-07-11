@@ -6,17 +6,19 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import styled from "styled-components/native";
 import ArrowReturn from "../../../assets/Img_Presentation/Shape.svg";
 import Avatar from "../../../assets/Img_Presentation/Avatar.svg";
-import { MyLibraryReadState, BookDetailsState } from "../../recoil";
+import { MyLibraryReadState, BookDetailsState, User } from "../../recoil";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useNavigation } from "@react-navigation/native";
 
 export default function MyReadPage({ navigation: { goBack } }) {
   const MyLibraryRead = useRecoilValue(MyLibraryReadState);
   const setDetailsBook = useSetRecoilState(BookDetailsState);
+  const MyInfo = useRecoilValue(User);
   const navigation = useNavigation();
   console.log("MyLib", MyLibraryRead);
   return (
@@ -24,8 +26,11 @@ export default function MyReadPage({ navigation: { goBack } }) {
       <ViewIcon>
         <ArrowReturn onPress={() => goBack()} width={30} height={30} />
         <ViewAvatar>
-          <Avatar width={40} height={40} />
-          <Text>DcLover17</Text>
+          <Image
+            source={{ uri: MyInfo.avatar }}
+            style={{ width: 40, height: 40, borderRadius: 100 }}
+          />
+          <Text>{MyInfo.pseudo}</Text>
         </ViewAvatar>
       </ViewIcon>
       <TitlePage>En cours</TitlePage>

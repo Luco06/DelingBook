@@ -55,7 +55,10 @@ export default function UserProfil({ navigation: { goBack } }) {
       </ViewBtn>
       <ViewInfoProfile>
         <ViewAvatar>
-          <AvatarUser width={180} height={180} />
+          <Image
+            source={{ uri: InfoOtherUser.avatar }}
+            style={{ width: 150, height: 150, borderRadius: 100 }}
+          />
         </ViewAvatar>
         <ViewDescription>
           <PseudoProfil>{InfoOtherUser.pseudo}</PseudoProfil>
@@ -93,8 +96,8 @@ export default function UserProfil({ navigation: { goBack } }) {
             <Text>Publications</Text>
           </BoxInfoIntStr>
           <BoxInfoIntStr>
-            <Text>{followers}</Text>
-            <Text>Followers</Text>
+            <Text>{InfoOtherUser.friends.length}</Text>
+            <Text>Ami(e)s</Text>
           </BoxInfoIntStr>
           <BoxInfoIntStr>
             <Text>{follow}</Text>

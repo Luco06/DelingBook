@@ -13,13 +13,14 @@ import { SearchBar } from "@rneui/base";
 import API_Key from "../../../Api/ApiKey";
 import { useNavigation } from "@react-navigation/native";
 import { BookListState } from "../../recoil";
-import { BookDetailsState } from "../../recoil";
+import { BookDetailsState, User } from "../../recoil";
 import { useSetRecoilState, useRecoilValue } from "recoil";
 
 export default function SearchBook({ navigation: { goBack } }) {
   const setBookList = useSetRecoilState(BookListState);
   const bookList = useRecoilValue(BookListState);
   const setDetailsBook = useSetRecoilState(BookDetailsState);
+  const MyInfo = useRecoilValue(User);
   const navigation = useNavigation();
   const [query, setQuery] = useState("");
 
@@ -63,7 +64,7 @@ export default function SearchBook({ navigation: { goBack } }) {
     <View style={styles.container}>
       <ViewReturn>
         <ArrowReturn onPress={() => goBack()} width={30} height={30} />
-        <TextViewreturn>DCLover17</TextViewreturn>
+        <TextViewreturn>{MyInfo.pseudo}</TextViewreturn>
       </ViewReturn>
       <SearchBarView>
         <SearchBar
