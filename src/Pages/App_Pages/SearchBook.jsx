@@ -46,7 +46,7 @@ export default function SearchBook({ navigation: { goBack } }) {
           }`,
         }}
       />
-      <Pressable
+      <BntPressable
         onPress={() => (
           setDetailsBook(item.volumeInfo), navigation.navigate("BookDetail")
         )}
@@ -54,9 +54,8 @@ export default function SearchBook({ navigation: { goBack } }) {
         <ViewTextBook>
           <Text>Titre: {item.volumeInfo.title}</Text>
           <Text>Autheur: {item.volumeInfo.authors}</Text>
-          <Text>ID: {item.id}</Text>
         </ViewTextBook>
-      </Pressable>
+      </BntPressable>
     </ViewBook>
   );
 
@@ -125,14 +124,13 @@ const SearchBarView = styled.View`
 const ViewBook = styled.View`
   display: flex;
   flex-direction: row;
-  width: 100%;
   justify-content: space-around;
   align-items: center;
   margin-bottom: 5px;
 `;
 const BookImg = styled.Image`
-  height: 200px;
-  width: 150px;
+  height: 150px;
+  width: 100px;
   border-width: 1px;
   border-color: #efeff3;
   border-radius: 10px;
@@ -142,7 +140,6 @@ const ViewTextBook = styled.View`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 60%;
 `;
 
 const ViewResultBook = styled.View`
@@ -164,4 +161,8 @@ const TextBtn = styled.Text`
   font-size: 20px;
   color: black;
   font-weight: 500;
+`;
+
+const BntPressable = styled.Pressable`
+  width: 65%;
 `;
