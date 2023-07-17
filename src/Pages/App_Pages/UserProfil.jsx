@@ -10,7 +10,6 @@ import {
 import styled from "styled-components";
 import ArrowReturn from "../../../assets/Img_Presentation/Shape.svg";
 import Setting from "../../../assets/Img_Presentation/Fill_1157.svg";
-import AvatarUser from "../../../assets/Img_Presentation/AvatarUser.svg";
 import Like from "../../../assets/Img_Presentation/like.svg";
 import Comment from "../../../assets/Img_Presentation/Comment.svg";
 import Share from "../../../assets/Img_Presentation/Share.svg";
@@ -23,12 +22,10 @@ import { addUser } from "../../../Api/RPC/api";
 
 export default function UserProfil({ navigation: { goBack } }) {
   const [publication, setPublication] = useState(28);
-  const [followers, setFollowwers] = useState(401);
   const [follow, setFollow] = useState(412);
   const InfoOtherUser = useRecoilValue(SearchUserResult);
   const setListAmi = useSetRecoilState(FriendList);
   const ListAmi = useRecoilValue(FriendList);
-  console.log("OtherUser", InfoOtherUser);
 
   const MyTokens = useRecoilValue(MyAuthTokens);
   const token = `Bearer ${MyTokens}`;
@@ -38,7 +35,6 @@ export default function UserProfil({ navigation: { goBack } }) {
     console.log(friendId);
     addUser({ friendId: friendId }, token)
       .then((response) => {
-        console.log(response);
         setListAmi(response);
         alert(`${InfoOtherUser.pseudo} a bien été ajouté`);
       })
@@ -46,7 +42,12 @@ export default function UserProfil({ navigation: { goBack } }) {
         alert("Une erreur s'est produite lors de l'ajout");
       });
   };
-  console.log("Ma liste d'amis", ListAmi);
+  const avatarUserUrl = InfoOtherUser.avatar.replace(
+    "/Users/luc-olivieryohan/Desktop/DB_BackEnd/MangoDB/src/midddlewares",
+    ""
+  );
+  const avatarUrl = `http://192.168.1.23:3000${avatarUserUrl}`;
+  console.log(avatarUrl);
   return (
     <View style={styles.container}>
       <ViewBtn>
@@ -56,7 +57,7 @@ export default function UserProfil({ navigation: { goBack } }) {
       <ViewInfoProfile>
         <ViewAvatar>
           <Image
-            source={{ uri: InfoOtherUser.avatar }}
+            source={{ uri: avatarUrl }}
             style={{ width: 150, height: 150, borderRadius: 100 }}
           />
         </ViewAvatar>

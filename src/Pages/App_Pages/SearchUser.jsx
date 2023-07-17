@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Text,
-  StyleSheet,
-  FlatList,
-  Platform,
-  View,
-  Pressable,
-  Image,
-} from "react-native";
+import { StyleSheet, FlatList, Platform, View, Pressable } from "react-native";
 import styled from "styled-components/native";
 import { SearchBar } from "@rneui/base";
 import ArrowReturn from "../../../assets/Img_Presentation/Shape.svg";
@@ -26,37 +18,30 @@ export default function SearchUser({ navigation: { goBack } }) {
   const MyTokens = useRecoilValue(MyAuthTokens);
   const token = `Bearer ${MyTokens || MyInfo.authToken}`;
 
-  const userItem = ({ item }) => (
-    <ViewUserSearch key={item._id}>
-      <UserImg source={{ uri: item.avatar }} />
-      <Pressable
-        onPress={() => (SetResultInfo(item), navigation.navigate("UserProfil"))}
-      >
-        <UserPseudo>{item.pseudo}</UserPseudo>
-      </Pressable>
-    </ViewUserSearch>
-  );
-  //   const search = (searchTerm) => {
-  //     setUser(searchTerm);
-  //     if (searchTerm.length >= 3) {
-  //       searchUser({ pseudo: searchTerm }, token)
-  //         .then((response) => {
-  //           setFilterUser(response);
-  //           console.log("userFilter", response);
-  //         })
-  //         .catch((error) => {
-  //           console.log(error);
-  //         });
-  //     } else {
-  //       setFilterUser([]);
-  //     }
-  //   };
+  const userItem = ({ item }) => {
+    const avatarUserUrl = item.avatar.replace(
+      "/Users/luc-olivieryohan/Desktop/DB_BackEnd/MangoDB/src/midddlewares",
+      ""
+    );
+    const avatarUrl = `http://192.168.1.23:3000${avatarUserUrl}`;
+    return (
+      <ViewUserSearch key={item._id}>
+        <UserImg source={{ uri: avatarUrl }} />
+        <Pressable
+          onPress={() => (
+            SetResultInfo(item), navigation.navigate("UserProfil")
+          )}
+        >
+          <UserPseudo>{item.pseudo}</UserPseudo>
+        </Pressable>
+      </ViewUserSearch>
+    );
+  };
 
   const search = () => {
     searchUser({ pseudo: user }, token)
       .then((response) => {
         setFilterUser(response);
-        console.log("userFilter", response);
       })
       .catch((error) => {
         console.log(error);
@@ -67,7 +52,6 @@ export default function SearchUser({ navigation: { goBack } }) {
       search();
     }
   }, [user]);
-  console.log(token);
   return (
     <View style={styles.container}>
       <ViewReturn>
@@ -134,12 +118,12 @@ const ViewUserSearch = styled.View`
   display: flex;
   flex-direction: row;
   width: 60%;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
 `;
 const UserImg = styled.Image`
-  height: 200px;
-  width: 200px;
+  height: 100px;
+  width: 100px;
   border-radius: 100px;
 `;
 

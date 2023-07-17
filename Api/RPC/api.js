@@ -1,12 +1,12 @@
 //UserCall Api
 export const userLogin = (payload) => {
-  return fetch("http://192.168.0.20:3000/login", {
+  return fetch("http://192.168.1.23:3000/login", {
     method: "POST",
     headers: {
       "Content-type": "application/json",
       Accept: "application/json",
       "Access-Control-Request-Headers": "*",
-      api_key: "64790224e0c5a553ae57f1d3",
+      // api_key: "64790224e0c5a553ae57f1d3",
     },
     body: JSON.stringify(payload),
   })
@@ -24,7 +24,7 @@ export const userLogin = (payload) => {
 
 export const logoutUser = (token) => {
   return new Promise((resolve, reject) => {
-    fetch("http://192.168.0.20:3000/logout", {
+    fetch("http://192.168.1.23:3000/logout", {
       method: "POST",
       headers: {
         Authorization: token,
@@ -47,12 +47,12 @@ export const logoutUser = (token) => {
 };
 
 export const createUser = (payload) => {
-  return fetch("http://192.168.0.20:3000/users", {
+  return fetch("http://192.168.1.23:3000/users", {
     method: "POST",
     headers: {
       "Content-type": "application/json",
       Accept: "application/json",
-      api_key: "64790224e0c5a553ae57f1d3",
+      // api_key: "64790224e0c5a553ae57f1d3",
     },
     body: JSON.stringify(payload),
   })
@@ -68,18 +68,34 @@ export const createUser = (payload) => {
     });
 };
 export const updateUser = (payload, token) => {
-  return fetch("http://192.168.0.20:3000/users/me", {
+  // if (payload.avatar) {
+  //   payload.append("avatar", payload.avatar, "avatar.jpg");
+  // }
+
+  // const userUpdate = {
+  //   pseudo: payload.pseudo || "",
+  //   email: payload.email || "",
+  //   telephone: payload.telephone || "",
+  //   mdp: payload.mdp || "",
+  // };
+
+  // console.log("Payload", payload);
+  // payload.append("userUpdate", JSON.stringify(userUpdate));
+  // console.log("userUpdate", userUpdate);
+  console.log("Avatar", payload);
+  return fetch("http://192.168.1.23:3000/users/me", {
     method: "PATCH",
     headers: {
-      "Content-type": "application/json",
+      "Content-Type": "multipart/form-data",
       Accept: "application/json",
       Authorization: token,
     },
-    body: JSON.stringify(payload),
+    body: payload,
   })
     .then((res) => {
+      console.log(res);
       if (!res.ok) {
-        throw new Error("Vérifier vos les informations saisie");
+        throw new Error("Vérifier vos les informations saisies");
       }
       return res.json();
     })
@@ -88,8 +104,9 @@ export const updateUser = (payload, token) => {
       throw error;
     });
 };
+
 export const getMyInfo = (token) => {
-  return fetch("http://192.168.0.20:3000/users/me", {
+  return fetch("http://192.168.1.23:3000/users/me", {
     method: "GET",
     headers: {
       "Content-type": "application/json",
@@ -109,7 +126,7 @@ export const getMyInfo = (token) => {
     });
 };
 export const searchUser = (payload, token) => {
-  return fetch("http://192.168.0.20:3000/users/searchuser", {
+  return fetch("http://192.168.1.23:3000/users/searchuser", {
     method: "POST",
     headers: {
       "Content-type": "application/json",
@@ -134,7 +151,7 @@ export const searchUser = (payload, token) => {
 };
 
 export const addUser = (payload, token) => {
-  return fetch("http://192.168.0.20:3000/users/addfriend", {
+  return fetch("http://192.168.1.23:3000/users/addfriend", {
     method: "POST",
     headers: {
       "Content-type": "application/json",
@@ -159,7 +176,7 @@ export const addUser = (payload, token) => {
 };
 //BookApiCall
 export const addBook = (userId, payload, token) => {
-  return fetch(`http://192.168.0.20:3000/addBook/${userId}`, {
+  return fetch(`http://192.168.1.23:3000/addBook/${userId}`, {
     method: "POST",
     headers: {
       "Content-type": "application/json",
@@ -181,7 +198,7 @@ export const addBook = (userId, payload, token) => {
 };
 
 export const getBookInMyLibrary = (userId, tag, token) => {
-  return fetch(`http://192.168.0.20:3000/booksByTag/${userId}/${tag}`, {
+  return fetch(`http://192.168.1.23:3000/booksByTag/${userId}/${tag}`, {
     method: "GET",
     headers: {
       "Content-type": "application/json",
@@ -204,7 +221,7 @@ export const getBookInMyLibrary = (userId, tag, token) => {
 };
 
 export const deleteBookInMyLbrary = (userId, bookId, token) => {
-  return fetch(`http://192.168.0.20:3000/deleteBook/${userId}/${bookId}`, {
+  return fetch(`http://192.168.1.23:3000/deleteBook/${userId}/${bookId}`, {
     method: "DELETE",
     headers: {
       "Content-type": "application/json",

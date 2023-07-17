@@ -46,27 +46,53 @@ export default function UpdateUser({ navigation: { goBack } }) {
       console.log("Impossible d'ajouter une photo");
     }
   };
+
   const MyInfo = useRecoilValue(User);
   const navigation = useNavigation();
-  const userDataUpdate = {
-    avatar: image ? image.trim() : undefined,
-    pseudo: pseudo ? pseudo.trim() : undefined,
-    email: email ? email.trim() : undefined,
-    telephone: telephone ? telephone.trim() : undefined,
-    mdp: mdp ? mdp.trim() : undefined,
-  };
+  // const userDataUpdate = {
+  //   avatar: image ? image.trim() : undefined,
+  //   pseudo: pseudo ? pseudo.trim() : undefined,
+  //   email: email ? email.trim() : undefined,
+  //   telephone: telephone ? telephone.trim() : undefined,
+  //   mdp: mdp ? mdp.trim() : undefined,
+  // };
 
   const update = () => {
-    console.log("Données user", userDataUpdate);
+    const userUpdate = {
+      pseudo: pseudo.trim() || undefined,
+      email: email.trim() || undefined,
+      telephone: telephone.trim() || undefined,
+      mdp: mdp.trim() || undefined,
+    };
 
-    updateUser(userDataUpdate, token)
-      .then((res) => {
-        alert("Votre profil a été mis à jour");
-        navigation.navigate("Home");
-      })
-      .catch((error) => {
-        alert("Votre profil n'a pas pu être mis à jour");
+    const formData = new FormData();
+    if (image) {
+      formData.append("avatar", {
+        uri: image,
+        type: "image/jpeg",
+        name: "avatar.jpg",
       });
+      formData.append("userUpdate", JSON.stringify(userUpdate));
+      console.log("Données user", formData);
+
+      updateUser(formData, token)
+        .then((res) => {
+          alert("Votre profil a été mis à jour");
+          navigation.navigate("Home");
+        })
+        .catch((error) => {
+          alert("Votre profil n'a pas pu être mis à jour");
+        });
+    } else {
+      updateUser(userUpdate, token)
+        .then((res) => {
+          alert("Votre profil a été mis à jour");
+          navigation.navigate("Home");
+        })
+        .catch((error) => {
+          alert("Votre profil n'a pas pu être mis à jour");
+        });
+    }
   };
 
   return (

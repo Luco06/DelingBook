@@ -60,6 +60,15 @@ export default function MyUserProfil({ navigation: { goBack } }) {
         console.error("Une erreur est survenue", error);
       });
   };
+  const avatarUserUrl = MyUser.avatar
+    ? MyUser.avatar.replace(
+        "/Users/luc-olivieryohan/Desktop/DB_BackEnd/MangoDB/src/midddlewares",
+        ""
+      )
+    : null;
+  const baseUrl = "http://192.168.1.23:3000"; // L'URL de base de votre serveur
+  const avatarUrl = avatarUserUrl ? baseUrl + avatarUserUrl : null;
+
   return (
     <View style={styles.container}>
       <ViewBtn>
@@ -70,10 +79,14 @@ export default function MyUserProfil({ navigation: { goBack } }) {
       </ViewBtn>
       <ViewInfoProfile>
         <ViewAvatar>
-          <Image
-            source={{ uri: MyUser.avatar }}
-            style={{ width: 150, height: 150, borderRadius: 100 }}
-          />
+          {avatarUrl ? (
+            <Image
+              source={{ uri: avatarUrl }}
+              style={{ width: 150, height: 150, borderRadius: 100 }}
+            />
+          ) : (
+            <Avatar style={{ width: 150, height: 150 }} />
+          )}
         </ViewAvatar>
         <PseudoProfil>{MyUser.pseudo}</PseudoProfil>
         <Resume>{MyUser.description}</Resume>
