@@ -13,16 +13,18 @@ export default function StepBookGenderChoice1({ navigation }) {
   const [userDescription, setUserDescription] = useState("");
 
   const userUpdate = {
-    description: userDescription.trim(),
-    pseudo: userPseudo.trim(),
+    description: userDescription.trim() || undefined,
+    pseudo: userPseudo.trim() || undefined,
   };
 
   const token = `Bearer ${MyUser.authToken}`;
   const update = () => {
+    const formData = new FormData();
+    formData.append("userUpdate", JSON.stringify(userUpdate));
     console.log("Mon pseudo", userPseudo);
     console.log("Ma description", userDescription);
     console.log("MyUser", MyUser);
-    updateUser(userUpdate, token)
+    updateUser(formData, token)
       .then((res) => {
         navigation.navigate("StepBookGenderChoice3");
       })

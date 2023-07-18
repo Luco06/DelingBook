@@ -16,9 +16,9 @@ import Share from "../../../assets/Img_Presentation/Share.svg";
 import Footer from "./Footer";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { SearchUserResult, FriendList, MyAuthTokens } from "../../recoil";
+import { SearchUserResult, FriendList, MyAuthTokens, User } from "../../recoil";
 import { useNavigation } from "@react-navigation/native";
-import { addUser } from "../../../Api/RPC/api";
+import { addUser, deleteFriend } from "../../../Api/RPC/api";
 
 export default function UserProfil({ navigation: { goBack } }) {
   const [publication, setPublication] = useState(28);
@@ -26,10 +26,15 @@ export default function UserProfil({ navigation: { goBack } }) {
   const InfoOtherUser = useRecoilValue(SearchUserResult);
   const setListAmi = useSetRecoilState(FriendList);
   const ListAmi = useRecoilValue(FriendList);
+  const MyInfo = useRecoilValue(User);
+  const navigation = useNavigation();
 
   const MyTokens = useRecoilValue(MyAuthTokens);
   const token = `Bearer ${MyTokens}`;
   const friendId = InfoOtherUser._id;
+  const isFriend =
+    ListAmi.length > 0 &&
+    ListAmi.some((friend) => friend.i_d === InfoOtherUser._i);
 
   const ajoutAmi = () => {
     console.log(friendId);
@@ -37,17 +42,33 @@ export default function UserProfil({ navigation: { goBack } }) {
       .then((response) => {
         setListAmi(response);
         alert(`${InfoOtherUser.pseudo} a bien été ajouté`);
+        navigation.navigate("SearchUser");
       })
       .catch((error) => {
+        console.error("Une erreur s'est produite lors de l'ajout :", error);
         alert("Une erreur s'est produite lors de l'ajout");
+      });
+  };
+  const suppAmi = () => {
+    deleteFriend(MyInfo._id, InfoOtherUser._id, token)
+      .then((res) => {
+        alert("Cette utilisateur a bien été supprimer de votre liste d'ami");
+        navigation.navigate("SearchUser");
+      })
+      .catch((error) => {
+        console.error(
+          "Une erreur s'est produite lors dela suppression :",
+          error
+        );
+        alert("Une erreur s'est produite lors de l suppression");
       });
   };
   const avatarUserUrl = InfoOtherUser.avatar.replace(
     "/Users/luc-olivieryohan/Desktop/DB_BackEnd/MangoDB/src/midddlewares",
     ""
   );
-  const avatarUrl = `http://192.168.1.23:3000${avatarUserUrl}`;
-  console.log(avatarUrl);
+  const avatarUrl = `http://192.168.0.20:3000${avatarUserUrl}`;
+  console.log();
   return (
     <View style={styles.container}>
       <ViewBtn>
@@ -66,18 +87,44 @@ export default function UserProfil({ navigation: { goBack } }) {
           <Resume>{InfoOtherUser.description}</Resume>
         </ViewDescription>
         <ViewFollow>
-          <Pressable style={styles.BtnPrez} onPress={() => ajoutAmi()}>
-            <LinearGradient
-              style={{
-                borderRadius: 15,
-                height: 30,
-                width: 120,
-              }}
-              colors={["rgba(40, 125, 192, 0.8)", "rgba(19, 164, 132, 0.8)"]}
-            >
-              <TextFollow>Ajouter</TextFollow>
-            </LinearGradient>
-          </Pressable>
+          {isFriend ? (
+            <View>
+              <Pressable style={styles.BtnPrez} onPress={() => suppAmi()}>
+                <LinearGradient
+                  style={{
+                    borderRadius: 15,
+                    height: 30,
+                    width: 120,
+                  }}
+                  colors={[
+                    "rgba(40, 125, 192, 0.8)",
+                    "rgba(19, 164, 132, 0.8)",
+                  ]}
+                >
+                  <TextFollow>Supprimer</TextFollow>
+                </LinearGradient>
+              </Pressable>
+            </View>
+          ) : (
+            <View>
+              <Pressable style={styles.BtnPrez} onPress={() => ajoutAmi()}>
+                <LinearGradient
+                  style={{
+                    borderRadius: 15,
+                    height: 30,
+                    width: 120,
+                  }}
+                  colors={[
+                    "rgba(40, 125, 192, 0.8)",
+                    "rgba(19, 164, 132, 0.8)",
+                  ]}
+                >
+                  <TextFollow>Ajouter</TextFollow>
+                </LinearGradient>
+              </Pressable>
+            </View>
+          )}
+
           <Pressable style={styles.BtnPrez}>
             <LinearGradient
               style={{

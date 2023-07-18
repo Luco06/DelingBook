@@ -66,7 +66,7 @@ export default function MyUserProfil({ navigation: { goBack } }) {
         ""
       )
     : null;
-  const baseUrl = "http://192.168.1.23:3000"; // L'URL de base de votre serveur
+  const baseUrl = "http://192.168.0.20:3000"; // L'URL de base de votre serveur
   const avatarUrl = avatarUserUrl ? baseUrl + avatarUserUrl : null;
 
   return (

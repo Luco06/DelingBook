@@ -38,12 +38,12 @@ export default function BookDetail({ navigation: { goBack } }) {
   const MyLibraryLike = useRecoilValue(MyLibraryLikeState);
   const MyLibraryFinsh = useRecoilValue(MyLibraryFinishState);
   const MyLibraryRead = useRecoilValue(MyLibraryReadState);
-  const MyUserId = useRecoilValue(MyId);
   const MyTokens = useRecoilValue(MyAuthTokens);
   const ClearLikeList = useResetRecoilState(MyLibraryLikeState);
   const ClearReadList = useResetRecoilState(MyLibraryReadState);
   const ClearFinish = useResetRecoilState(MyLibraryFinishState);
   const MyInfo = useRecoilValue(User);
+  const MyUserId = MyInfo._id;
   const date = Date.parse(bookDetails.publishedDate);
   const dateConvert = new Date(date);
   const dateString =
@@ -155,11 +155,11 @@ export default function BookDetail({ navigation: { goBack } }) {
 
     addBook(MyUserId, bookDetailEnvie, token)
       .then((res) => {
-        console.log("Livre ajouté avec succès", res);
+        alert("Livre ajouté avec succès");
         ClearReadList();
       })
       .catch((error) => {
-        console.log(MyUserId);
+        console.log("MyId", MyUserId);
         console.log(bookDetailEnvie);
         console.log(token);
         console.log(
