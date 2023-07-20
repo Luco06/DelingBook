@@ -32,12 +32,6 @@ import { addBook } from "../../Api/RPC/api";
 export default function BookDetail({ navigation: { goBack } }) {
   const navigation = useNavigation();
   const bookDetails = useRecoilValue(BookDetailsState);
-  const setMyLibraryLike = useSetRecoilState(MyLibraryLikeState);
-  const setMyLibraryRead = useSetRecoilState(MyLibraryReadState);
-  const setMyLibraryFinsh = useSetRecoilState(MyLibraryFinishState);
-  const MyLibraryLike = useRecoilValue(MyLibraryLikeState);
-  const MyLibraryFinsh = useRecoilValue(MyLibraryFinishState);
-  const MyLibraryRead = useRecoilValue(MyLibraryReadState);
   const MyTokens = useRecoilValue(MyAuthTokens);
   const ClearLikeList = useResetRecoilState(MyLibraryLikeState);
   const ClearReadList = useResetRecoilState(MyLibraryReadState);
@@ -105,7 +99,7 @@ export default function BookDetail({ navigation: { goBack } }) {
         auteur2: bookDetails.authors[1],
       },
       genre: bookDetails.categories ? bookDetails.categories.join() : "néant",
-      pages: bookDetails.pageCount ? bookDetails.pages : "néant",
+      pages: bookDetails.pageCount,
       date: dateString,
       description: bookDetails.description,
       image:

@@ -49,10 +49,10 @@ export default function BookDetailLike({ navigation: { goBack } }) {
         <ArrowReturn onPress={() => goBack()} width={30} height={30} />
         <ViewAvatar>
           <Image
-            source={{ uri: MyInfo.avatar }}
+            source={{ uri: Myinfo.avatar }}
             style={{ width: 40, height: 40, borderRadius: 100 }}
           />
-          <Text>{MyInfo.pseudo}</Text>
+          <Text>{Myinfo.pseudo}</Text>
         </ViewAvatar>
       </ViewIcon>
       <ViewBook>

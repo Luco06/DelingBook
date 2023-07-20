@@ -178,8 +178,8 @@ const ViewUserSearch = styled.View`
   margin-bottom: 10px;
 `;
 const UserImg = styled.Image`
-  height: 100px;
-  width: 100px;
+  height: 80px;
+  width: 80px;
   border-radius: 100px;
 `;
 

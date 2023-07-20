@@ -14,14 +14,11 @@ import { logoutUser } from "../../../Api/RPC/api";
 import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import { MyAuthTokens, User } from "../../recoil";
 import { getMyInfo } from "../../../Api/RPC/api";
+import ArrowReturn from "../../../assets/Img_Presentation/Shape.svg";
 
 export default function MyUserProfil({ navigation: { goBack } }) {
   const navigation = useNavigation();
-  const [pseudo, setPseudo] = useState("DCLover17");
-  const [resume, setResume] = useState("ComicBook forever !!!👌👌");
   const [publication, setPublication] = useState(34);
-  const [followers, setFollowwers] = useState(350);
-  const [follow, setFollow] = useState(330);
   const [isVisible, setIsVisible] = useState(false);
   const MyUser = useRecoilValue(User);
   const setMyUser = useSetRecoilState(User);
@@ -72,7 +69,9 @@ export default function MyUserProfil({ navigation: { goBack } }) {
   return (
     <View style={styles.container}>
       <ViewBtn>
-        <ViewIcon></ViewIcon>
+        <ViewIcon>
+          <ArrowReturn onPress={() => goBack()} width={30} height={30} />
+        </ViewIcon>
         <ViewIcon>
           <Setting onPress={() => setIsVisible(true)} width={30} height={30} />
         </ViewIcon>
@@ -98,10 +97,6 @@ export default function MyUserProfil({ navigation: { goBack } }) {
           <BoxInfoIntStr>
             <Text>{MyUser.friends.length}</Text>
             <Text>Ami(e)s</Text>
-          </BoxInfoIntStr>
-          <BoxInfoIntStr>
-            <Text>{follow}</Text>
-            <Text>Suivi(e)s</Text>
           </BoxInfoIntStr>
         </BoxInfo>
         <View style={{ overflow: "hidden", paddingBottom: 5 }}>

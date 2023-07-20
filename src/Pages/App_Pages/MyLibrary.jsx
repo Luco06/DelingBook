@@ -3,7 +3,6 @@ import { Platform, View } from "react-native";
 import { Text, StyleSheet, FlatList, Image } from "react-native";
 import styled from "styled-components";
 import ArrowReturn from "../../../assets/Img_Presentation/Shape.svg";
-import Avatar from "../../../assets/Img_Presentation/Avatar.svg";
 import Share from "../../../assets/Img_Presentation/Share.svg";
 import Pencil from "../../../assets/Img_Presentation/pencil.svg";
 import Footer from "./Footer";
@@ -12,72 +11,18 @@ import {
   MyLibraryLikeState,
   MyLibraryFinishState,
   MyLibraryReadState,
-  MyAuthTokens,
   User,
 } from "../../recoil";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { getBookInMyLibrary } from "../../../Api/RPC/api";
+import { useRecoilValue } from "recoil";
+
 export default function MyLibrary({ navigation: { goBack } }) {
   const [MyLibrary, setMyLibrary] = useState("MyBookSpace");
-
-  const setMyLibraryLike = useSetRecoilState(MyLibraryLikeState);
-  const setMyLibraryRead = useSetRecoilState(MyLibraryReadState);
-  const setMyLibraryFinsh = useSetRecoilState(MyLibraryFinishState);
   const MyLibraryLike = useRecoilValue(MyLibraryLikeState);
   const MyLibraryFinsh = useRecoilValue(MyLibraryFinishState);
   const MyLibraryRead = useRecoilValue(MyLibraryReadState);
-  const MyTokens = useRecoilValue(MyAuthTokens);
   const MyInfo = useRecoilValue(User);
   const navigation = useNavigation();
-  const myId = MyInfo._id;
 
-  const token = `Bearer ${MyTokens}`;
-
-  const getMyLikeBook = () => {
-    getBookInMyLibrary(myId, "mesenvies", token)
-      .then((res) => {
-        setMyLibraryLike(res.books);
-        console.log("MyBookLike", MyLibraryLike);
-      })
-      .catch((error) => {
-        console.error(
-          "Une erreur s'est produite lors de la récupération des livres likés :",
-          error
-        );
-      });
-  };
-  const getMyProgressBook = () => {
-    getBookInMyLibrary(myId, "encours", token)
-      .then((res) => {
-        setMyLibraryRead(res.books);
-        console.log("MyBookReadingProgress", MyLibraryRead);
-      })
-      .catch((error) => {
-        console.error(
-          "Une erreur s'est produite lors de la récupération des livres likés :",
-          error
-        );
-      });
-  };
-  const getMyFinishBook = () => {
-    getBookInMyLibrary(myId, "dejalu", token)
-      .then((res) => {
-        setMyLibraryFinsh(res.books);
-        console.log("MyBookFinish", MyLibraryFinsh.books, "BobyFeeal");
-      })
-      .catch((error) => {
-        console.error(
-          "Une erreur s'est produite lors de la récupération des livres likés :",
-          error
-        );
-      });
-  };
-
-  useEffect(() => {
-    getMyLikeBook();
-    getMyProgressBook();
-    getMyFinishBook();
-  }, []);
   const Item = ({ item }) => (
     <ViewChoiceBook key={item._id}>
       <ViexTextFlat>

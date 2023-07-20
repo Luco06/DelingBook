@@ -34,7 +34,7 @@ export default function UserProfil({ navigation: { goBack } }) {
   const friendId = InfoOtherUser._id;
   const isFriend =
     ListAmi.length > 0 &&
-    ListAmi.some((friend) => friend.i_d === InfoOtherUser._i);
+    ListAmi.some((friend) => friend._id === InfoOtherUser._id);
 
   const ajoutAmi = () => {
     console.log(friendId);
@@ -73,7 +73,6 @@ export default function UserProfil({ navigation: { goBack } }) {
     <View style={styles.container}>
       <ViewBtn>
         <ArrowReturn onPress={() => goBack()} width={30} height={30} />
-        <Setting onPress={() => setIsVisible(true)} width={30} height={30} />
       </ViewBtn>
       <ViewInfoProfile>
         <ViewAvatar>
@@ -146,10 +145,6 @@ export default function UserProfil({ navigation: { goBack } }) {
           <BoxInfoIntStr>
             <Text>{InfoOtherUser.friends.length}</Text>
             <Text>Ami(e)s</Text>
-          </BoxInfoIntStr>
-          <BoxInfoIntStr>
-            <Text>{follow}</Text>
-            <Text>Suivi(e)s</Text>
           </BoxInfoIntStr>
         </BoxInfo>
         <View style={{ overflow: "hidden", paddingBottom: 5 }}>
