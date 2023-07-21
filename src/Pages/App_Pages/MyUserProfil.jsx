@@ -15,6 +15,7 @@ import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import { MyAuthTokens, User } from "../../recoil";
 import { getMyInfo } from "../../../Api/RPC/api";
 import ArrowReturn from "../../../assets/Img_Presentation/Shape.svg";
+import MyPublications from "../../components/MyPublications";
 
 export default function MyUserProfil({ navigation: { goBack } }) {
   const navigation = useNavigation();
@@ -66,6 +67,7 @@ export default function MyUserProfil({ navigation: { goBack } }) {
   const baseUrl = "http://192.168.0.20:3000"; // L'URL de base de votre serveur
   const avatarUrl = avatarUserUrl ? baseUrl + avatarUserUrl : null;
 
+  console.log("user", MyUser);
   return (
     <View style={styles.container}>
       <ViewBtn>
@@ -91,7 +93,7 @@ export default function MyUserProfil({ navigation: { goBack } }) {
         <Resume>{MyUser.description}</Resume>
         <BoxInfo>
           <BoxInfoIntStr>
-            <Text>{publication}</Text>
+            <Text>{MyUser.publications.length}</Text>
             <Text>Publications</Text>
           </BoxInfoIntStr>
           <BoxInfoIntStr>
@@ -99,7 +101,7 @@ export default function MyUserProfil({ navigation: { goBack } }) {
             <Text>Ami(e)s</Text>
           </BoxInfoIntStr>
         </BoxInfo>
-        <View style={{ overflow: "hidden", paddingBottom: 5 }}>
+        {/* <View style={{ overflow: "hidden", paddingBottom: 5 }}>
           <View style={styles.shadow}>
             <Resume>{MyUser.pseudo}</Resume>
             <Image
@@ -125,7 +127,8 @@ export default function MyUserProfil({ navigation: { goBack } }) {
               </BoxIconPublication>
             </ViewIconPublication>
           </View>
-        </View>
+        </View> */}
+        <MyPublications />
       </ViewInfoProfile>
       <BottomSheet modalProps={{}} isVisible={isVisible}>
         {list.map((l, i) => (

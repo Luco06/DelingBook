@@ -30,6 +30,7 @@ import Chat from "../components/Chat";
 import SearchUser from "../Pages/App_Pages/SearchUser";
 import UserProfil from "../Pages/App_Pages/UserProfil";
 import UpdateUser from "../components/UpdateUser";
+import ModalShareBook from "../components/ModalShareBook";
 
 const Nav = () => {
   const Stack = createNativeStackNavigator();
@@ -93,6 +94,7 @@ const Nav = () => {
             <Stack.Screen name="SearchUser" component={SearchUser} />
             <Stack.Screen name="UserProfil" component={UserProfil} />
             <Stack.Screen name="UpdateUser" component={UpdateUser} />
+            <Stack.Screen name="ModalShareBook" component={ModalShareBook} />
           </>
         )}
       </Stack.Navigator>

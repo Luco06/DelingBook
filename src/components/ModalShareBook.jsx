@@ -1,39 +1,29 @@
 import React, { useEffect, useState } from "react";
 import {
-  ScrollView,
-  StyleSheet,
   FlatList,
-  Platform,
-  View,
   Text,
-  Button,
   TextInput,
   Pressable,
-  Image,
   Modal,
+  StyleSheet,
 } from "react-native";
 import styled from "styled-components";
-import Footer from "./Footer";
-import Story from "../../../Api/Mock/Story";
-import BoxPost from "../../components/BoxPost";
-import { getMyInfo, getBookInMyLibrary } from "../../../Api/RPC/api";
+import { getBookInMyLibrary } from "../../Api/RPC/api";
 import {
-  MyAuthTokens,
   User,
   MyLibraryLikeState,
   MyLibraryFinishState,
   MyLibraryReadState,
-} from "../../recoil";
+  MyAuthTokens,
+} from "../recoil";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { FloatingAction } from "react-native-floating-action";
 import { LinearGradient } from "expo-linear-gradient";
-import Avatar from "../../../assets/Img_Presentation/Avatar.svg";
+import Avatar from "../../assets/Img_Presentation/Avatar.svg";
+import { SearchBar } from "@rneui/base";
+import { updateUser } from "../../Api/RPC/api";
 
-export default function Home({ navigation }) {
+export default function ModalShareBook({ navigation }) {
   const [modalShareBookVisible, setShareBookVisible] = useState(false);
-  const [modalShareMessageVisible, setModalShareMessageVisible] =
-    useState(false);
-
   const setMyInfo = useSetRecoilState(User);
   const MyInfo = useRecoilValue(User);
   const MyToken = useRecoilValue(MyAuthTokens);
@@ -45,17 +35,39 @@ export default function Home({ navigation }) {
   const MyLibraryFinsh = useRecoilValue(MyLibraryFinishState);
   const MyLibraryRead = useRecoilValue(MyLibraryReadState);
   const [allBook, setAllBook] = useState([]);
-  const [publication, setPublication] = useState({
-    img: "",
-    text: "",
-  });
-  const userInfo = () => {
-    getMyInfo(token)
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [publiImg, setPubliImg] = useState("");
+  const [publiTxt, setPubliTxt] = useState("");
+
+  const update = () => {
+    const formData = new FormData();
+
+    // Create a new publication object with the provided data
+    const newPublication = {
+      img: publiImg.trim() || undefined,
+      txt: publiTxt.trim() || undefined,
+    };
+
+    // Push the new publication to the current publications array
+    const currentPublications = [...MyInfo.publications]; // Make a copy of the current publications
+    currentPublications.push(newPublication);
+
+    // Create the userUpdate object with the updated publications
+    const userUpdate = {
+      publications: currentPublications,
+    };
+
+    // Append the userUpdate object to the formData
+    formData.append("userUpdate", JSON.stringify(userUpdate));
+
+    // Send the updated data to the server
+    updateUser(formData, token)
       .then((res) => {
-        setMyInfo(res);
+        console.log("u^date", res);
       })
       .catch((error) => {
-        console.error("Une erreur est survenue", error);
+        console.log(error);
       });
   };
 
@@ -114,97 +126,125 @@ export default function Home({ navigation }) {
     setAllBook(Array.from(livresUniques));
   };
   const flattenAllBooks = allBook.flat();
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    if (query.length >= 3) {
+      // Effectuer la recherche en filtrant les livres
+      const filteredBooks = flattenAllBooks.filter((book) => {
+        const title = book.titre.toLowerCase();
+        return title.includes(query.toLowerCase());
+      });
+      setSearchResults(filteredBooks);
+    } else {
+      setSearchResults([]);
+    }
+  };
+  const toggleBookModal = () => {
+    setShareBookVisible((prevState) => !prevState);
+  };
+  const closeModal = () => {
+    setShareBookVisible((prevState) => !prevState);
+    update();
+    navigation.navigate("Home");
+  };
   useEffect(() => {
-    userInfo();
+    toggleBookModal();
     getMyLikeBook();
     getMyProgressBook();
     getMyFinishBook();
-    // myAllBook();
-  }, []);
-  const Item = ({ item }) => (
-    <BoxStory key={item.id}>
-      <ImgStory source={item.img} />
-      <TextStroy>{item.pseudo}</TextStroy>
-    </BoxStory>
-  );
-  const actions = [
-    {
-      text: "Publier un livre",
-      icon: require("../../../assets/Img_Presentation/text.book.closed.png"),
-      name: "bt_sharebook",
-      position: 1,
-      color: "#454545",
-    },
-    {
-      text: "Publier un message",
-      icon: require("../../../assets/Img_Presentation/ellipsis.bubble.png"),
-      name: "bt_sharemessage",
-      position: 2,
-      color: "#454545",
-    },
-  ];
-  const handleActionPress = (name) => {
-    switch (name) {
-      case "bt_sharebook":
-        toggleBookModal(); // Ouvre la modal de partage de livre
-        break;
-      case "bt_sharemessage":
-        toggleMessageModal(); // Ouvre la modal de partage de message
-        break;
-      default:
-        break;
-    }
     myAllBook();
-  };
+  }, []);
 
-  const toggleBookModal = () => {
-    // setShareBookVisible((prevState) => !prevState);
-    navigation.navigate("ModalShareBook");
+  useEffect;
+  const avatarUserUrl = MyInfo.avatar
+    ? MyInfo.avatar.replace(
+        "/Users/luc-olivieryohan/Desktop/DB_BackEnd/MangoDB/src/midddlewares",
+        ""
+      )
+    : null;
+  const baseUrl = "http://192.168.0.20:3000"; // L'URL de base de votre serveur
+  const avatarUrl = avatarUserUrl ? baseUrl + avatarUserUrl : null;
+  const handleImageSelection = (selectImage) => {
+    setPubliImg(selectImage);
   };
-
-  const toggleMessageModal = () => {
-    setModalShareMessageVisible((prevState) => !prevState);
-  };
-
-  function ModalShareMessage() {
+  const BookItem = ({ item }) => {
     return (
-      <Modal visible={modalShareMessageVisible}>
-        <View style={{ flex: 1 }}>
-          <Text>ModalShareMessage</Text>
-          <Button title="fermer la modal" onPress={toggleMessageModal} />
-        </View>
-      </Modal>
+      <ViewUserSearch key={item._id}>
+        <BookImg
+          source={{
+            uri: `${item.image ?? require("../../assets/ImgNotFound.png")}`,
+          }}
+        />
+        <BntPressable onPress={() => handleImageSelection(item.image)}>
+          <ViewTextBook>
+            <Text>Titre: {item.titre}</Text>
+          </ViewTextBook>
+        </BntPressable>
+      </ViewUserSearch>
     );
-  }
-
+  };
   return (
-    <View style={styles.container}>
-      <ViewTitle>
-        <TitleHomePage>DelingBook</TitleHomePage>
-      </ViewTitle>
-      <ViewStory>
-        <FlatList
-          data={Story}
-          horizontal={true}
-          keyExtractor={Item.id}
-          renderItem={Item}
-        />
-      </ViewStory>
-      <View style={{ flex: 3.5 }}>
-        <ScrollView style={styles.contentContainer}>
-          <BoxPost />
-        </ScrollView>
-        <FloatingAction
-          actions={actions}
-          onPressItem={handleActionPress}
-          overlayColor="rgba(255, 255, 255, 0.4)"
-          color="#454545"
-        />
-      </View>
+    <Modal animationType="slide" visible={modalShareBookVisible}>
+      <ViewModal>
+        <ViewSearchBar>
+          <Text>Recherche parmis vos livres</Text>
+          <SearchBar
+            placeholder="Recherche"
+            platform={"ios"}
+            showCancel
+            leftIcon={{ type: "font-awesome", name: "magnifying-glass" }}
+            value={searchQuery}
+            onChangeText={handleSearch}
+          />
+        </ViewSearchBar>
+        <ViewResultSearch>
+          <Text style={{ textAlign: "center", fontSize: 20 }}>Vos livres</Text>
+          <FlatList
+            data={searchResults}
+            keyExtractor={(item) => item._id}
+            renderItem={BookItem}
+          />
+        </ViewResultSearch>
+        <ViewTextShare>
+          <TextInput
+            style={styles.input}
+            placeholder="Quoi de neuf?"
+            multiline={true}
+            onChangeText={(publiTxt) => setPubliTxt(publiTxt)}
+            value={publiTxt}
+          />
+        </ViewTextShare>
+        <Preview>
+          <ViewPseudo>
+            {avatarUrl ? (
+              <ImgPseudo source={{ uri: avatarUrl }} />
+            ) : (
+              <Avatar style={{ width: 25, height: 25, borderRadius: 100 }} />
+            )}
 
-      <Footer />
-      <ModalShareMessage />
-    </View>
+            <Resume>{MyInfo.pseudo}</Resume>
+          </ViewPseudo>
+          {publiImg ? (
+            <ImgPost source={{ uri: publiImg }} />
+          ) : (
+            <ImgPost source={require("../../assets/ImgNotFound.png")} />
+          )}
+          <Text>{publiTxt}</Text>
+        </Preview>
+        <Pressable style={styles.BtnPrez} onPress={closeModal}>
+          <LinearGradient
+            style={{
+              borderRadius: 15,
+              height: 30,
+              width: 120,
+            }}
+            colors={["rgba(40, 125, 192, 0.8)", "rgba(19, 164, 132, 0.8)"]}
+          >
+            <TextBtn>Publier</TextBtn>
+          </LinearGradient>
+        </Pressable>
+      </ViewModal>
+    </Modal>
   );
 }
 const styles = StyleSheet.create({
@@ -256,42 +296,6 @@ const styles = StyleSheet.create({
     margin: 20,
   },
 });
-const ViewTitle = styled.View`
-  display: flex;
-  justify-content: flex-start;
-  width: 90%;
-`;
-const TitleHomePage = styled.Text`
-  font-size: 20px;
-  font-weight: bold;
-`;
-const BoxStory = styled.View`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-const ViewStory = styled.View`
-  flex: 0.5;
-`;
-const ImgStory = styled.Image`
-  margin: 15px;
-  margin-top: 10px;
-  width: 50px;
-  height: 50px;
-`;
-const TextStroy = styled.Text`
-  font-size: 10px;
-  font-weight: 600;
-`;
-
-const ViewModal = styled.View`
-  display: flex;
-  background-color: white;
-  flex: 1;
-  padding: 5px;
-  border-radius: 10px;
-`;
-
 const ViewResultSearch = styled.View`
   flex: 2;
 `;
@@ -366,4 +370,20 @@ const ImgPost = styled.Image`
 
 const BntPressable = styled.Pressable`
   width: 65%;
+`;
+
+const ViewModal = styled.View`
+  display: flex;
+  background-color: white;
+  flex: 1;
+  padding: 5px;
+  border-radius: 10px;
+`;
+const ViewSearchBar = styled.View`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  margin: auto;
+  border-bottom-width: 0.5px;
 `;

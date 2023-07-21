@@ -59,3 +59,13 @@ export const FriendList = atom({
   key: "ListeAmi",
   default: [],
 });
+
+export const MyPublication = atom({
+  key: "MyPublication",
+  default: [],
+});
+
+export const AllPublications = atom({
+  key: "Allpublication",
+  default: [],
+});
