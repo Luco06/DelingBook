@@ -101,33 +101,6 @@ export default function MyUserProfil({ navigation: { goBack } }) {
             <Text>Ami(e)s</Text>
           </BoxInfoIntStr>
         </BoxInfo>
-        {/* <View style={{ overflow: "hidden", paddingBottom: 5 }}>
-          <View style={styles.shadow}>
-            <Resume>{MyUser.pseudo}</Resume>
-            <Image
-              style={{ height: 130, width: 90, alignSelf: "center", margin: 5 }}
-              source={require("../../../assets/Img_Presentation/tokyo.png")}
-            />
-            <Text>
-              Comic indépendant à dévorer dans les plus bref delais
-              !!#Tokyogosth
-            </Text>
-            <ViewIconPublication>
-              <BoxIconPublication>
-                <Like width={18} height={18} />
-                <TextIcon>120</TextIcon>
-              </BoxIconPublication>
-              <BoxIconPublication>
-                <Comment width={18} height={18} />
-                <TextIcon>66</TextIcon>
-              </BoxIconPublication>
-              <BoxIconPublication>
-                <Share width={18} height={18} />
-                <TextIcon>15</TextIcon>
-              </BoxIconPublication>
-            </ViewIconPublication>
-          </View>
-        </View> */}
         <MyPublications />
       </ViewInfoProfile>
       <BottomSheet modalProps={{}} isVisible={isVisible}>

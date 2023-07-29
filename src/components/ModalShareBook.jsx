@@ -19,8 +19,9 @@ import {
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { LinearGradient } from "expo-linear-gradient";
 import Avatar from "../../assets/Img_Presentation/Avatar.svg";
+import Cross from "../../assets/Img_Presentation/xmark.svg";
 import { SearchBar } from "@rneui/base";
-import { updateUser } from "../../Api/RPC/api";
+import { updateUser, getMyInfo } from "../../Api/RPC/api";
 
 export default function ModalShareBook({ navigation }) {
   const [modalShareBookVisible, setShareBookVisible] = useState(false);
@@ -40,6 +41,29 @@ export default function ModalShareBook({ navigation }) {
   const [publiImg, setPubliImg] = useState("");
   const [publiTxt, setPubliTxt] = useState("");
 
+  const avatarUserUrl = MyInfo.avatar
+    ? MyInfo.avatar.replace(
+        "/Users/luc-olivieryohan/Desktop/DB_BackEnd/MangoDB/src/midddlewares",
+        ""
+      )
+    : null;
+  const baseUrl = "http://192.168.0.20:3000"; // L'URL de base de votre serveur
+  const avatarUrl = avatarUserUrl ? baseUrl + avatarUserUrl : null;
+  const handleImageSelection = (selectImage) => {
+    setPubliImg(selectImage);
+  };
+  const userInfo = () => {
+    // setInterval(() => {
+    getMyInfo(token)
+      .then((res) => {
+        setMyInfo(res);
+      })
+      .catch((error) => {
+        console.error("Une erreur est survenue", error);
+      });
+    // }, 1000);
+  };
+
   const update = () => {
     const formData = new FormData();
 
@@ -47,6 +71,9 @@ export default function ModalShareBook({ navigation }) {
     const newPublication = {
       img: publiImg.trim() || undefined,
       txt: publiTxt.trim() || undefined,
+      pseudo: MyInfo.pseudo,
+      avatar: MyInfo.avatar,
+      date: new Date(),
     };
 
     // Push the new publication to the current publications array
@@ -64,7 +91,7 @@ export default function ModalShareBook({ navigation }) {
     // Send the updated data to the server
     updateUser(formData, token)
       .then((res) => {
-        console.log("u^date", res);
+        console.log("InfoUpdate", res);
       })
       .catch((error) => {
         console.log(error);
@@ -142,9 +169,14 @@ export default function ModalShareBook({ navigation }) {
   const toggleBookModal = () => {
     setShareBookVisible((prevState) => !prevState);
   };
-  const closeModal = () => {
+  const sendAndCloseModal = () => {
     setShareBookVisible((prevState) => !prevState);
     update();
+    userInfo();
+    navigation.navigate("Home");
+  };
+  const closeModal = () => {
+    setShareBookVisible((prevState) => !prevState);
     navigation.navigate("Home");
   };
   useEffect(() => {
@@ -155,18 +187,6 @@ export default function ModalShareBook({ navigation }) {
     myAllBook();
   }, []);
 
-  useEffect;
-  const avatarUserUrl = MyInfo.avatar
-    ? MyInfo.avatar.replace(
-        "/Users/luc-olivieryohan/Desktop/DB_BackEnd/MangoDB/src/midddlewares",
-        ""
-      )
-    : null;
-  const baseUrl = "http://192.168.0.20:3000"; // L'URL de base de votre serveur
-  const avatarUrl = avatarUserUrl ? baseUrl + avatarUserUrl : null;
-  const handleImageSelection = (selectImage) => {
-    setPubliImg(selectImage);
-  };
   const BookItem = ({ item }) => {
     return (
       <ViewUserSearch key={item._id}>
@@ -186,6 +206,12 @@ export default function ModalShareBook({ navigation }) {
   return (
     <Modal animationType="slide" visible={modalShareBookVisible}>
       <ViewModal>
+        <CrossPressable onPress={closeModal}>
+          <ViewCross>
+            <Cross width={20} height={20} />
+          </ViewCross>
+        </CrossPressable>
+
         <ViewSearchBar>
           <Text>Recherche parmis vos livres</Text>
           <SearchBar
@@ -231,7 +257,7 @@ export default function ModalShareBook({ navigation }) {
           )}
           <Text>{publiTxt}</Text>
         </Preview>
-        <Pressable style={styles.BtnPrez} onPress={closeModal}>
+        <Pressable style={styles.BtnPrez} onPress={sendAndCloseModal}>
           <LinearGradient
             style={{
               borderRadius: 15,
@@ -297,7 +323,7 @@ const styles = StyleSheet.create({
   },
 });
 const ViewResultSearch = styled.View`
-  flex: 2;
+  flex: 1.7;
 `;
 const ViewTextShare = styled.View`
   justify-content: flex-start;
@@ -383,7 +409,20 @@ const ViewSearchBar = styled.View`
   display: flex;
   justify-content: center;
   align-items: center;
-  flex: 1;
+  flex: 0.7;
   margin: auto;
   border-bottom-width: 0.5px;
+`;
+
+const ViewCross = styled.View`
+  justify-content: flex-end;
+  align-items: flex-end;
+  width: 90%;
+  display: flex;
+  float: right;
+`;
+
+const CrossPressable = styled.Pressable`
+  flex: 0.2;
+  margin: 5px;
 `;

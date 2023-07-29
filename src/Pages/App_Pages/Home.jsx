@@ -16,13 +16,18 @@ import styled from "styled-components";
 import Footer from "./Footer";
 import Story from "../../../Api/Mock/Story";
 import BoxPost from "../../components/BoxPost";
-import { getMyInfo, getBookInMyLibrary } from "../../../Api/RPC/api";
+import {
+  getMyInfo,
+  getBookInMyLibrary,
+  getFriendList,
+} from "../../../Api/RPC/api";
 import {
   MyAuthTokens,
   User,
   MyLibraryLikeState,
   MyLibraryFinishState,
   MyLibraryReadState,
+  FriendList,
 } from "../../recoil";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { FloatingAction } from "react-native-floating-action";
@@ -44,12 +49,12 @@ export default function Home({ navigation }) {
   const MyLibraryLike = useRecoilValue(MyLibraryLikeState);
   const MyLibraryFinsh = useRecoilValue(MyLibraryFinishState);
   const MyLibraryRead = useRecoilValue(MyLibraryReadState);
+  const setListAmi = useSetRecoilState(FriendList);
+  const ListAmi = useRecoilValue(FriendList);
   const [allBook, setAllBook] = useState([]);
-  const [publication, setPublication] = useState({
-    img: "",
-    text: "",
-  });
+
   const userInfo = () => {
+    // setInterval(() => {
     getMyInfo(token)
       .then((res) => {
         setMyInfo(res);
@@ -57,52 +62,69 @@ export default function Home({ navigation }) {
       .catch((error) => {
         console.error("Une erreur est survenue", error);
       });
+    // }, 1000);
   };
-
-  const getMyLikeBook = () => {
+  const getListFriends = () => {
     setTimeout(() => {
-      getBookInMyLibrary(MyInfo._id, "mesenvies", token)
+      const promises = [
+        getFriendList(MyInfo._id, token),
+        ...MyInfo.friends.map((friendId) => getFriendList(friendId, token)),
+      ];
+      Promise.all(promises)
         .then((res) => {
-          setMyLibraryLike(res.books);
-          console.log("MyBookLike", MyLibraryLike);
+          const friend = res[0];
+          setListAmi(friend);
+          console.log("ListAmi", ListAmi);
         })
         .catch((error) => {
-          console.error(
-            "Une erreur s'est produite lors de la récupération des livres likés :",
-            error
-          );
+          console.log(error);
         });
-    }, 1000);
+    }, 1200);
+  };
+  const getMyLikeBook = () => {
+    // setTimeout(() => {
+    getBookInMyLibrary(MyInfo._id, "mesenvies", token)
+      .then((res) => {
+        setMyLibraryLike(res.books);
+        console.log("MyBookLike", MyLibraryLike);
+      })
+      .catch((error) => {
+        console.error(
+          "Une erreur s'est produite lors de la récupération des livres likés :",
+          error
+        );
+      });
+    // }, 1000);
   };
   const getMyProgressBook = () => {
-    setTimeout(() => {
-      getBookInMyLibrary(MyInfo._id, "encours", token)
-        .then((res) => {
-          setMyLibraryRead(res.books);
-          console.log("MyBookReadingProgress", MyLibraryRead);
-        })
-        .catch((error) => {
-          console.error(
-            "Une erreur s'est produite lors de la récupération des livres likés :",
-            error
-          );
-        });
-    }, 1000);
+    // setTimeout(() => {
+    getBookInMyLibrary(MyInfo._id, "encours", token)
+      .then((res) => {
+        setMyLibraryRead(res.books);
+        console.log("MyBookReadingProgress", MyLibraryRead);
+      })
+      .catch((error) => {
+        console.error(
+          "Une erreur s'est produite lors de la récupération des livres likés :",
+          error
+        );
+      });
+    // }, 1000);
   };
   const getMyFinishBook = () => {
-    setTimeout(() => {
-      getBookInMyLibrary(MyInfo._id, "dejalu", token)
-        .then((res) => {
-          setMyLibraryFinsh(res.books);
-          console.log("MyBookFinish", MyLibraryFinsh, "BobyFeeal");
-        })
-        .catch((error) => {
-          console.error(
-            "Une erreur s'est produite lors de la récupération des livres likés :",
-            error
-          );
-        });
-    }, 1000);
+    // setTimeout(() => {
+    getBookInMyLibrary(MyInfo._id, "dejalu", token)
+      .then((res) => {
+        setMyLibraryFinsh(res.books);
+        console.log("MyBookFinish", MyLibraryFinsh, "BobyFeeal");
+      })
+      .catch((error) => {
+        console.error(
+          "Une erreur s'est produite lors de la récupération des livres likés :",
+          error
+        );
+      });
+    // }, 1000);
   };
   const myAllBook = () => {
     const livresUniques = new Set([
@@ -116,6 +138,7 @@ export default function Home({ navigation }) {
   const flattenAllBooks = allBook.flat();
   useEffect(() => {
     userInfo();
+    getListFriends();
     getMyLikeBook();
     getMyProgressBook();
     getMyFinishBook();
@@ -190,10 +213,8 @@ export default function Home({ navigation }) {
           renderItem={Item}
         />
       </ViewStory>
-      <View style={{ flex: 3.5 }}>
-        <ScrollView style={styles.contentContainer}>
-          <BoxPost />
-        </ScrollView>
+      <View style={{ flex: 3, width: "100%", padding: 20 }}>
+        <BoxPost />
         <FloatingAction
           actions={actions}
           onPressItem={handleActionPress}
@@ -201,7 +222,6 @@ export default function Home({ navigation }) {
           color="#454545"
         />
       </View>
-
       <Footer />
       <ModalShareMessage />
     </View>

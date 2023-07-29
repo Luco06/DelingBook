@@ -1,24 +1,23 @@
 import React from "react";
-import {
-  Platform,
-  View,
-  ScrollView,
-  StyleSheet,
-  FlatList,
-  Text,
-} from "react-native";
+import { View, StyleSheet, FlatList, Text } from "react-native";
 import styled from "styled-components";
 import Post from "../../Api/Mock/Post";
 import Like from "../../assets/Img_Presentation/like.svg";
 import Share from "../../assets/Img_Presentation/Share.svg";
 import Comment from "../../assets/Img_Presentation/Comment.svg";
-import { User } from "../recoil";
+import Trash from "../../assets/Img_Presentation/trash.svg";
+import { User, MyAuthTokens } from "../recoil";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+import { deletePost } from "../../Api/RPC/api";
 
 export default function MyPublications() {
   const MyInfo = useRecoilValue(User);
   const MyPublication = MyInfo.publications;
+  const MyTokens = useRecoilValue(MyAuthTokens);
+  const token = `Bearer ${MyTokens}`;
   console.log(MyPublication);
+  console.log(token);
+
   const avatarUserUrl = MyInfo.avatar
     ? MyInfo.avatar.replace(
         "/Users/luc-olivieryohan/Desktop/DB_BackEnd/MangoDB/src/midddlewares",
@@ -29,6 +28,22 @@ export default function MyPublications() {
   const avatarUrl = avatarUserUrl ? baseUrl + avatarUserUrl : null;
 
   const PostItem = ({ item }) => {
+    const publicationId = item._id;
+    const deletePublication = () => {
+      deletePost(publicationId, token)
+        .then((res) => {
+          alert(res.message);
+        })
+        .catch((error) => {
+          console.error(
+            "Une erreur s'est produite lors de la suppression de la publication :",
+            error
+          );
+          console.error("Status:", error.response?.status);
+          console.error("Message:", error.message);
+        });
+      console.log(publicationId);
+    };
     return (
       <ViewPost key={item._id}>
         <View style={styles.shadow}>
@@ -60,6 +75,9 @@ export default function MyPublications() {
               <Share width={18} height={18} />
               <TextIcon>{item.share}</TextIcon>
             </BoxIconPublication>
+            <DeletePressable onPress={deletePublication}>
+              <Trash width={25} height={25} />
+            </DeletePressable>
           </ViewIconPublication>
         </View>
       </ViewPost>
@@ -144,4 +162,14 @@ const ViewPost = styled.View`
   overflow: hidden;
   padding-bottom: 10px;
   height: auto;
+`;
+
+const DeletePressable = styled.Pressable`
+  margin: 6px;
+  justify-content: flex-end;
+  align-items: flex-end;
+  width: 66%;
+  display: flex;
+  float: right;
+  margin: 6px;
 `;
