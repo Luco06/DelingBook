@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -31,11 +31,8 @@ import {
 } from "../../recoil";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { FloatingAction } from "react-native-floating-action";
-import { LinearGradient } from "expo-linear-gradient";
-import Avatar from "../../../assets/Img_Presentation/Avatar.svg";
 
 export default function Home({ navigation }) {
-  const [modalShareBookVisible, setShareBookVisible] = useState(false);
   const [modalShareMessageVisible, setModalShareMessageVisible] =
     useState(false);
 
@@ -52,37 +49,37 @@ export default function Home({ navigation }) {
   const setListAmi = useSetRecoilState(FriendList);
   const ListAmi = useRecoilValue(FriendList);
   const [allBook, setAllBook] = useState([]);
+  const intervalRef = useRef(null);
+  const isMountedRef = useRef(true);
 
   const userInfo = () => {
-    // setInterval(() => {
     getMyInfo(token)
       .then((res) => {
-        setMyInfo(res);
+        if (isMountedRef.current) {
+          setMyInfo(res);
+        }
       })
       .catch((error) => {
         console.error("Une erreur est survenue", error);
       });
-    // }, 1000);
   };
+
   const getListFriends = () => {
-    setTimeout(() => {
-      const promises = [
-        getFriendList(MyInfo._id, token),
-        ...MyInfo.friends.map((friendId) => getFriendList(friendId, token)),
-      ];
-      Promise.all(promises)
-        .then((res) => {
-          const friend = res[0];
-          setListAmi(friend);
-          console.log("ListAmi", ListAmi);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }, 1200);
+    const promises = [
+      getFriendList(MyInfo._id, token),
+      ...MyInfo.friends.map((friendId) => getFriendList(friendId, token)),
+    ];
+    Promise.all(promises)
+      .then((res) => {
+        const friend = res[0];
+        setListAmi(friend);
+        console.log("ListAmi", ListAmi);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
   const getMyLikeBook = () => {
-    // setTimeout(() => {
     getBookInMyLibrary(MyInfo._id, "mesenvies", token)
       .then((res) => {
         setMyLibraryLike(res.books);
@@ -94,10 +91,8 @@ export default function Home({ navigation }) {
           error
         );
       });
-    // }, 1000);
   };
   const getMyProgressBook = () => {
-    // setTimeout(() => {
     getBookInMyLibrary(MyInfo._id, "encours", token)
       .then((res) => {
         setMyLibraryRead(res.books);
@@ -109,10 +104,8 @@ export default function Home({ navigation }) {
           error
         );
       });
-    // }, 1000);
   };
   const getMyFinishBook = () => {
-    // setTimeout(() => {
     getBookInMyLibrary(MyInfo._id, "dejalu", token)
       .then((res) => {
         setMyLibraryFinsh(res.books);
@@ -124,7 +117,6 @@ export default function Home({ navigation }) {
           error
         );
       });
-    // }, 1000);
   };
   const myAllBook = () => {
     const livresUniques = new Set([
@@ -137,13 +129,32 @@ export default function Home({ navigation }) {
   };
   const flattenAllBooks = allBook.flat();
   useEffect(() => {
+    // Appeler userInfo au montage du composant
     userInfo();
-    getListFriends();
-    getMyLikeBook();
-    getMyProgressBook();
-    getMyFinishBook();
-    // myAllBook();
+
+    // Mettre en place une intervalle pour rafraîchir les informations toutes les x secondes
+    intervalRef.current = setInterval(() => {
+      userInfo();
+    }, 60000);
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
   }, []);
+
+  useEffect(() => {
+    userInfo();
+    if (MyInfo._id) {
+      getListFriends();
+      getMyLikeBook();
+      getMyProgressBook();
+      getMyFinishBook();
+      // myAllBook();
+    }
+  }, [MyInfo._id, BoxPost]);
+
   const Item = ({ item }) => (
     <BoxStory key={item.id}>
       <ImgStory source={item.img} />

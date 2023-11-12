@@ -15,8 +15,8 @@ export default function BoxPost() {
   const setAllPublication = useSetRecoilState(AllPublications);
   const AllPubli = useRecoilValue(AllPublications);
 
-  console.log("ListAmi", ListAmi);
-  console.log("Mes Info", Myinfo);
+  // console.log("ListAmi", ListAmi);
+
   const joinAllPubli = () => {
     setTimeout(() => {
       const allPublications = [
@@ -32,9 +32,9 @@ export default function BoxPost() {
 
   useEffect(() => {
     joinAllPubli();
-  }, [joinAllPubli]);
+  }, [Myinfo]);
 
-  console.log("Toutes les publications", AllPubli);
+  // console.log("Toutes les publications", AllPubli);
 
   const afficherDateAvecPrefixe = (datePublication) => {
     const maintenant = new Date();

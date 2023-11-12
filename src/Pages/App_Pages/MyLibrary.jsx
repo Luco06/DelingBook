@@ -22,6 +22,7 @@ export default function MyLibrary({ navigation: { goBack } }) {
   const MyLibraryRead = useRecoilValue(MyLibraryReadState);
   const MyInfo = useRecoilValue(User);
   const navigation = useNavigation();
+  useEffect(() => {}, [MyInfo, MyLibraryLike, MyLibraryFinsh, MyLibraryRead]);
 
   const Item = ({ item }) => (
     <ViewChoiceBook key={item._id}>
