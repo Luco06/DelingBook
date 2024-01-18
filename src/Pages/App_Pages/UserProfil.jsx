@@ -68,7 +68,7 @@ export default function UserProfil({ navigation: { goBack } }) {
     ""
   );
   const avatarUrl = `http://192.168.0.20:3000${avatarUserUrl}`;
-  console.log();
+  console.log(InfoOtherUser);
   return (
     <View style={styles.container}>
       <ViewBtn>
@@ -133,7 +133,9 @@ export default function UserProfil({ navigation: { goBack } }) {
               }}
               colors={["rgba(40, 125, 192, 0.8)", "rgba(19, 164, 132, 0.8)"]}
             >
-              <TextFollow>Écrire</TextFollow>
+              <Pressable onPress={() => navigation.navigate("Chat")}>
+                <TextFollow>Écrire</TextFollow>
+              </Pressable>
             </LinearGradient>
           </Pressable>
         </ViewFollow>
