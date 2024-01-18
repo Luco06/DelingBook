@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useForm, Controller } from "react-hook-form";
 import { StyleSheet, View, TextInput, Text } from "react-native";
@@ -29,16 +29,23 @@ export default function StepLogin2({ navigation }) {
     },
   });
   const onSubmit = (data) => {
-    userLogin(data).then((res) => {
-      console.log("User connected", res);
-      setMyTokens(res.authToken);
-      setMyId(res.user._id);
-      setMyUser(res);
-      console.log("MyToken: ", MyTokens);
-      console.log("MyId: ", MyUserId);
-      console.log("MyUser", MyUser);
-    });
+    userLogin(data)
+      .then((res) => {
+        console.log("User connected", res);
+        setMyTokens(res.authToken);
+        setMyId(res.user._id);
+        setMyUser(res);
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la connexion", error);
+      });
   };
+  useEffect(() => {
+    console.log("MyToken: ", MyTokens);
+    console.log("MyId: ", MyUserId);
+    console.log("MyUser", MyUser);
+  }, [MyUser, MyUserId, MyTokens]);
+
   const [showPassword, setShowPassword] = useState(true);
   const showMdp = () => {
     setShowPassword(!showPassword);
