@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   FlatList,
   Text,
@@ -40,6 +40,8 @@ export default function ModalShareBook({ navigation }) {
   const [searchResults, setSearchResults] = useState([]);
   const [publiImg, setPubliImg] = useState("");
   const [publiTxt, setPubliTxt] = useState("");
+  const intervalRef = useRef(null);
+  const isMountedRef = useRef(true);
 
   const avatarUserUrl = MyInfo.avatar
     ? MyInfo.avatar.replace(
@@ -52,16 +54,15 @@ export default function ModalShareBook({ navigation }) {
   const handleImageSelection = (selectImage) => {
     setPubliImg(selectImage);
   };
-  const userInfo = () => {
-    // setInterval(() => {
-    getMyInfo(token)
-      .then((res) => {
+  const userInfo = async () => {
+    try {
+      const res = await getMyInfo(token);
+      if (isMountedRef.current && res !== null) {
         setMyInfo(res);
-      })
-      .catch((error) => {
-        console.error("Une erreur est survenue", error);
-      });
-    // }, 1000);
+      }
+    } catch (error) {
+      console.error("Une erreur est survenue", error);
+    }
   };
 
   const update = () => {
@@ -99,49 +100,43 @@ export default function ModalShareBook({ navigation }) {
   };
 
   const getMyLikeBook = () => {
-    setTimeout(() => {
-      getBookInMyLibrary(MyInfo._id, "mesenvies", token)
-        .then((res) => {
-          setMyLibraryLike(res.books);
-          console.log("MyBookLike", MyLibraryLike);
-        })
-        .catch((error) => {
-          console.error(
-            "Une erreur s'est produite lors de la récupération des livres likés :",
-            error
-          );
-        });
-    }, 1000);
+    getBookInMyLibrary(MyInfo._id, "mesenvies", token)
+      .then((res) => {
+        setMyLibraryLike(res.books);
+        console.log("MyBookLike", MyLibraryLike);
+      })
+      .catch((error) => {
+        console.error(
+          "Une erreur s'est produite lors de la récupération des livres likés :",
+          error
+        );
+      });
   };
   const getMyProgressBook = () => {
-    setTimeout(() => {
-      getBookInMyLibrary(MyInfo._id, "encours", token)
-        .then((res) => {
-          setMyLibraryRead(res.books);
-          console.log("MyBookReadingProgress", MyLibraryRead);
-        })
-        .catch((error) => {
-          console.error(
-            "Une erreur s'est produite lors de la récupération des livres likés :",
-            error
-          );
-        });
-    }, 1000);
+    getBookInMyLibrary(MyInfo._id, "encours", token)
+      .then((res) => {
+        setMyLibraryRead(res.books);
+        console.log("MyBookReadingProgress", MyLibraryRead);
+      })
+      .catch((error) => {
+        console.error(
+          "Une erreur s'est produite lors de la récupération des livres likés :",
+          error
+        );
+      });
   };
   const getMyFinishBook = () => {
-    setTimeout(() => {
-      getBookInMyLibrary(MyInfo._id, "dejalu", token)
-        .then((res) => {
-          setMyLibraryFinsh(res.books);
-          console.log("MyBookFinish", MyLibraryFinsh, "BobyFeeal");
-        })
-        .catch((error) => {
-          console.error(
-            "Une erreur s'est produite lors de la récupération des livres likés :",
-            error
-          );
-        });
-    }, 1000);
+    getBookInMyLibrary(MyInfo._id, "dejalu", token)
+      .then((res) => {
+        setMyLibraryFinsh(res.books);
+        console.log("MyBookFinish", MyLibraryFinsh, "BobyFeeal");
+      })
+      .catch((error) => {
+        console.error(
+          "Une erreur s'est produite lors de la récupération des livres likés :",
+          error
+        );
+      });
   };
   const myAllBook = () => {
     const livresUniques = new Set([
@@ -172,7 +167,7 @@ export default function ModalShareBook({ navigation }) {
   const sendAndCloseModal = () => {
     setShareBookVisible((prevState) => !prevState);
     update();
-    userInfo();
+
     navigation.navigate("Home");
   };
   const closeModal = () => {
@@ -180,11 +175,13 @@ export default function ModalShareBook({ navigation }) {
     navigation.navigate("Home");
   };
   useEffect(() => {
-    toggleBookModal();
-    getMyLikeBook();
-    getMyProgressBook();
-    getMyFinishBook();
-    myAllBook();
+    if (MyInfo && MyInfo._id) {
+      toggleBookModal();
+      getMyLikeBook();
+      getMyProgressBook();
+      getMyFinishBook();
+      myAllBook();
+    }
   }, []);
 
   const BookItem = ({ item }) => {
