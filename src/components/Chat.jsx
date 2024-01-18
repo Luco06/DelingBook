@@ -1,54 +1,32 @@
 import React, { useState, useEffect } from "react";
-import {
-  Platform,
-  View,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-} from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import styled from "styled-components";
-import ArrowReturn from "../../assets/Img_Presentation/Shape.svg";
-import Mess from "../../Api/Mock/Message";
-import Book from "../../assets/Img_Presentation/Book.svg";
-import Mic from "../../assets/Img_Presentation/mic.svg";
-import CamMessage from "../../assets/Img_Presentation/MessageIcon.svg";
 import { GiftedChat } from "react-native-gifted-chat";
 import io from "socket.io-client";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { User } from "../recoil";
+import { User, SearchUserResult } from "../recoil";
 export default function Chat({ navigation: { goBack } }) {
   const [UserPseudo, setUserPseudo] = useState("Reader");
   const socket = io("http://192.168.0.20:3000");
   const [messages, setMessages] = useState([]);
   const MyUser = useRecoilValue(User);
+  const InfoOtherUser = useRecoilValue(SearchUserResult);
 
   useEffect(() => {
     console.log(MyUser._id);
-    // socket.on("message", (message) => {
-    //   setMessages((previousMessages) =>
-    //     GiftedChat.append(previousMessages, message)
-    //   );
-    // });
-    setMessages([
-      {
-        _id: 1,
-        text: "Hello developer",
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: "React Native",
-          avatar: "https://placeimg.com/140/140/any",
-        },
-      },
-    ]);
+    console.log("Info de l'autre utilisateur", InfoOtherUser);
+    socket.emit("userConnected", { userId: MyUser._id });
+    socket.on("message", (message) => {
+      setMessages((previousMessages) =>
+        GiftedChat.append(previousMessages, message)
+      );
+    });
+    console.log(messages);
   }, []);
 
   const onSend = (messages = []) => {
-    socket.emit("message", messages[0]);
-    setMessages((previousMessages) =>
-      GiftedChat.append(previousMessages, messages)
-    );
+    const recipientId = InfoOtherUser._id;
+    socket.emit("sendMessageToUser", { recipientId, message: messages[0] });
   };
 
   return (
@@ -56,8 +34,8 @@ export default function Chat({ navigation: { goBack } }) {
       messages={messages}
       onSend={(messages) => onSend(messages)}
       user={{
-        _id: MyUser.user._id,
-        name: MyUser.user.email,
+        _id: MyUser._id,
+        name: MyUser.email,
       }}
     />
     // <View style={styles.container}>
