@@ -52,16 +52,15 @@ export default function Home({ navigation }) {
   const intervalRef = useRef(null);
   const isMountedRef = useRef(true);
 
-  const userInfo = () => {
-    getMyInfo(token)
-      .then((res) => {
-        if (isMountedRef.current) {
-          setMyInfo(res);
-        }
-      })
-      .catch((error) => {
-        console.error("Une erreur est survenue", error);
-      });
+  const userInfo = async () => {
+    try {
+      const res = await getMyInfo(token);
+      if (isMountedRef.current && res !== null) {
+        setMyInfo(res);
+      }
+    } catch (error) {
+      console.error("Une erreur est survenue", error);
+    }
   };
 
   const getListFriends = () => {
@@ -135,7 +134,7 @@ export default function Home({ navigation }) {
     // Mettre en place une intervalle pour rafraîchir les informations toutes les x secondes
     intervalRef.current = setInterval(() => {
       userInfo();
-    }, 60000);
+    }, 40000);
 
     return () => {
       if (intervalRef.current) {
@@ -145,8 +144,7 @@ export default function Home({ navigation }) {
   }, []);
 
   useEffect(() => {
-    userInfo();
-    if (MyInfo._id) {
+    if (MyInfo && MyInfo._id) {
       getListFriends();
       getMyLikeBook();
       getMyProgressBook();
