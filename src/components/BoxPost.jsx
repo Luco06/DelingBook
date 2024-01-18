@@ -19,19 +19,23 @@ export default function BoxPost() {
 
   const joinAllPubli = () => {
     setTimeout(() => {
-      const allPublications = [
-        ...Myinfo.publications,
-        ...ListAmi.flatMap((friend) => friend.publications),
-      ];
-      allPublications.sort((a, b) =>
-        compareDesc(parseISO(a.date), parseISO(b.date))
-      );
-      setAllPublication(allPublications);
+      if (Myinfo && Myinfo.publications && ListAmi) {
+        const allPublications = [
+          ...Myinfo.publications,
+          ...ListAmi.flatMap((friend) => friend.publications),
+        ];
+        allPublications.sort((a, b) =>
+          compareDesc(parseISO(a.date), parseISO(b.date))
+        );
+        setAllPublication(allPublications);
+      }
     }, 4000);
   };
 
   useEffect(() => {
-    joinAllPubli();
+    if (Myinfo !== "") {
+      joinAllPubli();
+    }
   }, [Myinfo]);
 
   // console.log("Toutes les publications", AllPubli);
