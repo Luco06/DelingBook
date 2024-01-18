@@ -27,6 +27,10 @@ import StepGenderBookChoice1 from "../Pages/StepBookGenderChoice/StepBookGenderC
 import StepBookGenderChoice2 from "../Pages/StepBookGenderChoice/StepBookGenderChoice2";
 import StepBookGenderChoice3 from "../Pages/StepBookGenderChoice/StepBookGenderChoice3";
 import Chat from "../components/Chat";
+import SearchUser from "../Pages/App_Pages/SearchUser";
+import UserProfil from "../Pages/App_Pages/UserProfil";
+import UpdateUser from "../components/UpdateUser";
+import ModalShareBook from "../components/ModalShareBook";
 
 const Nav = () => {
   const Stack = createNativeStackNavigator();
@@ -87,6 +91,10 @@ const Nav = () => {
               component={BookDetailFinish}
             />
             <Stack.Screen name="Chat" component={Chat} />
+            <Stack.Screen name="SearchUser" component={SearchUser} />
+            <Stack.Screen name="UserProfil" component={UserProfil} />
+            <Stack.Screen name="UpdateUser" component={UpdateUser} />
+            <Stack.Screen name="ModalShareBook" component={ModalShareBook} />
           </>
         )}
       </Stack.Navigator>

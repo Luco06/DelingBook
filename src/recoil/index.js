@@ -1,4 +1,12 @@
 import { atom, selector, useRecoilState, useRecoilValue } from "recoil";
+import { recoilPersist } from "recoil-persist";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const { persistAtom } = recoilPersist({
+  key: "recoil-persist", // this key is using to store data in local storage
+  storage: AsyncStorage, // configure which storage will be used to store the data
+  converter: JSON, // configure how values will be serialized/deserialized in storage
+});
 
 //La liste des livres après la recheche
 export const BookListState = atom({
@@ -42,5 +50,31 @@ export const PreToken = atom({
 
 export const MyId = atom({
   key: "MyId",
+  default: [],
+});
+
+export const User = atom({
+  key: "User",
+  default: [],
+  effects_UNSTABLE: [persistAtom],
+});
+
+export const SearchUserResult = atom({
+  key: "ResultUser",
+  default: [],
+});
+
+export const FriendList = atom({
+  key: "ListeAmi",
+  default: [],
+});
+
+export const MyPublication = atom({
+  key: "MyPublication",
+  default: [],
+});
+
+export const AllPublications = atom({
+  key: "Allpublication",
   default: [],
 });

@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Platform, View } from "react-native";
-import { Text, StyleSheet, FlatList } from "react-native";
+import { Text, StyleSheet, FlatList, Image } from "react-native";
 import styled from "styled-components";
 import ArrowReturn from "../../../assets/Img_Presentation/Shape.svg";
-import Avatar from "../../../assets/Img_Presentation/Avatar.svg";
 import Share from "../../../assets/Img_Presentation/Share.svg";
 import Pencil from "../../../assets/Img_Presentation/pencil.svg";
 import Footer from "./Footer";
@@ -12,74 +11,21 @@ import {
   MyLibraryLikeState,
   MyLibraryFinishState,
   MyLibraryReadState,
-  MyAuthTokens,
+  User,
 } from "../../recoil";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { getBookInMyLibrary } from "../../../Api/RPC/api";
+import { useRecoilValue } from "recoil";
+
 export default function MyLibrary({ navigation: { goBack } }) {
   const [MyLibrary, setMyLibrary] = useState("MyBookSpace");
-
-  const setMyLibraryLike = useSetRecoilState(MyLibraryLikeState);
-  const setMyLibraryRead = useSetRecoilState(MyLibraryReadState);
-  const setMyLibraryFinsh = useSetRecoilState(MyLibraryFinishState);
   const MyLibraryLike = useRecoilValue(MyLibraryLikeState);
   const MyLibraryFinsh = useRecoilValue(MyLibraryFinishState);
   const MyLibraryRead = useRecoilValue(MyLibraryReadState);
-  const MyTokens = useRecoilValue(MyAuthTokens);
+  const MyInfo = useRecoilValue(User);
   const navigation = useNavigation();
+  useEffect(() => {}, [MyInfo, MyLibraryLike, MyLibraryFinsh, MyLibraryRead]);
 
-  const token = `Bearer ${MyTokens}`;
-
-  const getMyLikeBook = () => {
-    getBookInMyLibrary("mesenvies", token)
-      .then((res) => {
-        console.log("Vos livres likés", res);
-        setMyLibraryLike(res);
-        console.log("MyBookLike", MyLibraryLike);
-      })
-      .catch((error) => {
-        console.error(
-          "Une erreur s'est produite lors de la récupération des livres likés :",
-          error
-        );
-      });
-  };
-  const getMyProgressBook = () => {
-    getBookInMyLibrary("encours", token)
-      .then((res) => {
-        console.log("Vos lecteurs en cours", res);
-        setMyLibraryRead(res);
-        console.log("MyBookReadingProgress", MyLibraryRead);
-      })
-      .catch((error) => {
-        console.error(
-          "Une erreur s'est produite lors de la récupération des livres likés :",
-          error
-        );
-      });
-  };
-  const getMyFinishBook = () => {
-    getBookInMyLibrary("dejalu", token)
-      .then((res) => {
-        console.log("Vos livre déjà lu", res);
-        setMyLibraryFinsh(res);
-        console.log("MyBookFinish", MyLibraryFinsh);
-      })
-      .catch((error) => {
-        console.error(
-          "Une erreur s'est produite lors de la récupération des livres likés :",
-          error
-        );
-      });
-  };
-
-  useEffect(() => {
-    getMyLikeBook();
-    getMyProgressBook();
-    getMyFinishBook();
-  }, []);
   const Item = ({ item }) => (
-    <ViewChoiceBook key={item.id}>
+    <ViewChoiceBook key={item._id}>
       <ViexTextFlat>
         <TexFlat numberOfLines={1} ellipsizeMode="tail">
           {item.titre}
@@ -94,14 +40,18 @@ export default function MyLibrary({ navigation: { goBack } }) {
       </View>
     </ViewChoiceBook>
   );
+  const keyExtractor = (item) => item._id.toString();
   return (
     <View style={styles.container}>
       <ViewBtn>
         <ViewIcon>
           <ArrowReturn onPress={() => goBack()} width={30} height={30} />
           <ViewAvatar>
-            <Avatar width={40} height={40} />
-            <Text>DcLover17</Text>
+            <Image
+              source={{ uri: MyInfo.avatar }}
+              style={{ width: 40, height: 40, borderRadius: 100 }}
+            />
+            <Text>{MyInfo.pseudo}</Text>
           </ViewAvatar>
         </ViewIcon>
         <LibraryTitle>{MyLibrary}</LibraryTitle>
@@ -118,7 +68,7 @@ export default function MyLibrary({ navigation: { goBack } }) {
           <FlatList
             data={MyLibraryLike}
             horizontal={true}
-            keyExtractor={Item.id}
+            keyExtractor={keyExtractor}
             renderItem={Item}
           />
         </ViewLibrary>
@@ -129,7 +79,7 @@ export default function MyLibrary({ navigation: { goBack } }) {
           <FlatList
             data={MyLibraryRead}
             horizontal={true}
-            keyExtractor={Item.id}
+            keyExtractor={keyExtractor}
             renderItem={Item}
           />
         </ViewLibrary>
@@ -140,7 +90,7 @@ export default function MyLibrary({ navigation: { goBack } }) {
           <FlatList
             data={MyLibraryFinsh}
             horizontal={true}
-            keyExtractor={Item.id}
+            keyExtractor={keyExtractor}
             renderItem={Item}
           />
         </ViewLibrary>

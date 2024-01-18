@@ -11,22 +11,28 @@ import Footer from "./Footer";
 import { useNavigation } from "@react-navigation/native";
 import { BottomSheet, Button, ListItem } from "@rneui/themed";
 import { logoutUser } from "../../../Api/RPC/api";
-import { useRecoilValue, useResetRecoilState } from "recoil";
-import { MyAuthTokens } from "../../recoil";
+import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
+import { MyAuthTokens, User } from "../../recoil";
+import { getMyInfo } from "../../../Api/RPC/api";
+import ArrowReturn from "../../../assets/Img_Presentation/Shape.svg";
+import MyPublications from "../../components/MyPublications";
 
 export default function MyUserProfil({ navigation: { goBack } }) {
   const navigation = useNavigation();
-  const [pseudo, setPseudo] = useState("DCLover17");
-  const [resume, setResume] = useState("ComicBook forever !!!👌👌");
   const [publication, setPublication] = useState(34);
-  const [followers, setFollowwers] = useState(350);
-  const [follow, setFollow] = useState(330);
   const [isVisible, setIsVisible] = useState(false);
+  const MyUser = useRecoilValue(User);
+  const setMyUser = useSetRecoilState(User);
   const MyTokens = useRecoilValue(MyAuthTokens);
   const ClearToken = useResetRecoilState(MyAuthTokens);
-  const token = `Bearer ${MyTokens}`;
+
+  const token = `Bearer ${MyTokens || MyUser.authToken}`;
+
   const list = [
-    { title: "Espace comptes" },
+    {
+      title: "Espace comptes",
+      onPress: () => navigation.navigate("UpdateUser"),
+    },
     { title: "Notifications" },
     { title: "Gestions des groupes" },
     { title: "Bloqué/restreints" },
@@ -52,62 +58,50 @@ export default function MyUserProfil({ navigation: { goBack } }) {
         console.error("Une erreur est survenue", error);
       });
   };
-  console.log(token);
+  const avatarUserUrl = MyUser.avatar
+    ? MyUser.avatar.replace(
+        "/Users/luc-olivieryohan/Desktop/DB_BackEnd/MangoDB/src/midddlewares",
+        ""
+      )
+    : null;
+  const baseUrl = "http://192.168.0.20:3000"; // L'URL de base de votre serveur
+  const avatarUrl = avatarUserUrl ? baseUrl + avatarUserUrl : null;
+
+  console.log("user", MyUser);
   return (
     <View style={styles.container}>
       <ViewBtn>
-        <ViewIcon></ViewIcon>
+        <ViewIcon>
+          <ArrowReturn onPress={() => goBack()} width={30} height={30} />
+        </ViewIcon>
         <ViewIcon>
           <Setting onPress={() => setIsVisible(true)} width={30} height={30} />
         </ViewIcon>
       </ViewBtn>
       <ViewInfoProfile>
         <ViewAvatar>
-          <Avatar width={200} height={200} />
+          {avatarUrl ? (
+            <Image
+              source={{ uri: avatarUrl }}
+              style={{ width: 150, height: 150, borderRadius: 100 }}
+            />
+          ) : (
+            <Avatar style={{ width: 150, height: 150 }} />
+          )}
         </ViewAvatar>
-        <PseudoProfil>{pseudo}</PseudoProfil>
-        <Resume>{resume}</Resume>
+        <PseudoProfil>{MyUser.pseudo}</PseudoProfil>
+        <Resume>{MyUser.description}</Resume>
         <BoxInfo>
           <BoxInfoIntStr>
-            <Text>{publication}</Text>
+            <Text>{MyUser.publications.length}</Text>
             <Text>Publications</Text>
           </BoxInfoIntStr>
           <BoxInfoIntStr>
-            <Text>{followers}</Text>
-            <Text>Followers</Text>
-          </BoxInfoIntStr>
-          <BoxInfoIntStr>
-            <Text>{follow}</Text>
-            <Text>Suivi(e)s</Text>
+            <Text>{MyUser.friends.length}</Text>
+            <Text>Ami(e)s</Text>
           </BoxInfoIntStr>
         </BoxInfo>
-        <View style={{ overflow: "hidden", paddingBottom: 5 }}>
-          <View style={styles.shadow}>
-            <Resume>{pseudo}</Resume>
-            <Image
-              style={{ height: 130, width: 90, alignSelf: "center", margin: 5 }}
-              source={require("../../../assets/Img_Presentation/tokyo.png")}
-            />
-            <Text>
-              Comic indépendant à dévorer dans les plus bref delais
-              !!#Tokyogosth
-            </Text>
-            <ViewIconPublication>
-              <BoxIconPublication>
-                <Like width={18} height={18} />
-                <TextIcon>120</TextIcon>
-              </BoxIconPublication>
-              <BoxIconPublication>
-                <Comment width={18} height={18} />
-                <TextIcon>66</TextIcon>
-              </BoxIconPublication>
-              <BoxIconPublication>
-                <Share width={18} height={18} />
-                <TextIcon>15</TextIcon>
-              </BoxIconPublication>
-            </ViewIconPublication>
-          </View>
-        </View>
+        <MyPublications />
       </ViewInfoProfile>
       <BottomSheet modalProps={{}} isVisible={isVisible}>
         {list.map((l, i) => (

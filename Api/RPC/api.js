@@ -6,7 +6,6 @@ export const userLogin = (payload) => {
       "Content-type": "application/json",
       Accept: "application/json",
       "Access-Control-Request-Headers": "*",
-      api_key: "64790224e0c5a553ae57f1d3",
     },
     body: JSON.stringify(payload),
   })
@@ -52,7 +51,6 @@ export const createUser = (payload) => {
     headers: {
       "Content-type": "application/json",
       Accept: "application/json",
-      api_key: "64790224e0c5a553ae57f1d3",
     },
     body: JSON.stringify(payload),
   })
@@ -67,7 +65,175 @@ export const createUser = (payload) => {
       throw error;
     });
 };
+export const updateUser = (payload, token) => {
+  return fetch("http://192.168.0.20:3000/users/me", {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Accept: "application/json",
+      Authorization: token,
+    },
+    body: payload,
+  })
+    .then((res) => {
+      console.log(res);
+      if (!res.ok) {
+        throw new Error("Vérifier vos les informations saisies");
+      }
+      return res.json();
+    })
+    .catch((error) => {
+      console.error("Une erreur s'est produite lors de la requête :", error);
+      throw error;
+    });
+};
 
+export const getMyInfo = (token) => {
+  return fetch("http://192.168.0.20:3000/users/me", {
+    method: "GET",
+    headers: {
+      "Content-type": "application/json",
+      Accept: "application/json",
+      Authorization: token,
+    },
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error("Error");
+      }
+      return res.json();
+    })
+    .catch((error) => {
+      console.error("Une erreur s'est produite lors de la requête :", error);
+      throw error;
+    });
+};
+export const searchUser = (payload, token) => {
+  return fetch("http://192.168.0.20:3000/users/searchuser", {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+      Accept: "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify(payload),
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error("Recherche impossible !");
+      }
+      return res.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => {
+      console.error("Une erreur s'est produite lors de la requête :", error);
+      throw error;
+    });
+};
+
+export const addUser = (payload, token) => {
+  return fetch("http://192.168.0.20:3000/users/addfriend", {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+      Accept: "application/json",
+      Authorization: token,
+    },
+    body: JSON.stringify(payload),
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error("Ajout impossible");
+      }
+      return res.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => {
+      console.error("Une erreur s'est produite lors de la requête :", error);
+      throw error;
+    });
+};
+
+export const getFriendList = async (userId, token) => {
+  return fetch(`http://192.168.0.20:3000/users/${userId}/friends`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: token,
+    },
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(
+          " Une erreur s'est produite lors de la récupération des livres par tag"
+        );
+      }
+      return res.json();
+    })
+    .catch((error) => {
+      console.error("Une erreur s'est produite lors de la requête :", error);
+      throw error;
+    });
+};
+
+export const deleteFriend = (userId, friendId, token) => {
+  return fetch(
+    `http://192.168.0.20:3000/users/deletefriend/${userId}/${friendId}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-type": "application/json",
+        Accept: "application/json",
+        Authorization: token,
+      },
+    }
+  )
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(
+          "Une erreur s'est produite lors de la suppression de l'ami"
+        );
+      }
+      return res.json();
+    })
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      console.error("Une erreur s'est produite lors de la requête :", error);
+      throw error;
+    });
+};
+
+export const deletePost = (publicationId, token) => {
+  return fetch(`http://192.168.0.20:3000/publications/${publicationId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-type": "application/json",
+      Accept: "application/json",
+      Authorization: token,
+    },
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(
+          " Une erreur s'est produite lors de la suppression de la publication"
+        );
+      }
+      return res.json();
+    })
+    .catch((error) => {
+      console.error("Une erreur s'est produite lors de la requête :", error);
+      throw error;
+    });
+};
+
+//BookApiCall
 export const addBook = (userId, payload, token) => {
   return fetch(`http://192.168.0.20:3000/addBook/${userId}`, {
     method: "POST",
@@ -90,8 +256,8 @@ export const addBook = (userId, payload, token) => {
     });
 };
 
-export const getBookInMyLibrary = (tag, token) => {
-  return fetch(`http://192.168.0.20:3000/booksByTag/${tag}`, {
+export const getBookInMyLibrary = (userId, tag, token) => {
+  return fetch(`http://192.168.0.20:3000/booksByTag/${userId}/${tag}`, {
     method: "GET",
     headers: {
       "Content-type": "application/json",

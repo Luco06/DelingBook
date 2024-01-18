@@ -15,11 +15,13 @@ import { CheckBox } from "@rneui/themed";
 import OriginalLogoWTtxt from "../../../assets/Img_Presentation/OrignalLogoWTtxt.svg";
 import { createUser } from "../../../Api/RPC/api";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { PreToken } from "../../recoil";
+import { PreToken, User } from "../../recoil";
 
 export default function StepLogin1({ navigation }) {
   const MyPreTokens = useRecoilValue(PreToken);
   const setMyPreTokens = useSetRecoilState(PreToken);
+  const setMyUser = useSetRecoilState(User);
+  const MyUser = useRecoilValue(User);
   const [mdp, setMdp] = useState("");
   const [email, setEmail] = useState("");
   const [telephone, setTelephone] = useState("");
@@ -40,6 +42,7 @@ export default function StepLogin1({ navigation }) {
         } else {
           alert("Votre compte à bien été créer");
           setMyPreTokens((token) => [...token, res.authToken]);
+          setMyUser(res);
           console.log("Pre", MyPreTokens);
           navigation.navigate("Step1");
         }

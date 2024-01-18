@@ -1,5 +1,12 @@
 import React from "react";
-import { Platform, View, StyleSheet, Text, ScrollView } from "react-native";
+import {
+  Platform,
+  View,
+  StyleSheet,
+  Text,
+  ScrollView,
+  Image,
+} from "react-native";
 import styled from "styled-components/native";
 import ArrowReturn from "../../../assets/Img_Presentation/Shape.svg";
 import Avatar from "../../../assets/Img_Presentation/Avatar.svg";
@@ -8,7 +15,7 @@ import Share from "../../../assets/Img_Presentation/Share.svg";
 import Delete from "../../../assets/delete.svg";
 import Rate from "../../../assets/star_rate.svg";
 import { useNavigation } from "@react-navigation/native";
-import { BookDetailsState, MyLibraryLikeState } from "../../recoil";
+import { BookDetailsState, MyLibraryLikeState, User } from "../../recoil";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 
 export default function BookDetailLike({ navigation: { goBack } }) {
@@ -16,6 +23,7 @@ export default function BookDetailLike({ navigation: { goBack } }) {
   const MyLibraryLike = useRecoilValue(MyLibraryLikeState);
   const setMyLibraryLike = useSetRecoilState(MyLibraryLikeState);
   const bookDetails = useRecoilValue(BookDetailsState);
+  const Myinfo = useRecoilValue(User);
   const date = Date.parse(bookDetails.publishedDate);
   const dateConvert = new Date(date);
   const dateString =
@@ -40,8 +48,11 @@ export default function BookDetailLike({ navigation: { goBack } }) {
       <ViewIcon>
         <ArrowReturn onPress={() => goBack()} width={30} height={30} />
         <ViewAvatar>
-          <Avatar width={40} height={40} />
-          <Text>DcLover17</Text>
+          <Image
+            source={{ uri: Myinfo.avatar }}
+            style={{ width: 40, height: 40, borderRadius: 100 }}
+          />
+          <Text>{Myinfo.pseudo}</Text>
         </ViewAvatar>
       </ViewIcon>
       <ViewBook>

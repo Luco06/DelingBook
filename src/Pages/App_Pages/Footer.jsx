@@ -5,7 +5,7 @@ import Home from "../../../assets/Img_Presentation/Home.svg";
 import Account from "../../../assets/Img_Presentation/Account.svg";
 import Message from "../../../assets/Img_Presentation/Message.svg";
 import Search from "../../../assets/Img_Presentation/Search.svg";
-import Video from "../../../assets/Img_Presentation/Video.svg";
+import AddUser from "../../../assets/Img_Presentation/addUser.svg";
 import { useNavigation } from "@react-navigation/native";
 
 export default function Footer() {
@@ -32,7 +32,11 @@ export default function Footer() {
         width={25}
         height={25}
       />
-      <Video width={25} height={25} />
+      <AddUser
+        onPress={() => navigation.navigate("SearchUser")}
+        width={28}
+        height={28}
+      />
       <Account
         onPress={() => navigation.navigate("MyUserProfil")}
         width={25}

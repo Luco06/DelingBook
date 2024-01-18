@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Platform, View, StyleSheet, Text, ScrollView } from "react-native";
+import {
+  Platform,
+  View,
+  StyleSheet,
+  Text,
+  ScrollView,
+  Image,
+} from "react-native";
 import styled from "styled-components/native";
 import ArrowReturn from "../../assets/Img_Presentation/Shape.svg";
 import Avatar from "../../assets/Img_Presentation/Avatar.svg";
@@ -17,6 +24,7 @@ import {
   MyLibraryFinishState,
   MyId,
   MyAuthTokens,
+  User,
 } from "../recoil";
 import { useRecoilValue, useSetRecoilState, useResetRecoilState } from "recoil";
 import { addBook } from "../../Api/RPC/api";
@@ -24,17 +32,12 @@ import { addBook } from "../../Api/RPC/api";
 export default function BookDetail({ navigation: { goBack } }) {
   const navigation = useNavigation();
   const bookDetails = useRecoilValue(BookDetailsState);
-  const setMyLibraryLike = useSetRecoilState(MyLibraryLikeState);
-  const setMyLibraryRead = useSetRecoilState(MyLibraryReadState);
-  const setMyLibraryFinsh = useSetRecoilState(MyLibraryFinishState);
-  const MyLibraryLike = useRecoilValue(MyLibraryLikeState);
-  const MyLibraryFinsh = useRecoilValue(MyLibraryFinishState);
-  const MyLibraryRead = useRecoilValue(MyLibraryReadState);
-  const MyUserId = useRecoilValue(MyId);
   const MyTokens = useRecoilValue(MyAuthTokens);
   const ClearLikeList = useResetRecoilState(MyLibraryLikeState);
   const ClearReadList = useResetRecoilState(MyLibraryReadState);
   const ClearFinish = useResetRecoilState(MyLibraryFinishState);
+  const MyInfo = useRecoilValue(User);
+  const MyUserId = MyInfo._id;
   const date = Date.parse(bookDetails.publishedDate);
   const dateConvert = new Date(date);
   const dateString =
@@ -44,21 +47,7 @@ export default function BookDetail({ navigation: { goBack } }) {
     "/" +
     dateConvert.getFullYear();
   const token = `Bearer ${MyTokens}`;
-  function AddBookLike() {
-    setMyLibraryLike((bookslike) => [...bookslike, bookDetails]);
-    console.log("MyLibLike", MyLibraryLike);
-    alert(bookDetails.title, +"ajouter");
-  }
-  function AddBookRead() {
-    setMyLibraryRead((booksread) => [...booksread, bookDetails]);
-    console.log("MyLibRead", MyLibraryRead);
-    alert(bookDetails.title, +"ajouter");
-  }
-  function AddBookFinish() {
-    setMyLibraryFinsh((booksfinish) => [...booksfinish, bookDetails]);
-    console.log("MyLibFinish", MyLibraryFinsh);
-    alert(bookDetails.title, +"ajouter");
-  }
+
   const addBookInDbEncours = () => {
     const bookDetailEnCours = {
       tag: "encours",
@@ -71,7 +60,7 @@ export default function BookDetail({ navigation: { goBack } }) {
         auteur1: bookDetails.authors[0],
         auteur2: bookDetails.authors[1],
       },
-      genre: bookDetails.categories.join(),
+      genre: bookDetails.categories ? bookDetails.categories.join() : "néant",
       pages: bookDetails.pageCount,
       date: dateString,
       description: bookDetails.description,
@@ -83,7 +72,8 @@ export default function BookDetail({ navigation: { goBack } }) {
 
     addBook(MyUserId, bookDetailEnCours, token)
       .then((res) => {
-        console.log("Livre ajouté avec succès", res);
+        console.log(res);
+        alert("Livre ajouté avec succès");
         ClearLikeList();
       })
       .catch((error) => {
@@ -108,7 +98,7 @@ export default function BookDetail({ navigation: { goBack } }) {
         auteur1: bookDetails.authors[0],
         auteur2: bookDetails.authors[1],
       },
-      genre: bookDetails.categories.join(),
+      genre: bookDetails.categories ? bookDetails.categories.join() : "néant",
       pages: bookDetails.pageCount,
       date: dateString,
       description: bookDetails.description,
@@ -120,7 +110,8 @@ export default function BookDetail({ navigation: { goBack } }) {
 
     addBook(MyUserId, bookDetailDejaLu, token)
       .then((res) => {
-        console.log("Livre ajouté avec succès", res);
+        console.log(res);
+        alert("Livre ajouté avec succès");
         ClearFinish();
       })
       .catch((error) => {
@@ -146,7 +137,7 @@ export default function BookDetail({ navigation: { goBack } }) {
         auteur1: bookDetails.authors[0],
         auteur2: bookDetails.authors[1],
       },
-      genre: bookDetails.categories.join(),
+      genre: bookDetails.categories ? bookDetails.categories.join() : "néant",
       pages: bookDetails.pageCount,
       date: dateString,
       description: bookDetails.description,
@@ -158,11 +149,11 @@ export default function BookDetail({ navigation: { goBack } }) {
 
     addBook(MyUserId, bookDetailEnvie, token)
       .then((res) => {
-        console.log("Livre ajouté avec succès", res);
+        alert("Livre ajouté avec succès");
         ClearReadList();
       })
       .catch((error) => {
-        console.log(MyUserId);
+        console.log("MyId", MyUserId);
         console.log(bookDetailEnvie);
         console.log(token);
         console.log(
@@ -177,8 +168,11 @@ export default function BookDetail({ navigation: { goBack } }) {
       <ViewIcon>
         <ArrowReturn onPress={() => goBack()} width={30} height={30} />
         <ViewAvatar>
-          <Avatar width={40} height={40} />
-          <Text>DcLover17</Text>
+          <Image
+            source={{ uri: MyInfo.avatar }}
+            style={{ width: 40, height: 40, borderRadius: 100 }}
+          />
+          <Text>{MyInfo.pseudo}</Text>
         </ViewAvatar>
       </ViewIcon>
       <ViewBook>

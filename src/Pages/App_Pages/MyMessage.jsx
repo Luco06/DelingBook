@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Platform, View } from "react-native";
 import {
   Text,
@@ -13,14 +13,23 @@ import ArrowReturn from "../../../assets/Img_Presentation/Shape.svg";
 import { SearchBar } from "@rneui/themed";
 import PrevMessage from "../../../Api/Mock/PrevMessage";
 import { useNavigation } from "@react-navigation/native";
+import { User } from "../../recoil";
+import { useRecoilValue } from "recoil";
 
 export default function MyMessage({ navigation: { goBack } }) {
   const navigation = useNavigation();
   const [MyPseudo, setMyPseudo] = useState("DCLover17");
   const [Search, setSearch] = useState("");
+  const MyUser = useRecoilValue(User);
+  const MyToken = MyUser.authTokens;
   const updateSearch = (Search) => {
     setSearch(Search);
   };
+
+  const userID = MyUser._id;
+  const userAuthToken = MyUser.authToken;
+
+  useEffect(() => {}, []);
   return (
     <View style={styles.container}>
       <ViewReturn>
